@@ -262,3 +262,6 @@ public class EarthquakeRestController {
 }
 
 ```
+
+文件上传示例仓库：https://codehub.devcloud.huaweicloud.com/2020-SPM-1200001/MSHD-version2.git
+springboot+vue+axios+boostrap表单上传示例仓库：https://github.com/a11enyang/springBootVueAxiosDemo2
