@@ -32,3 +32,4 @@ build/
 
 ### 隐藏数据库配置
 src/main/resources/application.properties
+*.DS_Store
