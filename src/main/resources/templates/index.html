@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href='/webjars/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-3">
+                <h1 style="margin-left: 50px">
+                    <a href="#" class="router-link-active">
+                        <span class="logo-name">Alexzander</span>
+                    </a>
+                </h1>
+            </div>
+            <div class="col-md-6" style="margin-top: 20px">
+                <div class="navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="车票/订单/...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">搜索</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </div>
+            <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px">
+                <ul class="nav nav-pills">
+                    <li role="presentation" class="active"><a href="#">个人中心</a></li>
+                    <li role="presentation"><a href="#">登录</a></li>
+                    <li role="presentation"><a href="#">注册</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6" id="search-form">
+            <form class="form-horizontal">
+                <h2 style="text-align: center;">查询车票</h2>
+                <div class="form-group">
+                    <label for="startPoint" class="col-md-3 control-label">出发地</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="startPoint" placeholder="上海">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="destination" class="col-md-3 control-label">目的地</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="destination" placeholder="北京">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="date" class="col-md-3 control-label">日期</label>
+                    <div class="col-md-6">
+                        <input type="date" class="form-control" id="date" placeholder="2020/4/26">
+                    </div>
+                </div>
+                <div class="form-group" style="padding-left: 350px;">
+                    <div class="col-md-2" style="text-align: center;">
+                        <button type="submit" class="btn btn-warning">查询</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <hr />
+    <div class="row" id="news">
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="./image/logo.png" alt="...">
+                <p class="new-name">“环西部火车游”高品质旅游版高品质列车</p>
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="./image/logo.png" alt="...">
+                <p class="new-name">“环西部火车游”高品质旅游版高品质列车</p>
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="./image/logo.png" alt="...">
+                <p class="new-name">“环西部火车游”高品质旅游版高品质列车</p>
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="./image/logo.png" alt="...">
+                <p class="new-name">“环西部火车游”高品质旅游版高品质列车</p>
+            </a>
+        </div>
+    </div>
+    <style>
+        #search-form {
+            border: 1px solid blueviolet;
+        }
+
+        #news {
+            padding: 20px;
+        }
+
+        .new-name {
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+    <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
+    <script src="/webjars/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <br>
+
+</body>
+
+</html>

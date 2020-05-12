@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Ticket Center</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css"></linkrel>
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-3">
+                <h1 style="margin-left: 50px">
+                    <a href="#" class="router-link-active">
+                        <span class="logo-name">Alexzander</span>
+                    </a>
+                </h1>
+            </div>
+            <div class="col-md-7" style="margin-top: 20px">
+
+            </div>
+            <div class="col-md-2" style="margin-top: 15px ; padding-left: 50px">
+                <button type="button" class="btn btn-danger">退出登录</button>
+            </div>
+        </div>
+    </div>
+    <div class="main-tap">
+        <div class="row">
+            <div class="col-md-2" id="tableft">
+                <ul class="nav nav-pills" id="myTab">
+                    <li class="active"><a href="#personInfoManage" data-toggle="tab">个人信息</a></li>
+                    <li><a href="#trainManage" data-toggle="tab">列车管理</a></li>
+                    <li><a href="#orderManage" data-toggle="tab">订单管理</a></li>
+                </ul>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content">
+                    <!--个人信息-->
+                    <div class="tab-pane active" id="personInfoManage">
+                        <div class="panel panel-info">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading" style="height: 60px;">
+                                <div style="margin-top: 10px; width: 100px; float: left;">个人信息</div>
+                            </div>
+                            <div class="info-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="myInputName">name</label>
+                                        <input type="text" class="form-control" id="myInputName" placeholder="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="myInputPsw">性别</label>
+                                        <input type="text" class="form-control" id="myInputPsw" placeholder="性别">
+                                    </div>
+                                    <div class="form-group row" style="height:30px">
+                                        <div class="col-md-1" style="font-weight: bold; padding: 0px;">工号:</div>
+                                        <div class="col-md-6">3108</div>
+                                    </div>
+                                    <button type="submit" class="btn btn-danger">保存修改</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 列车和车次管理 -->
+                    <div class="tab-pane" id="trainManage">
+                        <div class="tabbable" style="margin: 3px;">
+                            <ul class="nav nav-pills" id="divstyletab" style="margin-bottom: 20px;">
+                                <li class="active"><a href="#tab11" data-toggle="tab">列车管理</a></li>
+                                <li><a href="#tab12" data-toggle="tab">车次管理</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <!-- 列车管理 -->
+                                <div class="tab-pane fade active in" id="tab11">
+                                    <div class="panel panel-info">
+                                        <!-- Default panel contents -->
+                                        <div class="panel-heading" style="height: 60px;">
+                                            <div style="margin-top: 10px; width: 100px; float: left;">列车列表</div>
+                                            <button type="button" class="btn btn-success" data-toggle="modal"
+                                            data-target="#moretrain"
+                                                style="float: right;">新增列车</button>
+                                        </div>
+                                        <div class="info-body">
+                                            <!-- Table -->
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>车型</th>
+                                                        <th>座位信息</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>11</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger">删除</button>
+                                                            <button type="button" class="btn btn-warning">修改信息</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>22</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger">删除</button>
+                                                            <button type="button" class="btn btn-warning">修改信息</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 车次管理 -->
+                                <div class="tab-pane fade" id="tab12">
+                                    <div class="panel panel-info">
+                                        <!-- Default panel contents -->
+                                        <div class="panel-heading" style="height: 40px;">
+                                            <div style="width: 100px; float: left;">搜索条件</div>
+                                        </div>
+                                        <div class="info-body row" style="padding: 0 50px 20px 50px;">
+                                            <div class="col-md-6">
+                                                <label for="searchMode">搜索方式</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="searchMode"
+                                                        placeholder="id搜索">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="searchContant">搜索内容</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="searchContant"
+                                                        placeholder="请输入关键字">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-default" type="button">搜索</button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-info">
+                                        <!-- Default panel contents -->
+                                        <div class="panel-heading" style="height: 60px;">
+                                            <div style="margin-top: 10px; width: 100px; float: left;">列车列表</div>
+                                            <button type="button" class="btn btn-success" data-toggle="modal"
+                                            data-target="#moretrip"
+                                                style="float: right;">新增车次</button>
+                                        </div>
+                                        <div class="info-body">
+                                            <!-- Table -->
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>编号</th>
+                                                        <th>状态</th>
+                                                        <th>起点站</th>
+                                                        <th>终点站</th>
+                                                        <th>起发日期</th>
+                                                        <th>设置</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>11</td>
+                                                        <td>111</td>
+                                                        <td>1111</td>
+                                                        <td>11111</td>
+                                                        <td style="width: 200px;">
+                                                            <button type="button" class="btn btn-warning"
+                                                                data-toggle="modal"
+                                                                data-target="#TimefixModel">时间设置</button>
+                                                            <button type="button" class="btn btn-warning"
+                                                                data-toggle="modal"
+                                                                data-target="#PricefixModel">票价设置</button>
+                                                        </td>
+                                                        <td style="width: 160px;">
+                                                            <button type="button" class="btn btn-danger">删除</button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>22</td>
+                                                        <td>222</td>
+                                                        <td>2222</td>
+                                                        <td>22222</td>
+                                                        <td style="width: 200px;">
+                                                            <button type="button" class="btn btn-warning"
+                                                                data-toggle="modal"
+                                                                data-target="#TimefixModel">时间设置</button>
+                                                            <button type="button" class="btn btn-warning"
+                                                                data-toggle="modal"
+                                                                data-target="#PricefixModel">票价设置</button>
+                                                        </td>
+                                                        <td style="width: 160px;">
+                                                            <button type="button" class="btn btn-danger">删除</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 中间图表结束 -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 订单管理 -->
+                    <div class="tab-pane" id="orderManage">
+                        <div class="panel panel-info">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading" style="height: 60px;">
+                                <div style="margin-top: 10px; width: 100px; float: left;">订单列表</div>
+                            </div>
+                            <div class="info-body">
+                                <!-- Table -->
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>订单编号</th>
+                                            <th>订单状态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>9870987625</td>
+                                            <td>11</td>
+                                        </tr>
+                                        <tr>
+                                            <td>9870987626</td>
+                                            <td>22</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- tab end -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 时间设置的弹窗 -->
+    <div class="modal fade" id="TimefixModel" tabindex="-1" role="dialog" aria-labelledby="TimefixModelLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:  #d9edf7;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="TimefixModelLabel">时间设置</h4>
+                </div>
+                <div class="modal-body">
+                    <table data-toggle="table">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>车站</th>
+                                <th>到达时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>上海</td>
+                                <td>12:00</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>北京</td>
+                                <td>14:00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!-- 票价设置的弹窗 -->
+    <div class="modal fade" id="PricefixModel" tabindex="-1" role="dialog" aria-labelledby="PricefixModelLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:  #d9edf7;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="PricefixModelLabel">时间设置</h4>
+                </div>
+                <div class="modal-body">
+                    <table data-toggle="table">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>起发站</th>
+                                <th>终点站</th>
+                                <th>车座类型</th>
+                                <th>票价</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>上海</td>
+                                <td>北京</td>
+                                <td>特等座</td>
+                                <td>¥120</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>北京</td>
+                                <td>天津</td>
+                                <td>特等座</td>
+                                <td>¥36</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!-- 新增列车的弹窗 -->
+    <div class="modal fade" id="moretrain" tabindex="-1" role="dialog" aria-labelledby="moretrainLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:  #d9edf7;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="moretrainLabel">新增乘车信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="contactInputTrainType">车型</label>
+                            <input type="text" class="form-control" id="contactInputTrainType" placeholder="X-220">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactInputTrainSeat">座位信息</label>
+                            <input type="text" class="form-control" id="contactInputTrainSeat" placeholder="座位信息">
+                        </div>
+                        <button type="submit" class="btn btn-danger">提交</button>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!-- 新增车次的弹窗 -->
+    <div class="modal fade" id="moretrip" tabindex="-1" role="dialog" aria-labelledby="moretripLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:  #d9edf7;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="moretripLabel">新增乘车信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="contactInputTripID">车次编号</label>
+                            <input type="text" class="form-control" id="contactInputTripID" placeholder="123456">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactInputTripState">车次状态</label>
+                            <input type="text" class="form-control" id="contactInputTripState" placeholder="运行中">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactInputStartPoint">起点站</label>
+                            <input type="text" class="form-control" id="contactInputStartPoint" placeholder="北京">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactInputDestination">终点站</label>
+                            <input type="text" class="form-control" id="contactInputDestination" placeholder="上海">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactInputStartDate">起发日期</label>
+                            <input type="text" class="form-control" id="contactInputStartDate" placeholder="2020.5.20">
+                        </div>
+                        <button type="submit" class="btn btn-danger">提交</button>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <style>
+        .main-tap {
+            margin-top: 20px;
+        }
+
+        #tableft ul {
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        #tableft ul li {
+            float: left;
+            list-style: none;
+            margin-left: 100px;
+            margin-top: 30px;
+        }
+
+        .info-body {
+            padding: 0 50px 50px 50px;
+        }
+
+        .form-group {
+            margin: 20px 0;
+        }
+    </style>
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
+</body>
+
+</html>
