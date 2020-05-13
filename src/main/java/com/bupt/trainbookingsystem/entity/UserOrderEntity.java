@@ -15,7 +15,7 @@ public class UserOrderEntity {
     private String nameList;
     private String seatList;
     private BigDecimal price;
-    private String condition;
+    private String userOrderCondition;
     private Integer ordineryUserId;
     private Integer tripId;
     private OrdinaryUserEntity ordinaryUserByOrdineryUserId;
@@ -92,13 +92,13 @@ public class UserOrderEntity {
     }
 
     @Basic
-    @Column(name = "condition")
-    public String getCondition() {
-        return condition;
+    @Column(name = "userOrderCondition")
+    public String getUserOrderCondition() {
+        return userOrderCondition;
     }
 
-    public void setCondition(String condition) {
-        this.condition = condition;
+    public void setUserOrderCondition(String condition) {
+        this.userOrderCondition = condition;
     }
 
     @Basic
@@ -133,14 +133,14 @@ public class UserOrderEntity {
                 Objects.equals(nameList, that.nameList) &&
                 Objects.equals(seatList, that.seatList) &&
                 Objects.equals(price, that.price) &&
-                Objects.equals(condition, that.condition) &&
+                Objects.equals(userOrderCondition, that.userOrderCondition) &&
                 Objects.equals(ordineryUserId, that.ordineryUserId) &&
                 Objects.equals(tripId, that.tripId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tripNumber, routLine, tripTime, nameList, seatList, price, condition, ordineryUserId, tripId);
+        return Objects.hash(id, tripNumber, routLine, tripTime, nameList, seatList, price, userOrderCondition, ordineryUserId, tripId);
     }
 
     @ManyToOne
