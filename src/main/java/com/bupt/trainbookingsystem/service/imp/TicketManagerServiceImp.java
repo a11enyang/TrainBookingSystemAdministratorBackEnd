@@ -24,8 +24,8 @@ public class TicketManagerServiceImp implements TicketManagerService {
     }
 
     @Override
-    public void save(TicketManagerEntity t) {
-        tmr.save(t);
+    public TicketManagerEntity save(TicketManagerEntity t) {
+        return tmr.save(t);
     }
 
     @Override

@@ -8,9 +8,7 @@ import com.bupt.trainbookingsystem.entity.TicketManagerEntity;
 import com.bupt.trainbookingsystem.service.AdvertisementService;
 import com.bupt.trainbookingsystem.service.TicketManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +23,14 @@ public class ManagerCenterRestController {
     @GetMapping("/ticketmanager")
     public List<TicketManagerEntity> getAllTicketManager(){
         return  ticketManagerService.findALL();
+    }
+    @PostMapping("/addticketmanager")
+    public TicketManagerEntity addTicketManager(@RequestBody TicketManagerEntity t){
+        return ticketManagerService.save(t);
+    }
+    @DeleteMapping("/deleteticketmanager/{id}")
+    public void deleteById(@PathVariable int id) {
+        ticketManagerService.deleteTicketManagerEntityById(id);
     }
     @GetMapping("/ad")
     public List<AdvertisementEntity> getAllAdvertisement(){
