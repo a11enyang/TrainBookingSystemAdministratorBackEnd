@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -39,11 +39,20 @@
                     </div><!-- /input-group -->
                 </div>
             </div>
-            <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px">
+            <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px" th:unless="${names}">
                 <ul class="nav nav-pills">
-                    <li role="presentation" class="active"><a href="#">个人中心</a></li>
-                    <li role="presentation"><a href="#">登录</a></li>
-                    <li role="presentation"><a href="#">注册</a></li>
+                    <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
+                    <li role="presentation"><a href="#" th:href="@{/login}">登录</a></li>
+                    <li role="presentation"><a href="#" th:href="@{/register}">注册</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px"  th:if="${names}">
+                <ul class="nav nav-pills">
+                    <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
+                    <img th:src="@{/picture/userimg.jpg}"  style="float: left;width: 50px;height: 50px;margin-left: 20px;margin-top: -5px">
+                    <li role="presentation" ><a href="#" th:text="${names}"></a></li>
+                    <li role="presentation" onclick="logout()"><a href="#" >注销</a></li>
                 </ul>
             </div>
         </div>
@@ -200,23 +209,23 @@
                             <div class="info-body">
                                 <div class="info-item row">
                                     <div class="info-label col-md-2">用户名:</div>
-                                    <div class="info-bd col-md-6">Mercury</div>
+                                    <div class="info-bd col-md-6"><span th:text="${names}"></span></div>
                                 </div>
                                 <div class="info-item row">
                                     <div class="info-label col-md-2">姓名:</div>
-                                    <div class="info-bd col-md-6">潘尚</div>
+                                    <div class="info-bd col-md-6"><span th:text="${names}"></span></div>
                                 </div>
                                 <div class="info-item row">
                                     <div class="info-label col-md-2">性别:</div>
-                                    <div class="info-bd col-md-6">男</div>
+                                    <div class="info-bd col-md-6"><span th:text="${types}"></span></div>
                                 </div>
                                 <div class="info-item row">
                                     <div class="info-label col-md-2">证件号:</div>
-                                    <div class="info-bd col-md-6">***************</div>
+                                    <div class="info-bd col-md-6"><span th:text="${personIds}"></span></div>
                                 </div>
                                 <div class="info-item row">
                                     <div class="info-label col-md-2">联系电话:</div>
-                                    <div class="info-bd col-md-6">1883456743</div>
+                                    <div class="info-bd col-md-6"><p th:text="${phonenums}+'abc'">wdaw</p></div>
                                 </div>
                             </div>
                         </div>
