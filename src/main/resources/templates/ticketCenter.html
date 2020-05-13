@@ -183,11 +183,14 @@
                                                         <td>11111</td>
                                                         <td style="width: 200px;">
                                                             <button type="button" class="btn btn-warning"
-                                                                data-toggle="modal"
-                                                                data-target="#TimefixModel">时间设置</button>
+                                                                    data-toggle="modal"
+                                                                    data-target="#RoutefixModel">路线</button>
                                                             <button type="button" class="btn btn-warning"
                                                                 data-toggle="modal"
-                                                                data-target="#PricefixModel">票价设置</button>
+                                                                data-target="#TimefixModel">时间</button>
+                                                            <button type="button" class="btn btn-warning"
+                                                                data-toggle="modal"
+                                                                data-target="#PricefixModel">票价</button>
                                                         </td>
                                                         <td style="width: 160px;">
                                                             <button type="button" class="btn btn-danger">删除</button>
@@ -201,11 +204,14 @@
                                                         <td>22222</td>
                                                         <td style="width: 200px;">
                                                             <button type="button" class="btn btn-warning"
-                                                                data-toggle="modal"
-                                                                data-target="#TimefixModel">时间设置</button>
+                                                                    data-toggle="modal"
+                                                                    data-target="#RoutefixModel">路线</button>
                                                             <button type="button" class="btn btn-warning"
                                                                 data-toggle="modal"
-                                                                data-target="#PricefixModel">票价设置</button>
+                                                                data-target="#TimefixModel">时间</button>
+                                                            <button type="button" class="btn btn-warning"
+                                                                data-toggle="modal"
+                                                                data-target="#PricefixModel">票价</button>
                                                         </td>
                                                         <td style="width: 160px;">
                                                             <button type="button" class="btn btn-danger">删除</button>
@@ -254,6 +260,25 @@
                 </div>
             </div>
         </div>
+    </div>
+    <!-- 路线设置的弹窗 -->
+    <div class="modal fade" id="RoutefixModel" tabindex="-1" role="dialog" aria-labelledby="RoutefixModelLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:  #d9edf7;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="RouteModelLabel">路线设置</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="InputRoute">路线设置</label>
+                        <input type="text" class="form-control" id="InputRoute" placeholder="北京-天津-黑龙江">
+                    </div>
+                    <button type="submit" class="btn btn-default" data-dismiss="modal">Submit</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
     </div>
     <!-- 时间设置的弹窗 -->
     <div class="modal fade" id="TimefixModel" tabindex="-1" role="dialog" aria-labelledby="TimefixModelLabel"
