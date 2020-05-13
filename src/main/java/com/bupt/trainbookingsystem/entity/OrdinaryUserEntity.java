@@ -2,6 +2,7 @@ package com.bupt.trainbookingsystem.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +18,8 @@ public class OrdinaryUserEntity {
     private BigDecimal balance;
     private Byte isstudent;
     private Byte credit;
+    private Collection<ContactEntity> contactsById;
+    private Collection<UserOrderEntity> userOrdersById;
 
     @Id
     @Column(name = "id")
@@ -138,5 +141,23 @@ public class OrdinaryUserEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, password, personId, email, phonenum, type, balance, isstudent, credit);
+    }
+
+    @OneToMany(mappedBy = "ordinaryUserByOrdineryUserId")
+    public Collection<ContactEntity> getContactsById() {
+        return contactsById;
+    }
+
+    public void setContactsById(Collection<ContactEntity> contactsById) {
+        this.contactsById = contactsById;
+    }
+
+    @OneToMany(mappedBy = "ordinaryUserByOrdineryUserId")
+    public Collection<UserOrderEntity> getUserOrdersById() {
+        return userOrdersById;
+    }
+
+    public void setUserOrdersById(Collection<UserOrderEntity> userOrdersById) {
+        this.userOrdersById = userOrdersById;
     }
 }

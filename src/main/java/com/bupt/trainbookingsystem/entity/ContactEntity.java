@@ -9,6 +9,8 @@ public class ContactEntity {
     private int id;
     private String name;
     private String personId;
+    private Integer ordineryUserId;
+    private OrdinaryUserEntity ordinaryUserByOrdineryUserId;
 
     @Id
     @Column(name = "id")
@@ -40,6 +42,16 @@ public class ContactEntity {
         this.personId = personId;
     }
 
+    @Basic
+    @Column(name = "ordinery_user_id")
+    public Integer getOrdineryUserId() {
+        return ordineryUserId;
+    }
+
+    public void setOrdineryUserId(Integer ordineryUserId) {
+        this.ordineryUserId = ordineryUserId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,11 +59,22 @@ public class ContactEntity {
         ContactEntity that = (ContactEntity) o;
         return id == that.id &&
                 Objects.equals(name, that.name) &&
-                Objects.equals(personId, that.personId);
+                Objects.equals(personId, that.personId) &&
+                Objects.equals(ordineryUserId, that.ordineryUserId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, personId);
+        return Objects.hash(id, name, personId, ordineryUserId);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ordinery_user_id", referencedColumnName = "id",insertable = false,updatable = false)
+    public OrdinaryUserEntity getOrdinaryUserByOrdineryUserId() {
+        return ordinaryUserByOrdineryUserId;
+    }
+
+    public void setOrdinaryUserByOrdineryUserId(OrdinaryUserEntity ordinaryUserByOrdineryUserId) {
+        this.ordinaryUserByOrdineryUserId = ordinaryUserByOrdineryUserId;
     }
 }

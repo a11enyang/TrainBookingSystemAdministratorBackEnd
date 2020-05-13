@@ -63,7 +63,7 @@
                                     <div style="margin-top: 0px; width: 300px; float: left;"><span style="font-size: 20px;font-family:'alfa-slab-one'">售票端用户信息</span></div>
                                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newbusiness" style="margin-top: -1px;float: right; height: 30px">新增用户</button>
                                 </div>
-                                
+
                                 <div class="tab-content">
                                     <!-- 第一个tab -->
                                     <br>
@@ -81,7 +81,7 @@
                                                     <th>ID</th>
                                                     <th>工号</th>
                                                     <th>账号名</th>
-                                                    
+
                                                     <th>密码</th>
                                                 </tr>
                                             </thead>
@@ -90,7 +90,7 @@
                                                     <td>467</td>
                                                     <td>shanghai-001</td>
                                                     <td>shanghai-001</td>
-                                               
+
                                                     <td>123456789</td>
                                                     <td>
                                                         <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
@@ -101,7 +101,7 @@
                                                     <td>468</td>
                                                     <td>shanghai-002</td>
                                                     <td>shanghai-002</td>
-                                            
+
                                                     <td>123456789</td>
                                                     <td>
                                                         <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
@@ -120,7 +120,7 @@
                                 <div class="panel-heading" style="height: 50px; background:rgba(170,218,248,1.00)">
                                     <div style="margin-top: 0px; width: 300px; float: left;"><span style="font-size: 20px;font-family:'alfa-slab-one'">普通用户信息</span></div>
                                 </div>
-                                
+
                                 <div class="tab-content">
                                     <!-- 第一个tab -->
                                     <br>
@@ -170,7 +170,7 @@
                                     </div>
                                 </div>
                             </div>
-    
+
                         </div>
                         <!-- 3 -->
                         <div class="tab-pane" id="infomanage">
@@ -341,7 +341,7 @@
                                 <label for="contactInputName">图片链接</label>
                                 <input type="file" name="gameImgFile"/>
                             </div>
-                        
+
                             <button type="submit" class="btn btn-danger">提交</button>
                         </form>
                     </div>
@@ -370,7 +370,7 @@
                                     <label for="contactInputName">重新上传图片</label>
                                     <input type="file" name="gameImgFile"/>
                                 </div>
-                            
+
                                 <button type="submit" class="btn btn-danger">提交</button>
                             </form>
                         </div>
@@ -378,41 +378,6 @@
                 </div><!-- /.modal -->
             </div>
         <!-- 编辑个人信息的弹窗 -->
-        <div class="modal fade" id="myInfoEdit" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header" style="background-color:  #d9edf7;">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="moreinfoLabel">编辑个人信息</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="myInputVname">用户名</label>
-                                <input type="text" class="form-control" id="myInputVname" placeholder="用户名">
-                            </div>
-                            <div class="form-group">
-                                <label for="myInputName">姓名</label>
-                                <input type="text" class="form-control" id="myInputName" placeholder="姓名">
-                            </div>
-                            <div class="form-group">
-                                <label for="mySex">性别</label>
-                                <input type="text" class="form-control" id="myInputName" placeholder="性别">
-                            </div>
-                            <div class="form-group">
-                                <label for="myInputIDNum">身份证号</label>
-                                <input type="text" class="form-control" id="myInputIDNum" placeholder="身份证号">
-                            </div>
-                            <div class="form-group">
-                                <label for="myInputPhoneNum">联系电话</label>
-                                <input type="text" class="form-control" id="myInputPhoneNum" placeholder="联系电话">
-                            </div>
-                            <button type="submit" class="btn btn-danger">提交</button>
-                        </form>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
-        </div>
         <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
         <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
         <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
@@ -434,18 +399,18 @@
                     var xhr = new XMLHttpRequest();
                     var progress = document.getElementById("progress")
                     progress.style.display = "block";
-            
+
                     xhr.upload.addEventListener("progress", function(e) {
                         if (e.lengthComputable) {
                             var percentage = Math.round((e.loaded * 100) / e.total);
                             progress.value = percentage;
                         }
                     }, false);
-            
+
                     xhr.upload.addEventListener("load", function(e){
                           console.log("上传完毕...")
                       }, false);
-            
+
                     xhr.open("POST", "upload");
                     xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
                     xhr.onreadystatechange = function() {
@@ -464,19 +429,19 @@
             .main-tap {
                 margin-top: 50px;
             }
-    
+
             #tableft ul {
                 flex-direction: row;
                 justify-content: center;
             }
-    
+
             #tableft ul li {
                 float: left;
                 list-style: none;
                 margin-left: 100px;
                 margin-top: 30px;
             }
-    
+
             .info-item {
                 margin: 10px 0px 10px 100px;
             }
