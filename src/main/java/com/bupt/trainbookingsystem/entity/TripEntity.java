@@ -2,6 +2,7 @@ package com.bupt.trainbookingsystem.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -14,6 +15,13 @@ public class TripEntity {
     private Timestamp departureTime;
     private String remainseatInfo;
     private Byte tripStatus;
+    private Integer trainId;
+    private Collection<FareEntity> faresById;
+    private Collection<RoutelineEntity> routelinesById;
+    private Collection<SeatEntity> seatsById;
+    private Collection<StationsEntity> stationsById;
+    private TrainEntity trainByTrainId;
+    private Collection<UserOrderEntity> userOrdersById;
 
     @Id
     @Column(name = "id")
@@ -85,6 +93,16 @@ public class TripEntity {
         this.tripStatus = tripStatus;
     }
 
+    @Basic
+    @Column(name = "train_id")
+    public Integer getTrainId() {
+        return trainId;
+    }
+
+    public void setTrainId(Integer trainId) {
+        this.trainId = trainId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -96,11 +114,67 @@ public class TripEntity {
                 Objects.equals(endStation, that.endStation) &&
                 Objects.equals(departureTime, that.departureTime) &&
                 Objects.equals(remainseatInfo, that.remainseatInfo) &&
-                Objects.equals(tripStatus, that.tripStatus);
+                Objects.equals(tripStatus, that.tripStatus) &&
+                Objects.equals(trainId, that.trainId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, trainNumber, startStation, endStation, departureTime, remainseatInfo, tripStatus);
+        return Objects.hash(id, trainNumber, startStation, endStation, departureTime, remainseatInfo, tripStatus, trainId);
+    }
+
+    @OneToMany(mappedBy = "tripByTripId")
+    public Collection<FareEntity> getFaresById() {
+        return faresById;
+    }
+
+    public void setFaresById(Collection<FareEntity> faresById) {
+        this.faresById = faresById;
+    }
+
+    @OneToMany(mappedBy = "tripByTripId")
+    public Collection<RoutelineEntity> getRoutelinesById() {
+        return routelinesById;
+    }
+
+    public void setRoutelinesById(Collection<RoutelineEntity> routelinesById) {
+        this.routelinesById = routelinesById;
+    }
+
+    @OneToMany(mappedBy = "tripByTripId")
+    public Collection<SeatEntity> getSeatsById() {
+        return seatsById;
+    }
+
+    public void setSeatsById(Collection<SeatEntity> seatsById) {
+        this.seatsById = seatsById;
+    }
+
+    @OneToMany(mappedBy = "tripByTripId")
+    public Collection<StationsEntity> getStationsById() {
+        return stationsById;
+    }
+
+    public void setStationsById(Collection<StationsEntity> stationsById) {
+        this.stationsById = stationsById;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "train_id", referencedColumnName = "id",insertable = false,updatable = false)
+    public TrainEntity getTrainByTrainId() {
+        return trainByTrainId;
+    }
+
+    public void setTrainByTrainId(TrainEntity trainByTrainId) {
+        this.trainByTrainId = trainByTrainId;
+    }
+
+    @OneToMany(mappedBy = "tripByTripId")
+    public Collection<UserOrderEntity> getUserOrdersById() {
+        return userOrdersById;
+    }
+
+    public void setUserOrdersById(Collection<UserOrderEntity> userOrdersById) {
+        this.userOrdersById = userOrdersById;
     }
 }

@@ -3,16 +3,17 @@
  内容：车次的DAO层
  **/
 package com.bupt.trainbookingsystem.dao;
-import com.bupt.trainbookingsystem.entity.TrainEntity;
 import com.bupt.trainbookingsystem.entity.TripEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
+@Repository
 public interface TripRepository extends JpaRepository<TripEntity,Integer> {
     //根据ID搜索
     TripEntity findTripEntityById(int id);

@@ -5,7 +5,6 @@
 package com.bupt.trainbookingsystem.service;
 import com.bupt.trainbookingsystem.dao.TrainRepository;
 import com.bupt.trainbookingsystem.entity.TrainEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

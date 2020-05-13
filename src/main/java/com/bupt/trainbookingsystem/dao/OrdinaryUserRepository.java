@@ -18,4 +18,6 @@ public interface OrdinaryUserRepository extends JpaRepository<OrdinaryUserEntity
 
     @Query("select t from OrdinaryUserEntity t where t.name=?1")
     public OrdinaryUserEntity finduserbyname(String name);
+
+
 }

@@ -3,11 +3,14 @@
  内容：车次的Service层
  **/
 package com.bupt.trainbookingsystem.service;
+
 import com.bupt.trainbookingsystem.entity.TripEntity;
+
 import java.sql.Timestamp;
 import java.util.List;
 
 public interface TripService {
+
     void save(TripEntity t);
     List<TripEntity> findAll();
     //根据ID搜索

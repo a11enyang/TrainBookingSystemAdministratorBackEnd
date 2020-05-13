@@ -3,7 +3,9 @@
  内容：列车的Service层
  **/
 package com.bupt.trainbookingsystem.service;
+
 import com.bupt.trainbookingsystem.entity.TrainEntity;
+
 import java.util.List;
 
 public interface TrainService {
