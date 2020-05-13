@@ -2,15 +2,16 @@
  开发人员：徐玉韬
  内容：列车的Service层实现
  **/
-package com.bupt.trainbookingsystem.service;
+package com.bupt.trainbookingsystem.service.imp;
 import com.bupt.trainbookingsystem.dao.TrainRepository;
 import com.bupt.trainbookingsystem.entity.TrainEntity;
+import com.bupt.trainbookingsystem.service.TrainService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TrainServiceImp implements  TrainService{
+public class TrainServiceImp implements TrainService {
     private final TrainRepository tr;
 
     public TrainServiceImp(TrainRepository tr) {

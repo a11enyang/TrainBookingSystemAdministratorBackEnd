@@ -2,9 +2,10 @@
  开发人员：徐玉韬
  内容：用户订单的Service层实现
  **/
-package com.bupt.trainbookingsystem.service;
+package com.bupt.trainbookingsystem.service.imp;
 import com.bupt.trainbookingsystem.dao.UserOrderRepository;
 import com.bupt.trainbookingsystem.entity.UserOrderEntity;
+import com.bupt.trainbookingsystem.service.UserOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;

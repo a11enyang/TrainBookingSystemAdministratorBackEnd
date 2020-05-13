@@ -2,10 +2,11 @@
  开发人员：徐玉韬
  内容：车次的Service层实现
  **/
-package com.bupt.trainbookingsystem.service;
+package com.bupt.trainbookingsystem.service.imp;
 
 import com.bupt.trainbookingsystem.dao.TripRepository;
 import com.bupt.trainbookingsystem.entity.TripEntity;
+import com.bupt.trainbookingsystem.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -2,9 +2,10 @@
  开发人员：徐玉韬
  内容：票务管理员的Service层实现
  **/
-package com.bupt.trainbookingsystem.service;
+package com.bupt.trainbookingsystem.service.imp;
 import com.bupt.trainbookingsystem.dao.TicketManagerRepository;
 import com.bupt.trainbookingsystem.entity.TicketManagerEntity;
+import com.bupt.trainbookingsystem.service.TicketManagerService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
