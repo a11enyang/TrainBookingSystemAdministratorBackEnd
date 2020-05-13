@@ -5,86 +5,86 @@
     <!-- import CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- 新 Bootstrap 核心 CSS 文件 -->
-   <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 </head>
 <body>
 <div id="app">
-<div class="page-header">
-    <div class="row">
-        <div class="col-md-3">
-            <h1 style="margin-left: 50px">
-                <a href="#" class="router-link-active">
-                    <span class="logo-name">Alexzander</span>
-                </a>
-            </h1>
-        </div>
-        <div class="col-md-6" style="margin-top: -10px">
-            <div class="navbar-search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="车票/订单/...">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-3">
+                <h1 style="margin-left: 50px">
+                    <a href="#" class="router-link-active">
+                        <span class="logo-name">Alexzander</span>
+                    </a>
+                </h1>
+            </div>
+            <div class="col-md-6" style="margin-top: -10px">
+                <div class="navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="车票/订单/...">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="button">搜索</button>
                         </span>
-                </div><!-- /input-group -->
+                    </div><!-- /input-group -->
+                </div>
             </div>
-        </div>
-        <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px" th:unless="${names}">
-            <ul class="nav nav-pills">
-                <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
-                <li role="presentation"><a href="#" th:href="@{/login}">登录</a></li>
-                <li role="presentation"><a href="#" th:href="@{/register}">注册</a></li>
-            </ul>
-        </div>
+            <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px" th:unless="${names}">
+                <ul class="nav nav-pills">
+                    <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
+                    <li role="presentation"><a href="#" th:href="@{/login}">登录</a></li>
+                    <li role="presentation"><a href="#" th:href="@{/register}">注册</a></li>
+                </ul>
+            </div>
 
-        <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px"  th:if="${names}">
-            <ul class="nav nav-pills">
-                <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
-                <img th:src="@{/picture/userimg.jpg}"  style="float: left;width: 50px;height: 50px;margin-left: 20px;margin-top: -5px">
-                <li role="presentation" ><a href="#" th:text="${names}"></a></li>
-                <li role="presentation" onclick="logout()"><a href="#" >注销</a></li>
-            </ul>
-        </div>
+            <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px" th:if="${names}">
+                <ul class="nav nav-pills">
+                    <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
+                    <img th:src="@{/picture/userimg.jpg}"
+                         style="float: left;width: 50px;height: 50px;margin-left: 20px;margin-top: -5px">
+                    <li role="presentation"><a href="#" th:text="${names}"></a></li>
+                    <li role="presentation" onclick="logout()"><a href="#">注销</a></li>
+                </ul>
+            </div>
 
+        </div>
     </div>
-</div>
-
 
 
     <el-main>
-       <el-row  class="row-1" style="padding: 20px;">
-           <el-col :span="6">
-                     <span style="margin-left: 20px">出发地</span>
-               <el-input placeholder="出发地" class="search-1" >
-                      <i slot="suffix" class="el-input__icon el-icon-location-information"></i>
-               </el-input>
-           </el-col>
+        <el-row class="row-1" style="padding: 20px;">
+            <el-col :span="6">
+                <span style="margin-left: 20px">出发地</span>
+                <el-input placeholder="出发地" class="search-1">
+                    <i slot="suffix" class="el-input__icon el-icon-location-information"></i>
+                </el-input>
+            </el-col>
 
-           </el-col>
-           <el-col :span="6">
-               <span style="">目的地</span>
-               <el-input placeholder="目的地"  class="search-1" >
-                      <i slot="suffix" class="el-input__icon el-icon-location"></i>
-               </el-input>
-           </el-col>
-           <el-col :span="6">
-               <span style="">日期</span>
-               <el-input placeholder="日期"  class="search-1" >
-                      <i slot="suffix" class="el-input__icon el-icon-date"></i>
-               </el-input>
-           </el-col>
-           <el-col :span="2">
-               <div style="margin-top: -5px">
+            </el-col>
+            <el-col :span="6">
+                <span style="">目的地</span>
+                <el-input placeholder="目的地" class="search-1">
+                    <i slot="suffix" class="el-input__icon el-icon-location"></i>
+                </el-input>
+            </el-col>
+            <el-col :span="6">
+                <span style="">日期</span>
+                <el-input placeholder="日期" class="search-1">
+                    <i slot="suffix" class="el-input__icon el-icon-date"></i>
+                </el-input>
+            </el-col>
+            <el-col :span="2">
+                <div style="margin-top: -5px">
 
-                  <label><input name="type-check" type="radio" value="" />普通 </label>
-                   <br>
-                   <label><input name="type-check" type="radio" value="" />学生 </label>
-               </div>
-           </el-col>
-           <el-col :span="2">
-                 <el-button type="warning" class="search-btn" >查询</el-button>
-           </el-col>
-       </el-row>
+                    <label><input name="type-check" type="radio" value=""/>普通 </label>
+                    <br>
+                    <label><input name="type-check" type="radio" value=""/>学生 </label>
+                </div>
+            </el-col>
+            <el-col :span="2">
+                <el-button type="warning" class="search-btn">查询</el-button>
+            </el-col>
+        </el-row>
         <br>
         <el-row class="row-1">
             <el-tabs type="border-card">
@@ -117,7 +117,8 @@
                     <el-checkbox label="南站"></el-checkbox>
                     <el-checkbox label="西站"></el-checkbox>
                     <el-checkbox label="东站"></el-checkbox>
-                    <el-checkbox label="北站"></el-checkbox></el-tab-pane>
+                    <el-checkbox label="北站"></el-checkbox>
+                </el-tab-pane>
                 <el-tab-pane label="周三">
                     <span>车次类型 &nbsp;</span>
                     <el-checkbox label="G-高铁"></el-checkbox>
@@ -205,73 +206,79 @@
             共...个搜索结果
         </span>
         <el-row class="row-1">
-<table class="table table-striped">
-  <caption></caption>
-  <thead>
-    <tr >
-      <th ><span style="margin-left: 20px">车次</span></th>
-      <th>出发站<br>到达站</th>
-      <th>出发时间<br>到达时间</th>
-        <th>历时</th>
-      <th>特等座</th>
-      <th>一等座</th>
-        <th>二等座</th>
-      <th>软卧</th>
-      <th>软座</th>
-        <th>硬卧</th>
-      <th>硬座</th>
-        <th>其他</th>
-      <th>备注</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>D710</td>
-      <td>上海<br>北京南</td>
-      <td>21:24<br>9:22</td>
-        <td>11:58<br>次日到达</td>
-      <td>--</td>
-      <td>--</td>
-        <td>有</td>
-      <td>--</td>
-      <td>有</td>
-        <td>--</td>
-      <td>有</td>
-      <td>有</td>
-        <td><button type="button" class="btn btn-primary">预定</button></td>
-    </tr>
-    <tr>
-      <td>D710</td>
-      <td>上海<br>北京南</td>
-      <td>21:24<br>9:22</td>
-        <td>11:58<br>次日到达</td>
-      <td>--</td>
-      <td>--</td>
-        <td>有</td>
-      <td>--</td>
-      <td>有</td>
-        <td>--</td>
-      <td>有</td>
-      <td>有</td>
-        <td><button type="button" class="btn btn-primary">预定</button></td>
-    </tr>
-    <tr>
-      <td>D710</td>
-      <td>上海<br>北京南</td>
-      <td>21:24<br>9:22</td>
-        <td>11:58<br>次日到达</td>
-      <td>--</td>
-      <td>--</td>
-        <td>有</td>
-      <td>--</td>
-      <td>有</td>
-        <td>--</td>
-      <td>有</td>
-      <td>有</td>
-        <td><button type="button" class="btn btn-primary">预定</button></td>
-    </tr>
-  </tbody>
-</table>
+            <table class="table table-striped">
+                <caption></caption>
+                <thead>
+                <tr>
+                    <th><span style="margin-left: 20px">车次</span></th>
+                    <th>出发站<br>到达站</th>
+                    <th>出发时间<br>到达时间</th>
+                    <th>历时</th>
+                    <th>特等座</th>
+                    <th>一等座</th>
+                    <th>二等座</th>
+                    <th>软卧</th>
+                    <th>软座</th>
+                    <th>硬卧</th>
+                    <th>硬座</th>
+                    <th>其他</th>
+                    <th>备注</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>D710</td>
+                    <td>上海<br>北京南</td>
+                    <td>21:24<br>9:22</td>
+                    <td>11:58<br>次日到达</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>有</td>
+                    <td>--</td>
+                    <td>有</td>
+                    <td>--</td>
+                    <td>有</td>
+                    <td>有</td>
+                    <td>
+                        <button type="button" class="btn btn-primary">预定</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>D710</td>
+                    <td>上海<br>北京南</td>
+                    <td>21:24<br>9:22</td>
+                    <td>11:58<br>次日到达</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>有</td>
+                    <td>--</td>
+                    <td>有</td>
+                    <td>--</td>
+                    <td>有</td>
+                    <td>有</td>
+                    <td>
+                        <button type="button" class="btn btn-primary">预定</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>D710</td>
+                    <td>上海<br>北京南</td>
+                    <td>21:24<br>9:22</td>
+                    <td>11:58<br>次日到达</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>有</td>
+                    <td>--</td>
+                    <td>有</td>
+                    <td>--</td>
+                    <td>有</td>
+                    <td>有</td>
+                    <td>
+                        <button type="button" class="btn btn-primary">预定</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </el-row>
     </el-main>
 </div>
@@ -290,42 +297,49 @@
 
 <script type="text/javascript">
     function logout() {
-        var url="/admin/logout";
-        $.post(url,null,function () {
-            window.location='/search';
+        var url = "/admin/logout";
+        $.post(url, null, function () {
+            window.location = '/search';
         });
     }
 </script>
 <style>
-    body{
+    body {
         margin: 0px;
     }
-    .navbar-search{
+
+    .navbar-search {
         margin-top: 30px;
     }
-    .navber-links{
+
+    .navber-links {
         margin-top: 19.5px;
     }
-    .search-1{
+
+    .search-1 {
         margin-top: -5px;
         width: 200px;
     }
-    .search-btn{
+
+    .search-btn {
         margin-top: -5px;
         margin-left: 10px;
         width: 100px;
     }
-    .row-1{
+
+    .row-1 {
         margin-left: 100px;
-        border:1px solid blue;
+        border: 1px solid blue;
         border-radius: 4px;
         width: 80%;
     }
-    .el-menu{
-        border-bottom: 0px!important;
+
+    .el-menu {
+        border-bottom: 0px !important;
     }
-    .el-menu-item{
-        border-bottom-color:#ffffff!important;
+
+    .el-menu-item {
+        border-bottom-color: #ffffff !important;
     }
 </style>
 </html>
