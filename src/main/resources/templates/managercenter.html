@@ -17,8 +17,11 @@
             <![endif]-->
         </head>
         <link href='/webjars/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
+        <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
+        <script src="/webjars/vue/2.6.11/vue.min.js"></script>
     </head>
     <body>
+        <!-- 左侧导航栏-->
         <div class="page-header"style="background: black; margin-top: 0px ;" >
             <div class="row">
                 <div class="col-md-3">
@@ -74,8 +77,10 @@
                                         </span>
                                     <br>
                                     </div><!-- /input-group -->
-                                    <div class="tab-pane fade active in" id="tab11">
-                                        <table class="table table-striped" id="weizhifu">
+                                    <div class="tab-pane fade active in" >
+                                        <!--所有售票员-->
+                                        <div id="Ticket_managers">
+                                        <table class="table table-striped" >
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
@@ -85,23 +90,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>467</td>
-                                                    <td>shanghai-001</td>
-                                                    <td>shanghai-001</td>
-
-                                                    <td>123456789</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
-                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updatebusiness" style="margin-top: -6px;">修改</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>468</td>
-                                                    <td>shanghai-002</td>
-                                                    <td>shanghai-002</td>
-
-                                                    <td>123456789</td>
+                                                <tr v-for="ticket_manager in ticket_managers">
+                                                    <td>{{ticket_manager.id}}</td>
+                                                    <td>{{ticket_manager.staffId}}</td>
+                                                    <td>{{ticket_manager.name}}</td>
+                                                    <td>{{ticket_manager.password}}</td>
                                                     <td>
                                                         <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
                                                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updatebusiness" style="margin-top: -6px;">修改</button>
@@ -109,6 +102,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -169,7 +163,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <!-- 3 -->
                         <div class="tab-pane" id="infomanage">
@@ -191,8 +184,8 @@
                                         </span>
                                     <br>
                                     </div><!-- /input-group -->
-                                    <div class="tab-pane fade active in" id="tab11">
-                                        <table class="table table-striped" id="weizhifu">
+                                    <div class="tab-pane fade active in" >
+                                        <table class="table table-striped" >
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
@@ -223,15 +216,15 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div></div>
+                            </div></div></div>
                         </div>
                         <!-- tab end -->
                     </div>
                 </div>
             </div>
         </div>
-            <!-- 新增售票端用户信息的弹窗 -->
-            <div class="modal fade" id="newbusiness" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+        <!-- 新增售票端用户信息的弹窗 -->
+        <div class="modal fade" id="newbusiness" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header" style="background-color:  #d9edf7;">
@@ -258,8 +251,8 @@
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal -->
             </div>
-                   <!-- 修改售票端用户信息的弹窗 -->
-                   <div class="modal fade" id="updatebusiness" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+        <!-- 修改售票端用户信息的弹窗 -->
+        <div class="modal fade" id="updatebusiness" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header" style="background-color:  #d9edf7;">
@@ -286,8 +279,8 @@
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal -->
                 </div>
-                      <!-- 修改普通用户信息的弹窗 -->
-                <div class="modal fade" id="updateordinery" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+        <!-- 修改普通用户信息的弹窗 -->
+        <div class="modal fade" id="updateordinery" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header" style="background-color:  #d9edf7;">
@@ -347,8 +340,8 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
-            <!-- 新增广告信息的弹窗 -->
-            <div class="modal fade" id="updatead" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+        <!-- 新增广告信息的弹窗 -->
+        <div class="modal fade" id="updatead" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header" style="background-color:  #d9edf7;">
@@ -376,7 +369,57 @@
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal -->
             </div>
-        <!-- 编辑个人信息的弹窗 -->
+        <!-- vue -->
+        <script>
+            new Vue({
+                el: "#Ticket_managers",
+                data() {
+                    return {
+                        ticket_managers: null,
+                        infoHref: null,
+                        api: null,
+                    }
+                },
+                mounted() {
+                    axios
+                        .get("http://localhost:8080/api/managercenter/ticketmanager")
+                        .then(response => (this.ticket_managers = response.data));
+                },
+                methods: {
+                    /*readInfo: function(e){
+                        this.infoHref = "http://localhost:8080/earthquake/info/" + e.id;
+                    },
+                    readApi: function(e){
+                        this.api = "http://localhost:8080/api/earthquake/info/" + e.id;
+                        alert("api的地址是: " + this.api);
+                    }*/
+                }
+            });
+            new Vue({
+                el: "#Ticket_managers",
+                data() {
+                    return {
+                        ticket_managers: null,
+                        infoHref: null,
+                        api: null,
+                    }
+                },
+                mounted() {
+                    axios
+                        .get("http://localhost:8080/api/managercenter/ticketmanager")
+                        .then(response => (this.ticket_managers = response.data));
+                },
+                methods: {
+                    /*readInfo: function(e){
+                        this.infoHref = "http://localhost:8080/earthquake/info/" + e.id;
+                    },
+                    readApi: function(e){
+                        this.api = "http://localhost:8080/api/earthquake/info/" + e.id;
+                        alert("api的地址是: " + this.api);
+                    }*/
+                }
+            });
+        </script>
         <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
         <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
         <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
@@ -448,7 +491,6 @@
 
         <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
         <script src="/webjars/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-        <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
-        <script src="/webjars/vue/2.6.11/vue.min.js"></script>
+
     </body>
 </html>
