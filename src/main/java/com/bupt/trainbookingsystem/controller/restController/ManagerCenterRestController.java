@@ -24,6 +24,10 @@ public class ManagerCenterRestController {
     public List<TicketManagerEntity> getAllTicketManager(){
         return  ticketManagerService.findALL();
     }
+    @GetMapping("/findticketmanager/{id}")
+    public TicketManagerEntity getaTicketManager(@PathVariable int id){
+        return  ticketManagerService.findTicketManagerEntityById(id);
+    }
     @PostMapping("/addticketmanager")
     public TicketManagerEntity addTicketManager(@RequestBody TicketManagerEntity t){
         return ticketManagerService.save(t);
