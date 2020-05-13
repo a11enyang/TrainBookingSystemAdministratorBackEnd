@@ -1,7 +1,8 @@
-package com.bupt.trainbookingsystem.service;
+package com.bupt.trainbookingsystem.service.imp;
 
 import com.bupt.trainbookingsystem.dao.OrdinaryUserRepository;
 import com.bupt.trainbookingsystem.entity.OrdinaryUserEntity;
+import com.bupt.trainbookingsystem.service.OrdinaryUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
