@@ -16,6 +16,10 @@ public class UserOrderEntity {
     private String seatList;
     private BigDecimal price;
     private String condition;
+    private Integer ordineryUserId;
+    private Integer tripId;
+    private OrdinaryUserEntity ordinaryUserByOrdineryUserId;
+    private TripEntity tripByTripId;
 
     @Id
     @Column(name = "id")
@@ -97,6 +101,26 @@ public class UserOrderEntity {
         this.condition = condition;
     }
 
+    @Basic
+    @Column(name = "ordinery_user_id")
+    public Integer getOrdineryUserId() {
+        return ordineryUserId;
+    }
+
+    public void setOrdineryUserId(Integer ordineryUserId) {
+        this.ordineryUserId = ordineryUserId;
+    }
+
+    @Basic
+    @Column(name = "trip_id")
+    public Integer getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(Integer tripId) {
+        this.tripId = tripId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -109,11 +133,33 @@ public class UserOrderEntity {
                 Objects.equals(nameList, that.nameList) &&
                 Objects.equals(seatList, that.seatList) &&
                 Objects.equals(price, that.price) &&
-                Objects.equals(condition, that.condition);
+                Objects.equals(condition, that.condition) &&
+                Objects.equals(ordineryUserId, that.ordineryUserId) &&
+                Objects.equals(tripId, that.tripId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tripNumber, routLine, tripTime, nameList, seatList, price, condition);
+        return Objects.hash(id, tripNumber, routLine, tripTime, nameList, seatList, price, condition, ordineryUserId, tripId);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ordinery_user_id", referencedColumnName = "id",insertable = false,updatable = false)
+    public OrdinaryUserEntity getOrdinaryUserByOrdineryUserId() {
+        return ordinaryUserByOrdineryUserId;
+    }
+
+    public void setOrdinaryUserByOrdineryUserId(OrdinaryUserEntity ordinaryUserByOrdineryUserId) {
+        this.ordinaryUserByOrdineryUserId = ordinaryUserByOrdineryUserId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "trip_id", referencedColumnName = "id",insertable = false,updatable = false)
+    public TripEntity getTripByTripId() {
+        return tripByTripId;
+    }
+
+    public void setTripByTripId(TripEntity tripByTripId) {
+        this.tripByTripId = tripByTripId;
     }
 }

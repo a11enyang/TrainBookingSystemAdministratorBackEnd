@@ -1,6 +1,7 @@
 package com.bupt.trainbookingsystem.entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -9,6 +10,7 @@ public class TrainEntity {
     private int id;
     private String trainType;
     private String seatInfo;
+    private Collection<TripEntity> tripsById;
 
     @Id
     @Column(name = "id")
@@ -53,5 +55,14 @@ public class TrainEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, trainType, seatInfo);
+    }
+
+    @OneToMany(mappedBy = "trainByTrainId")
+    public Collection<TripEntity> getTripsById() {
+        return tripsById;
+    }
+
+    public void setTripsById(Collection<TripEntity> tripsById) {
+        this.tripsById = tripsById;
     }
 }

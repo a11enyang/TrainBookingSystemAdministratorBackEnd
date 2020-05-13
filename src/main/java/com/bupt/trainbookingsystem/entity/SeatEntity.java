@@ -11,6 +11,8 @@ public class SeatEntity {
     private String firstStation;
     private String nextStation;
     private byte[] seatInfo;
+    private Integer tripId;
+    private TripEntity tripByTripId;
 
     @Id
     @Column(name = "id")
@@ -52,6 +54,16 @@ public class SeatEntity {
         this.seatInfo = seatInfo;
     }
 
+    @Basic
+    @Column(name = "trip_id")
+    public Integer getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(Integer tripId) {
+        this.tripId = tripId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -60,13 +72,24 @@ public class SeatEntity {
         return id == that.id &&
                 Objects.equals(firstStation, that.firstStation) &&
                 Objects.equals(nextStation, that.nextStation) &&
-                Arrays.equals(seatInfo, that.seatInfo);
+                Arrays.equals(seatInfo, that.seatInfo) &&
+                Objects.equals(tripId, that.tripId);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, firstStation, nextStation);
+        int result = Objects.hash(id, firstStation, nextStation, tripId);
         result = 31 * result + Arrays.hashCode(seatInfo);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "trip_id", referencedColumnName = "id",insertable = false,updatable = false)
+    public TripEntity getTripByTripId() {
+        return tripByTripId;
+    }
+
+    public void setTripByTripId(TripEntity tripByTripId) {
+        this.tripByTripId = tripByTripId;
     }
 }
