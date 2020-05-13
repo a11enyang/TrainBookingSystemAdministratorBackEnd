@@ -1,5 +1,8 @@
 package com.bupt.trainbookingsystem.service;
 
-public class AdvertisementServiceImp implements AdministratorService{
+import org.springframework.stereotype.Service;
+
+@Service
+public class AdvertisementServiceImp implements AdvertisementService{
 
 }

@@ -5,6 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+/**
+ * 开发者：严智琪
+ * 内容：普通用户管理
+ */
+
 @Repository
 public interface OrdinaryUserRepository extends JpaRepository<OrdinaryUserEntity,Integer> {
 
