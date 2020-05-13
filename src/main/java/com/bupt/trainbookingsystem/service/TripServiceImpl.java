@@ -14,8 +14,12 @@ import java.util.List;
 
 @Service
 public class TripServiceImpl implements TripService {
-    @Autowired
-    private TripRepository tpr;
+    private final TripRepository tpr;
+
+    public TripServiceImpl(TripRepository tpr) {
+        this.tpr = tpr;
+    }
+
     @Override
     public void save(TripEntity t) {
         tpr.save(t);
