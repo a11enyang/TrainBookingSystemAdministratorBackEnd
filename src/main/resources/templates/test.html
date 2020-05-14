@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="demo">
+    <ul class="tab-head clearfix " >
+        <li class="active">基本信息</li>
+        <li>课程详情</li>
+        <li>视频管理</li>
+        <li>讲义管理</li>
+        <li>习题管理</li>
+    </ul>
+    <div class="tab-body" style="display: block;">这是基本信息</div>
+    <div class="tab-body">这是课程详情</div>
+    <div class="tab-body">这是视频管理</div>
+    <div class="tab-body">这是讲义管理</div>
+    <div class="tab-body">这是习题管理</div>
+</div>
+
+
+
+<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+<script>
+    $(function(){
+
+        var getIndexNum = sessionStorage.getItem("tabLiNum");
+        $(".tab-head li").eq(getIndexNum).addClass('active').siblings().removeClass('active');
+        $(".tab-body").eq(getIndexNum).show().siblings(".tab-body").hide();
+
+        $(".tab-head li").on('click',function(){
+
+            $(this).addClass('active').siblings().removeClass('active');
+            $(".tab-body").eq($(this).index()).show().siblings(".tab-body").hide();
+
+            var indexNum = $(this).index(); //所点击li的索引值
+            console.log("当前li的下标为：",indexNum); //打印索引值
+
+            sessionStorage.setItem("tabLiNum",indexNum); //将(下标名称，索引值)存入session中
+        })
+
+    })
+</script>
+
+</body>
+</html>
