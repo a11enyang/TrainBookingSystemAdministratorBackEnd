@@ -29,6 +29,19 @@ public class MainController {
     }
 
     /**
+     * 查询(新)页面
+     * @return
+     */
+    @GetMapping("/search_new")
+    public String search_new(HttpSession session, Model model){
+
+        OrdinaryUserEntity user=(OrdinaryUserEntity) session.getAttribute("user");
+        if(user!=null)
+            model.addAttribute("names",user.getName());
+        return "search_new";
+    }
+
+    /**
      * 查询页面
      * @return
      */
@@ -40,7 +53,6 @@ public class MainController {
             model.addAttribute("names",user.getName());
         return "search";
     }
-
 
     /**
      * 买票页面

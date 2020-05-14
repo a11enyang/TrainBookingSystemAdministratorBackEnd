@@ -9,6 +9,7 @@ public class ContactEntity {
     private int id;
     private String name;
     private String personId;
+    private String phonenum;
     private Integer ordineryUserId;
     private OrdinaryUserEntity ordinaryUserByOrdineryUserId;
 
@@ -40,6 +41,16 @@ public class ContactEntity {
 
     public void setPersonId(String personId) {
         this.personId = personId;
+    }
+
+    @Basic
+    @Column(name = "person_phonenum")
+    public String getPhonenum() {
+        return phonenum;
+    }
+
+    public void setPhonenum(String phonenum) {
+        this.phonenum = phonenum;
     }
 
     @Basic

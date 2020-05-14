@@ -17,8 +17,11 @@
             <![endif]-->
         </head>
         <link href='/webjars/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
+        <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
+        <script src="/webjars/vue/2.6.11/vue.min.js"></script>
     </head>
     <body>
+        <!-- 左侧导航栏-->
         <div class="page-header"style="background: black; margin-top: 0px ;" >
             <div class="row">
                 <div class="col-md-3">
@@ -40,7 +43,7 @@
                 </div>
                 <div class="col-md-3" style="margin-top: 20px ; padding-left: 50px">
                     <ul class="nav nav-pills">
-                        <li class="active" > <button type="button" class="btn btn-success">退出登录</button></li>
+                        <li class="active" > <button type="button" href="/backLogin" class="btn btn-success">退出登录</button></li>
                     </ul>
                 </div>
             </div>
@@ -74,8 +77,68 @@
                                         </span>
                                     <br>
                                     </div><!-- /input-group -->
-                                    <div class="tab-pane fade active in" id="tab11">
-                                        <table class="table table-striped" id="weizhifu">
+                                    <div class="tab-pane fade active in" >
+                                        <!--所有售票员-->
+                                        <div id="Ticket_managers">
+                                            <!-- 新增售票端用户信息的弹窗 -->
+                                            <div class="modal fade" id="newbusiness" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="background-color:  #d9edf7;">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4 class="modal-title">新增售票端用户</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form @submit.prevent="postTicketManager()">
+                                                                <div class="form-group">
+                                                                    <label for="contactInputName">账号</label>
+                                                                    <input type="text" class="form-control"  placeholder="账号" v-model="name" >
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="contactInputIDNum">密码</label>
+                                                                    <input type="text" class="form-control"  placeholder="密码" v-model="password">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="contactInputPhoneNum">工号</label>
+                                                                    <input type="text" class="form-control"   placeholder="工号" v-model="staffId">
+                                                                </div>
+                                                                <button type="submit" class="btn btn-danger">提交</button>
+                                                            </form>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal -->
+                                            </div>
+                                            <!-- 修改售票端用户信息的弹窗 -->
+                                            <div class="modal fade" id="updatebusiness" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="background-color:  #d9edf7;">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4 class="modal-title" >修改售票端用户信息</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form>
+                                                                <div>
+                                                                <div class="form-group">
+                                                                    <label for="contactInputName">账号</label>
+                                                                    <input type="text" class="form-control"  placeholder="账号" >
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="contactInputIDNum">密码</label>
+                                                                    <input type="text" class="form-control"  placeholder="密码" >
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="contactInputPhoneNum">工号</label>
+                                                                    <input type="text" class="form-control" placeholder="工号">
+                                                                </div>
+                                                                <button type="submit" class="btn btn-danger">提交</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal -->
+                                            </div>
+                                        <table class="table table-striped" >
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
@@ -85,30 +148,19 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>467</td>
-                                                    <td>shanghai-001</td>
-                                                    <td>shanghai-001</td>
-
-                                                    <td>123456789</td>
+                                                <tr v-for="ticket_manager in ticket_managers">
+                                                    <td>{{ticket_manager.id}}</td>
+                                                    <td>{{ticket_manager.staffId}}</td>
+                                                    <td>{{ticket_manager.name}}</td>
+                                                    <td>{{ticket_manager.password}}</td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
-                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updatebusiness" style="margin-top: -6px;">修改</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>468</td>
-                                                    <td>shanghai-002</td>
-                                                    <td>shanghai-002</td>
-
-                                                    <td>123456789</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
-                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updatebusiness" style="margin-top: -6px;">修改</button>
+                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;"@click="deleteticket_manager(ticket_manager)">删除</button>
+                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updatebusiness" style="margin-top: -6px;"@click="seeticket_manager(ticket_manager)">修改</button>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -169,7 +221,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <!-- 3 -->
                         <div class="tab-pane" id="infomanage">
@@ -191,8 +242,8 @@
                                         </span>
                                     <br>
                                     </div><!-- /input-group -->
-                                    <div class="tab-pane fade active in" id="tab11">
-                                        <table class="table table-striped" id="weizhifu">
+                                    <div class="tab-pane fade active in" >
+                                        <table class="table table-striped" >
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
@@ -223,71 +274,17 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div></div>
+                            </div></div></div>
                         </div>
                         <!-- tab end -->
                     </div>
                 </div>
             </div>
         </div>
-            <!-- 新增售票端用户信息的弹窗 -->
-            <div class="modal fade" id="newbusiness" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color:  #d9edf7;">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="moreinfoLabel">新增售票端用户</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="contactInputName">账号</label>
-                                    <input type="text" class="form-control" id="contactInputName" placeholder="账号">
-                                </div>
-                                <div class="form-group">
-                                    <label for="contactInputIDNum">密码</label>
-                                    <input type="text" class="form-control" id="contactInputIDNum" placeholder="密码">
-                                </div>
-                                <div class="form-group">
-                                    <label for="contactInputPhoneNum">工号</label>
-                                    <input type="text" class="form-control" id="contactInputPhoneNum" placeholder="工号">
-                                </div>
-                                <button type="submit" class="btn btn-danger">提交</button>
-                            </form>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal -->
-            </div>
-                   <!-- 修改售票端用户信息的弹窗 -->
-                   <div class="modal fade" id="updatebusiness" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background-color:  #d9edf7;">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="moreinfoLabel">修改售票端用户信息</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="contactInputName">账号</label>
-                                        <input type="text" class="form-control" id="contactInputName" placeholder="账号" value="shanghai-001">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contactInputIDNum">密码</label>
-                                        <input type="text" class="form-control" id="contactInputIDNum" placeholder="密码" value="12345678">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contactInputPhoneNum">工号</label>
-                                        <input type="text" class="form-control" id="contactInputPhoneNum" placeholder="工号"value="shanghai-001">
-                                    </div>
-                                    <button type="submit" class="btn btn-danger">提交</button>
-                                </form>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal -->
-                </div>
-                      <!-- 修改普通用户信息的弹窗 -->
-                <div class="modal fade" id="updateordinery" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+
+
+        <!-- 修改普通用户信息的弹窗 -->
+        <div class="modal fade" id="updateordinery" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header" style="background-color:  #d9edf7;">
@@ -347,8 +344,8 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
-            <!-- 新增广告信息的弹窗 -->
-            <div class="modal fade" id="updatead" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+        <!-- 新增广告信息的弹窗 -->
+        <div class="modal fade" id="updatead" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header" style="background-color:  #d9edf7;">
@@ -376,7 +373,60 @@
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal -->
             </div>
-        <!-- 编辑个人信息的弹窗 -->
+        <!-- vue -->
+        <script>
+            new Vue({
+                el: "#Ticket_managers",
+                data() {
+                    return {
+                        ticket_managers: null,
+                        editone:null,
+                        id:"",
+                        name: "",
+                        password: "",
+                        staffId:"",
+                    }
+                },
+                mounted() {
+                    this.get();
+                },
+                methods: {
+                    //获取管理员页面
+                    get: function(){axios
+                        .get("http://localhost:8080/api/managercenter/ticketmanager")
+                        .then(response => (this.ticket_managers = response.data))
+                    },
+                    //新的票务端管理员
+                    postTicketManager: function (event) {
+                        axios
+                            .post("http://localhost:8080/api/managercenter/addticketmanager", {
+                                "name": this.name,
+                                "password":this.password,
+                                "staffId":this.staffId,
+                            })
+                            .then(savedPerson => {
+                                this.ticket_managers.push(savedPerson.data);
+                                this.name = '';
+                                this.password = '';
+                                this.staffId='';
+                            })
+                        this.get();
+                    },
+                    //删除票务管理员
+                    deleteticket_manager: async function(ticket_manager) {
+                    await axios
+                    .delete("http://localhost:8080/api/managercenter/deleteticketmanager/" + ticket_manager.id);
+                    this.get();
+                    },
+                    //编辑票务管理员
+                    seeticket_manager:function (ticket_manager) {
+                    axios
+                        .get("http://localhost:8080/api/managercenter/findticketmanager/"+ticket_manager.id)
+                        .then(response=>(this.editone=response.data))
+                    },
+                    }
+            });
+        </script>
         <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
         <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
         <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
@@ -448,7 +498,6 @@
 
         <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
         <script src="/webjars/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-        <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
-        <script src="/webjars/vue/2.6.11/vue.min.js"></script>
+
     </body>
 </html>

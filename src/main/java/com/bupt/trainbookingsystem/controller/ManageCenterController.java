@@ -41,6 +41,10 @@ public class ManageCenterController {
             return "managerlogin";
         }
     }
+    @RequestMapping("/backLogin")
+    public String backLogin(){
+        return "managerlogin";
+    }
 
 
 }
