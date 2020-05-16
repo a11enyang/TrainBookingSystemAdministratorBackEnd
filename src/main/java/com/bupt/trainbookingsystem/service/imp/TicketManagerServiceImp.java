@@ -39,6 +39,12 @@ public class TicketManagerServiceImp implements TicketManagerService {
     }
 
     @Override
+    public List<TicketManagerEntity> findTicketManagerEntitiesByNameContainingOrStaffIdContaining(String name) {
+        return tmr.findTicketManagerEntitiesByNameContaining(name);
+    }
+
+
+    @Override
     public TicketManagerEntity findTicketManagerEntityByStaffIdNotContains(String staff_id) {
         return tmr.findTicketManagerEntityByStaffIdNotContains(staff_id);
     }
@@ -49,7 +55,8 @@ public class TicketManagerServiceImp implements TicketManagerService {
     }
 
     @Override
-    public void updateTicketManagerById(String name, String password, String staff_id, int id) {
+    public TicketManagerEntity updateTicketManagerById(String name, String password, String staff_id, int id) {
         tmr.updateTicketManagerById(name, password, staff_id, id);
+        return tmr.findTicketManagerEntityById(id);
     }
 }
