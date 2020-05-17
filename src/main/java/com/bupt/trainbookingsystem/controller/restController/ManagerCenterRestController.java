@@ -81,14 +81,19 @@ public class ManagerCenterRestController {
         return ordinaryUserService.updateUserById(name, password, staffId, is_student, credit, id);
     }
 
-
-
-
-
     //显示所有广告信息
-    @GetMapping("/ad")
+    @GetMapping("/ads")
     public List<AdvertisementEntity> getAllAdvertisement(){
         return advertisementService.findAll();
     }
-
+    //删除广告
+    @DeleteMapping("/deleteAd/{id}")
+    public void deleteAdById(@PathVariable int id) {
+        advertisementService.deleteAdvertisementEntityById(id);
+    }
+    //查找广告
+    @PostMapping("/findAd")
+    public AdvertisementEntity findAd(@RequestParam(value="link",required = false) String name){
+       return advertisementService.findAdvertisementEntitiesByLinkContaining(name);
+    }
 }

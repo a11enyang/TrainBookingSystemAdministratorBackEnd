@@ -333,11 +333,44 @@
                                 <div class="tab-content">
                                     <!-- 第一个tab -->
                                     <br>
-                                    <div class="input-group"style="width: 50%">
-                                        <input type="text" class="form-control" placeholder="广告链接">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="button"style="margin-top: -4px;">搜索</button>
-                                        </span>
+                                    <div id="Ads">
+                                        <!-- 新增广告信息的弹窗 -->
+                                        <div class="modal fade" id="newad" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="moreinfoLabel">新增广告信息</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form>
+                                                            <div class="form-group">
+                                                                <label for="contactInputName">广告链接</label>
+                                                                <input type="text" class="form-control" id="contactInputName" placeholder="姓名">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputName">图片链接</label>
+                                                                <input type="file" name="gameImgFile"/>
+                                                            </div>
+
+                                                            <button type="submit" class="btn btn-danger">提交</button>
+                                                        </form>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
+                                        <!--搜索广告信息-->
+                                        <div class="input-group"style="width: 50%">
+                                        <form @submit.prevent="searchAds">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" v-model="search_name">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button class="btn btn-primary" type="submit"style="margin-top: 0px;float: left">搜索</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     <br>
                                     </div><!-- /input-group -->
                                     <div class="tab-pane fade active in" >
@@ -350,26 +383,21 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>https://www.taobao.com/</td>
-                                                    <td>photo/ad/1.jpg</td>
-                                                    <td >
-                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
-                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"data-toggle="modal" data-target="#updatead">修改</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>https://www.tmall.com/</td>
-                                                    <td>photo/ad/2.jpg</td>
+                                                <tr v-for="ad in ads">
+                                                    <td>{{ad.id}}</td>
+                                                    <td><a v-bind:href=ad.link> {{ad.link}}</a></td>
+                                                    <td><a v-bind:href=ad.photo >{{ad.photo}}</a></td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
-                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"data-toggle="modal" data-target="#updatead">修改</button>
+                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;"
+                                                         @click="deleteAd(ad)">删除</button>
+                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"
+                                                                data-toggle="modal" data-target="#updatead"
+                                                        @click="seeAd(ad)">修改</button>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -383,32 +411,8 @@
 
 
 
-        <!-- 新增广告信息的弹窗 -->
-        <div class="modal fade" id="newad" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header" style="background-color:  #d9edf7;">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="moreinfoLabel">新增广告信息</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="contactInputName">广告链接</label>
-                                <input type="text" class="form-control" id="contactInputName" placeholder="姓名">
-                            </div>
-                            <div class="form-group">
-                                <label for="contactInputName">图片链接</label>
-                                <input type="file" name="gameImgFile"/>
-                            </div>
 
-                            <button type="submit" class="btn btn-danger">提交</button>
-                        </form>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
-        </div>
-        <!-- 新增广告信息的弹窗 -->
+        <!-- 修改广告信息的弹窗 -->
         <div class="modal fade" id="updatead" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -439,6 +443,93 @@
             </div>
         <!-- vue -->
         <script>
+            new Vue({
+                el: "#Ads",
+                data() {
+                    return {
+                        ads: null,
+                        link:"",
+                        photo: "",
+                        edit_id:"",
+                        edit_link:"",
+                        edit_photo:"",
+                        in_search:false,
+                        not_search:true,
+                        search_ads:null,
+                        search_name:"",
+                    }
+                },
+                mounted() {
+                    this.get();
+                },
+                methods: {
+                    //获取广告页面
+                    get: function(){axios
+                        .get("http://localhost:8080/api/managercenter/ads")
+                        .then(response => (this.ads = response.data))
+                    },
+                    //搜索票务端管理员
+                    searchAds:
+                        function(event){
+                            let param = new URLSearchParams()
+                            param.append("link",this.search_name);
+                            axios.post("http://localhost:8080/api/managercenter/findAd",param)
+                                .then(response=>(this.search_ads = response.data))
+                            this.in_search = true;
+                            this.not_search = false;
+                        },
+                    go_back:
+                        function(){
+                            this.in_search = false;
+                            this.not_search = true;
+                        },
+                    //新的广告
+                    /*postTicketManager: function (event) {
+                        axios
+                            .post("http://localhost:8080/api/managercenter/addAd", {
+                                "name": this.name,
+                                "password":this.password,
+                                "staffId":this.staffId,
+                            })
+                            .then(savedPerson => {
+                                this.ticket_managers.push(savedPerson.data);
+                                this.name = '';
+                                this.password = '';
+                                this.staffId='';
+                            })
+                        this.get();
+                    },*/
+                    //删除广告
+                    deleteAd: async function(ad) {
+                        await axios
+                            .delete("http://localhost:8080/api/managercenter/deleteAd/" + ad.id);
+                        this.get();
+                    },
+                    //编辑广告
+                    seeAd:function (ad) {
+                        this.edit_id = ad.id;
+                        this.edit_photo = ad.photo;
+                        this.edit_link = ad.link;
+                    },
+                    /*
+                    //编辑广告
+                    posteditTicketManager: function (event) {
+                        let param = new URLSearchParams()
+                        param.append("id",this.edit_name);
+                        param.append("link",this.edit_link);
+                        param.append("photo",this.edit_photo);
+                        axios.post("http://localhost:8080/api/managercenter/editAd", param)
+                            .then(savedPerson => {
+                                if(this.in_search===true){
+                                    this.get();this.searchAds();
+                                }
+                                else {
+                                    this.get();
+                                }
+                            })
+                    },*/
+                }
+            });
             new Vue({
                 el: "#Ticket_managers",
                 data() {
@@ -521,7 +612,13 @@
                         param.append("staffId",this.edit_staffId);
                         param.append("id",this.edit_id);
                         axios.post("http://localhost:8080/api/managercenter/editticketmanager", param)
-                            .then(savedPerson => {this.get();
+                            .then(savedPerson => {
+                                if(this.in_search===true){
+                                    this.get();this.searchTicketManager();
+                                }
+                                else {
+                                    this.get();
+                                }
                         })
                     },
                     }
@@ -599,15 +696,13 @@
                         param.append("id",this.edit_id);
                         param.append("credit",this.edit_credit);
                         axios.post("http://localhost:8080/api/managercenter/editUser", param)
-                            .then(savedPerson => {this.get();
-                            })
-                        if(this.in_search_name!==''){
-                            console.log(this.in_search_name);
-                        let param1 = new URLSearchParams();
-                        param1.append("name",this.in_search_name);
-                        axios.post("http://localhost:8080/api/managercenter/findUser",param1)
-                            .then(response=>(this.search_users = response.data))
-                        }
+                            .then(savedPerson => {
+                                if(this.in_search===true){
+                                    this.get();this.searchUsers();
+                                }
+                                else {
+                                    this.get();
+                                }})
                     },
                 }
             });
