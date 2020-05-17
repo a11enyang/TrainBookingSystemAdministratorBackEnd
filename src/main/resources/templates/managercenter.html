@@ -209,50 +209,113 @@
                                 <div class="tab-content">
                                     <!-- 第一个tab -->
                                     <br>
-                                    <div>
-                                    <div class="input-group"style="width: 50%">
-                                        <input type="text" class="form-control" placeholder="用户名/身份证号/...">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="button"style="margin-top: -4px;">搜索</button>
-                                        </span>
+                                    <div   id="Ordinary_users">
+                                        <!-- 修改普通用户信息的弹窗 -->
+                                        <div class="modal fade" id="updateordinery" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="moreinfoLabel">修改普通用户信息</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form @submit.prevent="postEditUser()">
+                                                            <div class="form-group">
+                                                                <label for="contactInputName">账号</label>
+                                                                <input type="text" class="form-control" id="contactInputName" v-model="edit_name">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputIDNum">密码</label>
+                                                                <input type="text" class="form-control" id="contactInputIDNum" v-model="edit_password">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputPhoneNum">身份证号</label>
+                                                                <input type="text" class="form-control" id="contactInputPhoneNum"v-model="edit_personId">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputPhoneNum">学生认证</label>
+                                                                <input type="text" class="form-control" id="contactInputPhoneNum" v-model="edit_is_student">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputPhoneNum">信用信息</label>
+                                                                <input type="text" class="form-control" id="contactInputPhoneNum" v-model="edit_credit">
+                                                            </div>
+                                                            <button type="submit" class="btn btn-danger">提交</button>
+                                                        </form>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
+                                        <!--搜索用户-->
+                                        <div class="input-group"style="width: 50%">
+                                        <form @submit.prevent="searchUsers">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" v-model="search_name">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button class="btn btn-primary" type="submit"style="margin-top: 0px;float: left">搜索</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     <br>
                                     </div><!-- /input-group -->
                                     <div class="tab-pane fade active in" id="tab11">
+                                        <div v-show="not_search">
                                         <table class="table table-striped" id="weizhifu">
                                             <thead>
                                                 <tr>
                                                     <th>账号</th>
                                                     <th>密码</th>
-                                                    <th>余额</th>
+                                                    <th>身份证号</th>
                                                     <th>学生认证</th>
                                                     <th>信用信息</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>xuyutao</td>
-                                                    <td>12345678</td>
-                                                    <td>100.00</td>
-                                                    <td>1</td>
-                                                    <td>1</td>
+                                                <tr v-for="user in ordinary_users">
+                                                    <td>{{user.name}}</td>
+                                                    <td>{{user.password}}</td>
+                                                    <td>{{user.personId}}</td>
+                                                    <td>{{user.isstudent}}</td>
+                                                    <td>{{user.credit}}</td>
                                                     <td >
-                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
-                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"data-toggle="modal" data-target="#updateordinery">修改</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>panshang</td>
-                                                    <td>12345678</td>
-                                                    <td>100.00</td>
-                                                    <td>1</td>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
-                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"data-toggle="modal" data-target="#updateordinery">修改</button>
+                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;"@click="deletetUser(user)">删除</button>
+                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"data-toggle="modal"
+                                                                data-target="#updateordinery" @click="seeUser(user)">修改</button>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        </div>
+                                        <div v-show="in_search">
+                                            <table class="table table-striped" id="weizhifu">
+                                                <thead>
+                                                <tr>
+                                                    <th>账号</th>
+                                                    <th>密码</th>
+                                                    <th>身份证号</th>
+                                                    <th>学生认证</th>
+                                                    <th>信用信息</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr v-for="user in search_users">
+                                                    <td>{{user.name}}</td>
+                                                    <td>{{user.password}}</td>
+                                                    <td>{{user.personId}}</td>
+                                                    <td>{{user.isstudent}}</td>
+                                                    <td>{{user.credit}}</td>
+                                                    <td >
+                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;"@click="deletetUser(user)">删除</button>
+                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"data-toggle="modal"
+                                                                data-target="#updateordinery" @click="seeUser(user)">修改</button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <button type="button" class="btn btn-warning"style="margin-top: -6px;"@click="go_back()">返回原列表</button>
+                                        </div>
                                     </div>
                                 </div></div>
                             </div>
@@ -319,42 +382,7 @@
         </div>
 
 
-        <!-- 修改普通用户信息的弹窗 -->
-        <div class="modal fade" id="updateordinery" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background-color:  #d9edf7;">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="moreinfoLabel">修改普通用户信息</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="contactInputName">账号</label>
-                                        <input type="text" class="form-control" id="contactInputName" placeholder="账号" value="xuyutao">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contactInputIDNum">密码</label>
-                                        <input type="text" class="form-control" id="contactInputIDNum" placeholder="密码" value="12345678">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contactInputPhoneNum">余额</label>
-                                        <input type="text" class="form-control" id="contactInputPhoneNum" placeholder="余额"value="100.00">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contactInputPhoneNum">学生认证</label>
-                                        <input type="text" class="form-control" id="contactInputPhoneNum" placeholder="学生认证"value="1">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contactInputPhoneNum">信用信息</label>
-                                        <input type="text" class="form-control" id="contactInputPhoneNum" placeholder="信用信息"value="1">
-                                    </div>
-                                    <button type="submit" class="btn btn-danger">提交</button>
-                                </form>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal -->
-                </div>
+
         <!-- 新增广告信息的弹窗 -->
         <div class="modal fade" id="newad" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -493,11 +521,95 @@
                         param.append("staffId",this.edit_staffId);
                         param.append("id",this.edit_id);
                         axios.post("http://localhost:8080/api/managercenter/editticketmanager", param)
-                            .then(savedPerson => {this.get();this.searchTicketManager();
+                            .then(savedPerson => {this.get();
                         })
-
                     },
                     }
+            });
+            new Vue({
+                el: "#Ordinary_users",
+                data() {
+                    return {
+                        ordinary_users: null,
+                        id:"",
+                        name: "",
+                        password: "",
+                        personId:"",
+                        isstudent:"",
+                        credit:"",
+                        edit_id:"",
+                        edit_name:"",
+                        edit_password:"",
+                        edit_personId:"",
+                        edit_is_student:"",
+                        edit_credit:"",
+                        in_search:false,
+                        not_search:true,
+                        search_users:null,
+                        search_name:'',
+                        in_search_name:'',
+                    }
+                },
+                mounted() {
+                    this.get();
+                },
+                methods: {
+                    //获取普通用户页面
+                    get: function(){axios
+                        .get("http://localhost:8080/api/managercenter/user")
+                        .then(response => (this.ordinary_users = response.data))
+                    },
+                    //搜索普通用户
+                    searchUsers:
+                        function(event){
+                            let param = new URLSearchParams()
+                            param.append("name",this.search_name);
+                            axios.post("http://localhost:8080/api/managercenter/findUser",param)
+                                .then(response=>(this.search_users = response.data))
+                            this.in_search = true;
+                            this.not_search = false;
+                            this.in_search_name = this.search_name;
+                            this.search_name='';
+                        },
+                    go_back:
+                        function(){
+                            this.in_search = false;
+                            this.not_search = true;
+                        },
+                    //删除用户
+                    deletetUser: async function(user) {
+                        await axios
+                            .delete("http://localhost:8080/api/managercenter/deleteUser/" + user.id);
+                        this.get();
+                    },
+                    //编辑用户
+                    seeUser:function (user) {
+                        this.edit_id = user.id;
+                        this.edit_name = user.name;
+                        this.edit_password = user.password;
+                        this.edit_personId = user.personId;
+                        this.edit_credit = user.credit;
+                        this.edit_is_student = user.isstudent;                    },
+                    postEditUser: function (event) {
+                        let param = new URLSearchParams();
+                        param.append("name",this.edit_name);
+                        param.append("password",this.edit_password);
+                        param.append("is_student",this.edit_is_student);
+                        param.append("personId",this.edit_personId);
+                        param.append("id",this.edit_id);
+                        param.append("credit",this.edit_credit);
+                        axios.post("http://localhost:8080/api/managercenter/editUser", param)
+                            .then(savedPerson => {this.get();
+                            })
+                        if(this.in_search_name!==''){
+                            console.log(this.in_search_name);
+                        let param1 = new URLSearchParams();
+                        param1.append("name",this.in_search_name);
+                        axios.post("http://localhost:8080/api/managercenter/findUser",param1)
+                            .then(response=>(this.search_users = response.data))
+                        }
+                    },
+                }
             });
         </script>
         <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
