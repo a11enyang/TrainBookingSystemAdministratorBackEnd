@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
+import java.util.*;
 import javax.transaction.Transactional;
 
 /**
@@ -17,7 +17,7 @@ import javax.transaction.Transactional;
 @Repository
 public interface AdvertisementRespository extends JpaRepository<AdvertisementEntity, Integer> {
     //依靠链接检索
-    AdvertisementEntity findAdvertisementEntitiesByLinkContaining(String s);
+    List<AdvertisementEntity> findAdvertisementEntitiesByLinkContaining(String s);
     //依靠ID检索
     AdvertisementEntity findAdvertisementEntityById(int id);
     //依靠ID删除

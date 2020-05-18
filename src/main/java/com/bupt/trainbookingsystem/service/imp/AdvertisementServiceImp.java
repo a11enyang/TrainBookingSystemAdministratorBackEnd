@@ -16,13 +16,19 @@ import java.util.List;
 public class AdvertisementServiceImp implements AdvertisementService {
     @Autowired
     private AdvertisementRespository advertisementRespository;
+
+    @Override
+    public AdvertisementEntity save(AdvertisementEntity a) {
+        return advertisementRespository.save(a);
+    }
+
     @Override
     public List<AdvertisementEntity> findAll() {
         return advertisementRespository.findAll();
     }
 
     @Override
-    public AdvertisementEntity findAdvertisementEntitiesByLinkContaining(String s) {
+    public     List<AdvertisementEntity> findAdvertisementEntitiesByLinkContaining(String s) {
         return advertisementRespository.findAdvertisementEntitiesByLinkContaining(s);
     }
 

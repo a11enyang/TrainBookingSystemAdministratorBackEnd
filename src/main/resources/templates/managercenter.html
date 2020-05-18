@@ -334,6 +334,35 @@
                                     <!-- 第一个tab -->
                                     <br>
                                     <div id="Ads">
+                                        <!-- 修改广告信息的弹窗 -->
+                                        <div class="modal fade" id="updatead" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="moreinfoLabel">更新广告信息</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form @submit.prevent="editAd()">
+                                                            <div class="form-group">
+                                                                <label for="contactInputName">广告链接</label>
+                                                                <input type="text" class="form-control" id="contactInputName" v-model="edit_link">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputName">图片链接</label>
+                                                                <input type="text" class="form-control" id="contactInputName" v-model="edit_photo">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputName">重新上传图片</label>
+                                                                <input type="file" ref="myeditfile"/>
+                                                            </div>
+
+                                                            <button type="submit" class="btn btn-danger">提交</button>
+                                                        </form>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
                                         <!-- 新增广告信息的弹窗 -->
                                         <div class="modal fade" id="newad" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -343,14 +372,14 @@
                                                         <h4 class="modal-title" id="moreinfoLabel">新增广告信息</h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form>
+                                                        <form @submit.prevent="addAd">
                                                             <div class="form-group">
                                                                 <label for="contactInputName">广告链接</label>
-                                                                <input type="text" class="form-control" id="contactInputName" placeholder="姓名">
+                                                                <input type="text" class="form-control" id="contactInputName" v-model="link">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="contactInputName">图片链接</label>
-                                                                <input type="file" name="gameImgFile"/>
+                                                                <input type="file" ref="myfile" />
                                                             </div>
 
                                                             <button type="submit" class="btn btn-danger">提交</button>
@@ -374,6 +403,7 @@
                                     <br>
                                     </div><!-- /input-group -->
                                     <div class="tab-pane fade active in" >
+                                        <div v-show="not_search">
                                         <table class="table table-striped" >
                                             <thead>
                                                 <tr>
@@ -397,7 +427,34 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div>
+                                        </div>
+                                        <div v-show="in_search">
+                                            <table class="table table-striped" >
+                                                <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>广告链接</th>
+                                                    <th>图片链接</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr v-for="ad in search_ads">
+                                                    <td>{{ad.id}}</td>
+                                                    <td><a v-bind:href=ad.link> {{ad.link}}</a></td>
+                                                    <td><a v-bind:href=ad.photo >{{ad.photo}}</a></td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;"
+                                                                @click="deleteAd(ad)">删除</button>
+                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"
+                                                                data-toggle="modal" data-target="#updatead"
+                                                                @click="seeAd(ad)">修改</button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <button type="button" class="btn btn-warning"style="margin-top: -6px;"@click="go_back()">返回原列表</button>
+                                        </div>
+                                       </div>
                                     </div>
                                 </div>
                             </div>
@@ -412,35 +469,7 @@
 
 
 
-        <!-- 修改广告信息的弹窗 -->
-        <div class="modal fade" id="updatead" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color:  #d9edf7;">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="moreinfoLabel">更新广告信息</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="contactInputName">广告链接</label>
-                                    <input type="text" class="form-control" id="contactInputName" placeholder="广告链接" value="https://www.taobao.com/">
-                                </div>
-                                <div class="form-group">
-                                    <label for="contactInputName">图片链接</label>
-                                    <input type="text" class="form-control" id="contactInputName" placeholder="广告链接" value="photo/ad/2.jpg">
-                                </div>
-                                <div class="form-group">
-                                    <label for="contactInputName">重新上传图片</label>
-                                    <input type="file" name="gameImgFile"/>
-                                </div>
 
-                                <button type="submit" class="btn btn-danger">提交</button>
-                            </form>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal -->
-            </div>
         <!-- vue -->
         <script>
             new Vue({
@@ -448,6 +477,7 @@
                 data() {
                     return {
                         ads: null,
+                        id:'',
                         link:"",
                         photo: "",
                         edit_id:"",
@@ -484,21 +514,28 @@
                             this.not_search = true;
                         },
                     //新的广告
-                    /*postTicketManager: function (event) {
-                        axios
-                            .post("http://localhost:8080/api/managercenter/addAd", {
-                                "name": this.name,
-                                "password":this.password,
-                                "staffId":this.staffId,
-                            })
-                            .then(savedPerson => {
-                                this.ticket_managers.push(savedPerson.data);
-                                this.name = '';
-                                this.password = '';
-                                this.staffId='';
-                            })
-                        this.get();
-                    },*/
+                    addAd: function (event) {
+                        let myfile = this.$refs.myfile;
+                        let files = myfile.files;
+                        let file = files[0];
+                        let formData = new FormData();
+                        formData.append("file", file);
+                        formData.append("link",this.link);
+                        axios({
+                            method: 'post',
+                            url: "http://localhost:8080/api/managercenter/addAd",
+                            data: formData,
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }).then(savedAd => {
+                            this.ads.push(savedAd.data);
+                            this.link = '';
+                            this.photo= '';
+                            this.id='';
+                        });
+                        this,get();
+                    },
                     //删除广告
                     deleteAd: async function(ad) {
                         await axios
@@ -511,23 +548,34 @@
                         this.edit_photo = ad.photo;
                         this.edit_link = ad.link;
                     },
-                    /*
+
                     //编辑广告
-                    posteditTicketManager: function (event) {
-                        let param = new URLSearchParams()
-                        param.append("id",this.edit_name);
-                        param.append("link",this.edit_link);
-                        param.append("photo",this.edit_photo);
-                        axios.post("http://localhost:8080/api/managercenter/editAd", param)
-                            .then(savedPerson => {
-                                if(this.in_search===true){
-                                    this.get();this.searchAds();
-                                }
-                                else {
-                                    this.get();
-                                }
-                            })
-                    },*/
+                    editAd: function (event) {
+                        let myfile = this.$refs.myeditfile;
+                        let files = myfile.files;
+                        let file = files[0];
+                        let formData = new FormData();
+                        formData.append("id",this.edit_id);
+                        formData.append("link",this.edit_link);
+                        formData.append("file",file);
+                        axios({
+                            method: 'post',
+                            url: "http://localhost:8080/api/managercenter/editAd",
+                            data: formData,
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }).then(savedAd => {
+                            if(this.in_search===true){
+                                this.get();this.searchAds();
+                            }
+                            else {
+                                this.get();
+                            }
+                             });
+
+                    },
+
                 }
             });
             new Vue({

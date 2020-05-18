@@ -12,9 +12,10 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface AdvertisementService {
+    AdvertisementEntity save(AdvertisementEntity a);
     List<AdvertisementEntity> findAll();
     //依靠链接检索
-    AdvertisementEntity findAdvertisementEntitiesByLinkContaining(String s);
+    List<AdvertisementEntity> findAdvertisementEntitiesByLinkContaining(String s);
     //依靠ID检索
     AdvertisementEntity findAdvertisementEntityById(int id);
     //依靠ID删除
