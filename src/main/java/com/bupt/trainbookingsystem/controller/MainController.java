@@ -75,4 +75,14 @@ public class MainController {
         }
         return "personalcenter";
     }
+
+    /**
+     * 买票页面
+     * @return
+     */
+    @RequestMapping("/search_new")
+    public String getSearch_new(){
+        return "search_new";
+    }
+
 }
