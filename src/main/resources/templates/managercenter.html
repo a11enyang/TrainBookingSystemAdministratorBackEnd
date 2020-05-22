@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-md-3" style="margin-top: 20px ; padding-left: 50px">
                     <ul class="nav nav-pills">
-                        <li class="active" > <button type="button" class="btn btn-success">退出登录</button></li>
+                        <li class="active" > <button type="button" href="/backLogin" class="btn btn-success">退出登录</button></li>
                     </ul>
                 </div>
             </div>
@@ -70,17 +70,82 @@
                                 <div class="tab-content">
                                     <!-- 第一个tab -->
                                     <br>
+                                    <div id="Ticket_managers">
+                                        <!-- 新增售票端用户信息的弹窗 -->
+                                        <div class="modal fade" id="newbusiness" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title">新增售票端用户</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form @submit.prevent="postTicketManager()">
+                                                            <div class="form-group">
+                                                                <label for="contactInputName">账号</label>
+                                                                <input type="text" class="form-control"  placeholder="账号" v-model="name" >
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputIDNum">密码</label>
+                                                                <input type="text" class="form-control"  placeholder="密码" v-model="password">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputPhoneNum">工号</label>
+                                                                <input type="text" class="form-control"   placeholder="工号" v-model="staffId">
+                                                            </div>
+                                                            <button type="submit" class="btn btn-danger">提交</button>
+                                                        </form>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
+                                        <!-- 修改售票端用户信息的弹窗 -->
+                                        <div class="modal fade" id="updatebusiness" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" >修改售票端用户信息</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form @submit.prevent="posteditTicketManager()">
+                                                            <div>
+                                                                <div class="form-group">
+                                                                    <label for="contactInputName">账号</label>
+                                                                    <input type="text" class="form-control"  v-model="edit_name">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="contactInputIDNum">密码</label>
+                                                                    <input type="text" class="form-control"  v-model="edit_password">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="contactInputPhoneNum">工号</label>
+                                                                    <input type="text" class="form-control" v-model="edit_staffId">
+                                                                </div>
+                                                                <button type="submit" class="btn btn-danger">提交</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
                                     <div class="input-group"style="width: 50%">
-                                        <input type="text" class="form-control" placeholder="用户名/工号/..">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="button"style="margin-top: -4px;">搜索</button>
-                                        </span>
+                                        <form @submit.prevent="searchTicketManager">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                               <input type="text" class="form-control" placeholder="用户名" v-model="search_name">
+                                                </div>
+                                                <div class="col-md-4">
+                                               <button class="btn btn-primary" type="submit"style="margin-top: 0px;float: left">搜索</button>
+                                                </div>
+                                            </div>
+                                            </form>
                                     <br>
                                     </div><!-- /input-group -->
                                     <div class="tab-pane fade active in" >
                                         <!--所有售票员-->
-                                        <div id="Ticket_managers">
-                                        <table class="table table-striped" >
+                                        <div v-show="not_search">
+                                        <table class="table table-striped" v-show="not_search" >
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
@@ -96,14 +161,41 @@
                                                     <td>{{ticket_manager.name}}</td>
                                                     <td>{{ticket_manager.password}}</td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
-                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updatebusiness" style="margin-top: -6px;">修改</button>
+                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;"@click="deleteticket_manager(ticket_manager)">删除</button>
+                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updatebusiness" style="margin-top: -6px;"@click="seeticket_manager(ticket_manager)">修改</button>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                         </div>
+                                        <div v-show="in_search">
+                                        <table class="table table-striped"  >
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>工号</th>
+                                                <th>账号名</th>
+                                                <th>密码</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="ticket_manager in search_managers">
+                                                <td>{{ticket_manager.id}}</td>
+                                                <td>{{ticket_manager.staffId}}</td>
+                                                <td>{{ticket_manager.name}}</td>
+                                                <td>{{ticket_manager.password}}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger"style="margin-top: -6px;"@click="deleteticket_manager(ticket_manager)">删除</button>
+                                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updatebusiness" style="margin-top: -6px;"@click="seeticket_manager(ticket_manager)">修改</button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+
+                                        </table>
+                                            <button type="button" class="btn btn-warning"style="margin-top: -6px;"@click="go_back()">返回原列表</button>
                                     </div>
+                                </div>
+                            </div>
                                 </div>
                             </div>
                         </div>
@@ -117,51 +209,115 @@
                                 <div class="tab-content">
                                     <!-- 第一个tab -->
                                     <br>
-                                    <div class="input-group"style="width: 50%">
-                                        <input type="text" class="form-control" placeholder="用户名/身份证号/...">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="button"style="margin-top: -4px;">搜索</button>
-                                        </span>
+                                    <div   id="Ordinary_users">
+                                        <!-- 修改普通用户信息的弹窗 -->
+                                        <div class="modal fade" id="updateordinery" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="moreinfoLabel">修改普通用户信息</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form @submit.prevent="postEditUser()">
+                                                            <div class="form-group">
+                                                                <label for="contactInputName">账号</label>
+                                                                <input type="text" class="form-control" id="contactInputName" v-model="edit_name">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputIDNum">密码</label>
+                                                                <input type="text" class="form-control" id="contactInputIDNum" v-model="edit_password">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputPhoneNum">身份证号</label>
+                                                                <input type="text" class="form-control" id="contactInputPhoneNum"v-model="edit_personId">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputPhoneNum">学生认证</label>
+                                                                <input type="text" class="form-control" id="contactInputPhoneNum" v-model="edit_is_student">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputPhoneNum">信用信息</label>
+                                                                <input type="text" class="form-control" id="contactInputPhoneNum" v-model="edit_credit">
+                                                            </div>
+                                                            <button type="submit" class="btn btn-danger">提交</button>
+                                                        </form>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
+                                        <!--搜索用户-->
+                                        <div class="input-group"style="width: 50%">
+                                        <form @submit.prevent="searchUsers">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" v-model="search_name">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button class="btn btn-primary" type="submit"style="margin-top: 0px;float: left">搜索</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     <br>
                                     </div><!-- /input-group -->
                                     <div class="tab-pane fade active in" id="tab11">
+                                        <div v-show="not_search">
                                         <table class="table table-striped" id="weizhifu">
                                             <thead>
                                                 <tr>
                                                     <th>账号</th>
                                                     <th>密码</th>
-                                                    <th>余额</th>
+                                                    <th>身份证号</th>
                                                     <th>学生认证</th>
                                                     <th>信用信息</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>xuyutao</td>
-                                                    <td>12345678</td>
-                                                    <td>100.00</td>
-                                                    <td>1</td>
-                                                    <td>1</td>
+                                                <tr v-for="user in ordinary_users">
+                                                    <td>{{user.name}}</td>
+                                                    <td>{{user.password}}</td>
+                                                    <td>{{user.personId}}</td>
+                                                    <td>{{user.isstudent}}</td>
+                                                    <td>{{user.credit}}</td>
                                                     <td >
-                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
-                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"data-toggle="modal" data-target="#updateordinery">修改</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>panshang</td>
-                                                    <td>12345678</td>
-                                                    <td>100.00</td>
-                                                    <td>1</td>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
-                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"data-toggle="modal" data-target="#updateordinery">修改</button>
+                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;"@click="deletetUser(user)">删除</button>
+                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"data-toggle="modal"
+                                                                data-target="#updateordinery" @click="seeUser(user)">修改</button>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        </div>
+                                        <div v-show="in_search">
+                                            <table class="table table-striped" id="weizhifu">
+                                                <thead>
+                                                <tr>
+                                                    <th>账号</th>
+                                                    <th>密码</th>
+                                                    <th>身份证号</th>
+                                                    <th>学生认证</th>
+                                                    <th>信用信息</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr v-for="user in search_users">
+                                                    <td>{{user.name}}</td>
+                                                    <td>{{user.password}}</td>
+                                                    <td>{{user.personId}}</td>
+                                                    <td>{{user.isstudent}}</td>
+                                                    <td>{{user.credit}}</td>
+                                                    <td >
+                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;"@click="deletetUser(user)">删除</button>
+                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"data-toggle="modal"
+                                                                data-target="#updateordinery" @click="seeUser(user)">修改</button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <button type="button" class="btn btn-warning"style="margin-top: -6px;"@click="go_back()">返回原列表</button>
+                                        </div>
                                     </div>
-                                </div>
+                                </div></div>
                             </div>
                         </div>
                         <!-- 3 -->
@@ -177,14 +333,77 @@
                                 <div class="tab-content">
                                     <!-- 第一个tab -->
                                     <br>
-                                    <div class="input-group"style="width: 50%">
-                                        <input type="text" class="form-control" placeholder="广告链接">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="button"style="margin-top: -4px;">搜索</button>
-                                        </span>
+                                    <div id="Ads">
+                                        <!-- 修改广告信息的弹窗 -->
+                                        <div class="modal fade" id="updatead" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="moreinfoLabel">更新广告信息</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form @submit.prevent="editAd()">
+                                                            <div class="form-group">
+                                                                <label for="contactInputName">广告链接</label>
+                                                                <input type="text" class="form-control" id="contactInputName" v-model="edit_link">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputName">图片链接</label>
+                                                                <input type="text" class="form-control" id="contactInputName" v-model="edit_photo">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputName">重新上传图片</label>
+                                                                <input type="file" ref="myeditfile"/>
+                                                            </div>
+
+                                                            <button type="submit" class="btn btn-danger">提交</button>
+                                                        </form>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
+                                        <!-- 新增广告信息的弹窗 -->
+                                        <div class="modal fade" id="newad" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="moreinfoLabel">新增广告信息</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form @submit.prevent="addAd">
+                                                            <div class="form-group">
+                                                                <label for="contactInputName">广告链接</label>
+                                                                <input type="text" class="form-control" id="contactInputName" v-model="link">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contactInputName">图片链接</label>
+                                                                <input type="file" ref="myfile" />
+                                                            </div>
+
+                                                            <button type="submit" class="btn btn-danger">提交</button>
+                                                        </form>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
+                                        <!--搜索广告信息-->
+                                        <div class="input-group"style="width: 50%">
+                                        <form @submit.prevent="searchAds">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" v-model="search_name">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button class="btn btn-primary" type="submit"style="margin-top: 0px;float: left">搜索</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     <br>
                                     </div><!-- /input-group -->
                                     <div class="tab-pane fade active in" >
+                                        <div v-show="not_search">
                                         <table class="table table-striped" >
                                             <thead>
                                                 <tr>
@@ -194,205 +413,169 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>https://www.taobao.com/</td>
-                                                    <td>photo/ad/1.jpg</td>
-                                                    <td >
-                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
-                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"data-toggle="modal" data-target="#updatead">修改</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>https://www.tmall.com/</td>
-                                                    <td>photo/ad/2.jpg</td>
+                                                <tr v-for="ad in ads">
+                                                    <td>{{ad.id}}</td>
+                                                    <td><a v-bind:href=ad.link> {{ad.link}}</a></td>
+                                                    <td><a v-bind:href=ad.photo >{{ad.photo}}</a></td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;">删除</button>
-                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"data-toggle="modal" data-target="#updatead">修改</button>
+                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;"
+                                                         @click="deleteAd(ad)">删除</button>
+                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"
+                                                                data-toggle="modal" data-target="#updatead"
+                                                        @click="seeAd(ad)">修改</button>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        </div>
+                                        <div v-show="in_search">
+                                            <table class="table table-striped" >
+                                                <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>广告链接</th>
+                                                    <th>图片链接</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr v-for="ad in search_ads">
+                                                    <td>{{ad.id}}</td>
+                                                    <td><a v-bind:href=ad.link> {{ad.link}}</a></td>
+                                                    <td><a v-bind:href=ad.photo >{{ad.photo}}</a></td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger"style="margin-top: -6px;"
+                                                                @click="deleteAd(ad)">删除</button>
+                                                        <button type="button" class="btn btn-success"style="margin-top: -6px;"
+                                                                data-toggle="modal" data-target="#updatead"
+                                                                @click="seeAd(ad)">修改</button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <button type="button" class="btn btn-warning"style="margin-top: -6px;"@click="go_back()">返回原列表</button>
+                                        </div>
+                                       </div>
                                     </div>
                                 </div>
-                            </div></div></div>
-                        </div>
+                            </div>
+                            </div>
                         <!-- tab end -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- 新增售票端用户信息的弹窗 -->
-        <div class="modal fade" id="newbusiness" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color:  #d9edf7;">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="moreinfoLabel">新增售票端用户</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="contactInputName">账号</label>
-                                    <input type="text" class="form-control" id="contactInputName" placeholder="账号">
-                                </div>
-                                <div class="form-group">
-                                    <label for="contactInputIDNum">密码</label>
-                                    <input type="text" class="form-control" id="contactInputIDNum" placeholder="密码">
-                                </div>
-                                <div class="form-group">
-                                    <label for="contactInputPhoneNum">工号</label>
-                                    <input type="text" class="form-control" id="contactInputPhoneNum" placeholder="工号">
-                                </div>
-                                <button type="submit" class="btn btn-danger">提交</button>
-                            </form>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal -->
-            </div>
-        <!-- 修改售票端用户信息的弹窗 -->
-        <div class="modal fade" id="updatebusiness" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background-color:  #d9edf7;">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="moreinfoLabel">修改售票端用户信息</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="contactInputName">账号</label>
-                                        <input type="text" class="form-control" id="contactInputName" placeholder="账号" value="shanghai-001">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contactInputIDNum">密码</label>
-                                        <input type="text" class="form-control" id="contactInputIDNum" placeholder="密码" value="12345678">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contactInputPhoneNum">工号</label>
-                                        <input type="text" class="form-control" id="contactInputPhoneNum" placeholder="工号"value="shanghai-001">
-                                    </div>
-                                    <button type="submit" class="btn btn-danger">提交</button>
-                                </form>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal -->
-                </div>
-        <!-- 修改普通用户信息的弹窗 -->
-        <div class="modal fade" id="updateordinery" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background-color:  #d9edf7;">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="moreinfoLabel">修改普通用户信息</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="contactInputName">账号</label>
-                                        <input type="text" class="form-control" id="contactInputName" placeholder="账号" value="xuyutao">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contactInputIDNum">密码</label>
-                                        <input type="text" class="form-control" id="contactInputIDNum" placeholder="密码" value="12345678">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contactInputPhoneNum">余额</label>
-                                        <input type="text" class="form-control" id="contactInputPhoneNum" placeholder="余额"value="100.00">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contactInputPhoneNum">学生认证</label>
-                                        <input type="text" class="form-control" id="contactInputPhoneNum" placeholder="学生认证"value="1">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contactInputPhoneNum">信用信息</label>
-                                        <input type="text" class="form-control" id="contactInputPhoneNum" placeholder="信用信息"value="1">
-                                    </div>
-                                    <button type="submit" class="btn btn-danger">提交</button>
-                                </form>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal -->
-                </div>
-        <!-- 新增广告信息的弹窗 -->
-        <div class="modal fade" id="newad" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header" style="background-color:  #d9edf7;">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="moreinfoLabel">新增广告信息</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="contactInputName">广告链接</label>
-                                <input type="text" class="form-control" id="contactInputName" placeholder="姓名">
-                            </div>
-                            <div class="form-group">
-                                <label for="contactInputName">图片链接</label>
-                                <input type="file" name="gameImgFile"/>
-                            </div>
 
-                            <button type="submit" class="btn btn-danger">提交</button>
-                        </form>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
-        </div>
-        <!-- 新增广告信息的弹窗 -->
-        <div class="modal fade" id="updatead" tabindex="-1" role="dialog" aria-labelledby="moreinfoLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color:  #d9edf7;">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="moreinfoLabel">更新广告信息</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="contactInputName">广告链接</label>
-                                    <input type="text" class="form-control" id="contactInputName" placeholder="广告链接" value="https://www.taobao.com/">
-                                </div>
-                                <div class="form-group">
-                                    <label for="contactInputName">图片链接</label>
-                                    <input type="text" class="form-control" id="contactInputName" placeholder="广告链接" value="photo/ad/2.jpg">
-                                </div>
-                                <div class="form-group">
-                                    <label for="contactInputName">重新上传图片</label>
-                                    <input type="file" name="gameImgFile"/>
-                                </div>
 
-                                <button type="submit" class="btn btn-danger">提交</button>
-                            </form>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal -->
-            </div>
+
+
+
         <!-- vue -->
         <script>
             new Vue({
-                el: "#Ticket_managers",
+                el: "#Ads",
                 data() {
                     return {
-                        ticket_managers: null,
-                        infoHref: null,
-                        api: null,
+                        ads: null,
+                        id:'',
+                        link:"",
+                        photo: "",
+                        edit_id:"",
+                        edit_link:"",
+                        edit_photo:"",
+                        in_search:false,
+                        not_search:true,
+                        search_ads:null,
+                        search_name:"",
                     }
                 },
                 mounted() {
-                    axios
-                        .get("http://localhost:8080/api/managercenter/ticketmanager")
-                        .then(response => (this.ticket_managers = response.data));
+                    this.get();
                 },
                 methods: {
-                    /*readInfo: function(e){
-                        this.infoHref = "http://localhost:8080/earthquake/info/" + e.id;
+                    //获取广告页面
+                    get: function(){axios
+                        .get("http://localhost:8080/api/managercenter/ads")
+                        .then(response => (this.ads = response.data))
                     },
-                    readApi: function(e){
-                        this.api = "http://localhost:8080/api/earthquake/info/" + e.id;
-                        alert("api的地址是: " + this.api);
-                    }*/
+                    //搜索票务端管理员
+                    searchAds:
+                        function(event){
+                            let param = new URLSearchParams()
+                            param.append("link",this.search_name);
+                            axios.post("http://localhost:8080/api/managercenter/findAd",param)
+                                .then(response=>(this.search_ads = response.data))
+                            this.in_search = true;
+                            this.not_search = false;
+                        },
+                    go_back:
+                        function(){
+                            this.in_search = false;
+                            this.not_search = true;
+                        },
+                    //新的广告
+                    addAd: function (event) {
+                        let myfile = this.$refs.myfile;
+                        let files = myfile.files;
+                        let file = files[0];
+                        let formData = new FormData();
+                        formData.append("file", file);
+                        formData.append("link",this.link);
+                        axios({
+                            method: 'post',
+                            url: "http://localhost:8080/api/managercenter/addAd",
+                            data: formData,
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }).then(savedAd => {
+                            this.ads.push(savedAd.data);
+                            this.link = '';
+                            this.photo= '';
+                            this.id='';
+                        });
+                        this,get();
+                    },
+                    //删除广告
+                    deleteAd: async function(ad) {
+                        await axios
+                            .delete("http://localhost:8080/api/managercenter/deleteAd/" + ad.id);
+                        this.get();
+                    },
+                    //编辑广告
+                    seeAd:function (ad) {
+                        this.edit_id = ad.id;
+                        this.edit_photo = ad.photo;
+                        this.edit_link = ad.link;
+                    },
+
+                    //编辑广告
+                    editAd: function (event) {
+                        let myfile = this.$refs.myeditfile;
+                        let files = myfile.files;
+                        let file = files[0];
+                        let formData = new FormData();
+                        formData.append("id",this.edit_id);
+                        formData.append("link",this.edit_link);
+                        formData.append("file",file);
+                        axios({
+                            method: 'post',
+                            url: "http://localhost:8080/api/managercenter/editAd",
+                            data: formData,
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }).then(savedAd => {
+                            if(this.in_search===true){
+                                this.get();this.searchAds();
+                            }
+                            else {
+                                this.get();
+                            }
+                             });
+
+                    },
+
                 }
             });
             new Vue({
@@ -400,23 +583,175 @@
                 data() {
                     return {
                         ticket_managers: null,
-                        infoHref: null,
-                        api: null,
+                        id:"",
+                        name: "",
+                        password: "",
+                        staffId:"",
+                        edit_id:"",
+                        edit_name:"",
+                        edit_password:"",
+                        edit_staffId:"",
+                        in_search:false,
+                        not_search:true,
+                        search_managers:null,
+                        search_name:'',
                     }
                 },
                 mounted() {
-                    axios
-                        .get("http://localhost:8080/api/managercenter/ticketmanager")
-                        .then(response => (this.ticket_managers = response.data));
+                    this.get();
                 },
                 methods: {
-                    /*readInfo: function(e){
-                        this.infoHref = "http://localhost:8080/earthquake/info/" + e.id;
+                    //获取管理员页面
+                    get: function(){axios
+                        .get("http://localhost:8080/api/managercenter/ticketmanager")
+                        .then(response => (this.ticket_managers = response.data))
                     },
-                    readApi: function(e){
-                        this.api = "http://localhost:8080/api/earthquake/info/" + e.id;
-                        alert("api的地址是: " + this.api);
-                    }*/
+                    //搜索票务端管理员
+                    searchTicketManager:
+                        function(event){
+                            let param = new URLSearchParams()
+                            param.append("name",this.search_name);
+                            axios.post("http://localhost:8080/api/managercenter/findticketmanager",param)
+                            .then(response=>(this.search_managers = response.data))
+                            this.in_search = true;
+                            this.not_search = false;
+                        },
+                    go_back:
+                         function(){
+                             this.in_search = false;
+                             this.not_search = true;
+                          },
+                    //新的票务端管理员
+                    postTicketManager: function (event) {
+                        axios
+                            .post("http://localhost:8080/api/managercenter/addticketmanager", {
+                                "name": this.name,
+                                "password":this.password,
+                                "staffId":this.staffId,
+                            })
+                            .then(savedPerson => {
+                                this.ticket_managers.push(savedPerson.data);
+                                this.name = '';
+                                this.password = '';
+                                this.staffId='';
+                            })
+                        this.get();
+                    },
+                    //删除票务管理员
+                    deleteticket_manager: async function(ticket_manager) {
+                    await axios
+                    .delete("http://localhost:8080/api/managercenter/deleteticketmanager/" + ticket_manager.id);
+                    this.get();
+                    },
+                    //编辑票务管理员
+                    seeticket_manager:function (ticket_manager) {
+                   // axios
+                       // .get("http://localhost:8080/api/managercenter/findticketmanager/"+ticket_manager.id)
+                        //.then(response=>(this.editone=response.data))
+                        this.edit_id = ticket_manager.id;
+                        this.edit_name = ticket_manager.name;
+                        this.edit_password = ticket_manager.password;
+                        this.edit_staffId = ticket_manager.staffId;
+                    },
+                    posteditTicketManager: function (event) {
+                        let param = new URLSearchParams()
+                        param.append("name",this.edit_name);
+                        param.append("password",this.edit_password);
+                        param.append("staffId",this.edit_staffId);
+                        param.append("id",this.edit_id);
+                        axios.post("http://localhost:8080/api/managercenter/editticketmanager", param)
+                            .then(savedPerson => {
+                                if(this.in_search===true){
+                                    this.get();this.searchTicketManager();
+                                }
+                                else {
+                                    this.get();
+                                }
+                        })
+                    },
+                    }
+            });
+            new Vue({
+                el: "#Ordinary_users",
+                data() {
+                    return {
+                        ordinary_users: null,
+                        id:"",
+                        name: "",
+                        password: "",
+                        personId:"",
+                        isstudent:"",
+                        credit:"",
+                        edit_id:"",
+                        edit_name:"",
+                        edit_password:"",
+                        edit_personId:"",
+                        edit_is_student:"",
+                        edit_credit:"",
+                        in_search:false,
+                        not_search:true,
+                        search_users:null,
+                        search_name:'',
+                        in_search_name:'',
+                    }
+                },
+                mounted() {
+                    this.get();
+                },
+                methods: {
+                    //获取普通用户页面
+                    get: function(){axios
+                        .get("http://localhost:8080/api/managercenter/user")
+                        .then(response => (this.ordinary_users = response.data))
+                    },
+                    //搜索普通用户
+                    searchUsers:
+                        function(event){
+                            let param = new URLSearchParams()
+                            param.append("name",this.search_name);
+                            axios.post("http://localhost:8080/api/managercenter/findUser",param)
+                                .then(response=>(this.search_users = response.data))
+                            this.in_search = true;
+                            this.not_search = false;
+                            this.in_search_name = this.search_name;
+                            this.search_name='';
+                        },
+                    go_back:
+                        function(){
+                            this.in_search = false;
+                            this.not_search = true;
+                        },
+                    //删除用户
+                    deletetUser: async function(user) {
+                        await axios
+                            .delete("http://localhost:8080/api/managercenter/deleteUser/" + user.id);
+                        this.get();
+                    },
+                    //编辑用户
+                    seeUser:function (user) {
+                        this.edit_id = user.id;
+                        this.edit_name = user.name;
+                        this.edit_password = user.password;
+                        this.edit_personId = user.personId;
+                        this.edit_credit = user.credit;
+                        this.edit_is_student = user.isstudent;                    },
+                    postEditUser: function (event) {
+                        let param = new URLSearchParams();
+                        param.append("name",this.edit_name);
+                        param.append("password",this.edit_password);
+                        param.append("is_student",this.edit_is_student);
+                        param.append("personId",this.edit_personId);
+                        param.append("id",this.edit_id);
+                        param.append("credit",this.edit_credit);
+                        axios.post("http://localhost:8080/api/managercenter/editUser", param)
+                            .then(savedPerson => {
+                                if(this.in_search===true){
+                                    this.get();this.searchUsers();
+                                }
+                                else {
+                                    this.get();
+                                }})
+                    },
                 }
             });
         </script>

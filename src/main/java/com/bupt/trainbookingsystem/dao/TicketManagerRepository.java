@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface TicketManagerRepository extends JpaRepository<TicketManagerEntity,Integer> {
@@ -18,9 +19,11 @@ public interface TicketManagerRepository extends JpaRepository<TicketManagerEnti
     TicketManagerEntity findTicketManagerEntityById(int id);
     //通过名字找票务端用户
     TicketManagerEntity findTicketManagerEntityByNameContains(String name);
+    List<TicketManagerEntity> findTicketManagerEntitiesByNameContaining(String name);
     //通过工号找票务端用户
     TicketManagerEntity findTicketManagerEntityByStaffIdNotContains(String staff_id);
     //通过ID删除票务端用户
+    @Transactional
     void deleteTicketManagerEntityById(int id);
     //通过ID修改票务端用户信息
     @Transactional

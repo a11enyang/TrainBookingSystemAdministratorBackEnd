@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.Map;
 
 /**
@@ -40,6 +39,10 @@ public class ManageCenterController {
             map.put("msg1","用户名密码错误");
             return "managerlogin";
         }
+    }
+    @RequestMapping("/backLogin")
+    public String backLogin(){
+        return "managerlogin";
     }
 
 
