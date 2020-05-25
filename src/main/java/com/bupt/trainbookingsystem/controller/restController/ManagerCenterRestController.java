@@ -153,7 +153,6 @@ public class ManagerCenterRestController {
         file.transferTo(Paths.get(localPath+"/"+newName));
         //file.transferTo(new File(folder,localPath+"/"+newName));
         String url = "http://localhost:8080/picture/ad/"+Paths.get(newName);
-
         return advertisementService.updateAdById(link,url,id);
     }
 

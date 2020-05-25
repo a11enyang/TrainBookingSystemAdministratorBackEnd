@@ -43,6 +43,11 @@ public class TicketManagerServiceImp implements TicketManagerService {
         return tmr.findTicketManagerEntitiesByNameContaining(name);
     }
 
+    @Override
+    public TicketManagerEntity findTicketManagerEntityByNameAndPassword(String name, String pw) {
+        return tmr.findTicketManagerEntityByNameAndPassword(name, pw);
+    }
+
 
     @Override
     public TicketManagerEntity findTicketManagerEntityByStaffIdNotContains(String staff_id) {

@@ -20,6 +20,7 @@ public interface TicketManagerService {
     //通过名字找票务端用户
     TicketManagerEntity findTicketManagerEntityByNameContains(String name);
     List<TicketManagerEntity> findTicketManagerEntitiesByNameContainingOrStaffIdContaining(String name);
+    TicketManagerEntity findTicketManagerEntityByNameAndPassword(String name,String pw);
     //通过工号找票务端用户
     TicketManagerEntity findTicketManagerEntityByStaffIdNotContains(String staff_id);
     //通过ID删除票务端用户

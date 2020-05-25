@@ -37,12 +37,13 @@ public class ManageCenterController {
         else{
             System.out.println("no user");
             map.put("msg1","用户名密码错误");
-            return "managerlogin";
+            return "redirect:/managerLogin";
         }
     }
-    @RequestMapping("/backLogin")
+    @RequestMapping("/managerBackLogin")
     public String backLogin(){
-        return "managerlogin";
+        System.out.println("ss");
+        return "redirect:/managerLogin";
     }
 
 

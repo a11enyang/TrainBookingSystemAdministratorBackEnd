@@ -19,6 +19,8 @@ public interface TicketManagerRepository extends JpaRepository<TicketManagerEnti
     TicketManagerEntity findTicketManagerEntityById(int id);
     //通过名字找票务端用户
     TicketManagerEntity findTicketManagerEntityByNameContains(String name);
+    //通过名字密码寻找用户
+    TicketManagerEntity findTicketManagerEntityByNameAndPassword(String name,String pw);
     List<TicketManagerEntity> findTicketManagerEntitiesByNameContaining(String name);
     //通过工号找票务端用户
     TicketManagerEntity findTicketManagerEntityByStaffIdNotContains(String staff_id);
