@@ -1,6 +1,7 @@
 /**
  * 开发者：徐玉韬
  * 内容：管理端的restcontroller
+ * 处理管理端的各类数据请求
  */
 package com.bupt.trainbookingsystem.controller.restController;
 import com.bupt.trainbookingsystem.dao.UserOrderRepository;
@@ -59,7 +60,7 @@ public class ManagerCenterRestController {
     public TicketManagerEntity editticketmanager(@RequestParam("name")String name,@RequestParam("password") String password,
                                                  @RequestParam ("staffId")String staffId,@RequestParam("id") int id){
         System.out.println(name+"name");
-        return ticketManagerService.updateTicketManagerById(name, password, staffId, id);
+        return ticketManagerService.updateTicketManagerById1(name, password, staffId, id);
     }
     //查找售票管理员
     @PostMapping("/findticketmanager")

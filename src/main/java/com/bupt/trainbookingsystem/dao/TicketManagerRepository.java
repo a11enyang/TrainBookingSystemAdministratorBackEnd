@@ -30,6 +30,10 @@ public interface TicketManagerRepository extends JpaRepository<TicketManagerEnti
     //通过ID修改票务端用户信息
     @Transactional
     @Modifying
-    @Query(value="update ticket_manager set name = ?1,password=?2,staff_id=?3  where id =?4",nativeQuery=true)
-    void updateTicketManagerById(String name,String password,String staff_id, int id);
+    @Query(value="update ticket_manager set name = ?1,password=?2,staff_id=?3 where id =?4",nativeQuery=true)
+    void updateTicketManagerById1(String name,String password,String staff_id,int id);
+    @Transactional
+    @Modifying
+    @Query(value="update ticket_manager set name = ?1,password=?2 where id =?3",nativeQuery=true)
+    void updateTicketManagerById2(String name,String password,int id);
 }

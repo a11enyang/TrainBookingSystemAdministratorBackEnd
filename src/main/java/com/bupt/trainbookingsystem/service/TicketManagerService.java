@@ -27,5 +27,6 @@ public interface TicketManagerService {
     @Transactional
     void deleteTicketManagerEntityById(int id);
     //通过ID修改票务端用户信息
-    TicketManagerEntity  updateTicketManagerById(String name,String password,String staff_id, int id);
+    TicketManagerEntity updateTicketManagerById1(String name,String password,String staffId,int id);
+    TicketManagerEntity updateTicketManagerById2(String name,String password,int id);
 }
