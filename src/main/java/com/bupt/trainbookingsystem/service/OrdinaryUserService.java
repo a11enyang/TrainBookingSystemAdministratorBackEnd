@@ -24,5 +24,7 @@ public interface OrdinaryUserService {
     List<OrdinaryUserEntity> findOrdinaryUserEntitiesByNameContaining(String s);
     //根据ID编辑用户
     OrdinaryUserEntity updateUserById(String name,String password,String person_id,Byte is_student,Byte credit ,int id);
+    //创建用户(id自增)
+    void createOrdinaryUserEntity(OrdinaryUserEntity userEntity);
 
 }

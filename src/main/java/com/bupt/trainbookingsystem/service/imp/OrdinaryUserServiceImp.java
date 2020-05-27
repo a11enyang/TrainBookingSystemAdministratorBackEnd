@@ -51,4 +51,8 @@ public class OrdinaryUserServiceImp implements OrdinaryUserService {
         return ordinaryUserRepository.findOrdinaryUserEntityById(id);
     }
 
+    @Override
+    public void createOrdinaryUserEntity(OrdinaryUserEntity userEntity){
+        ordinaryUserRepository.save(userEntity);
+    }
 }
