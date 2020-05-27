@@ -39,7 +39,7 @@ public class LoginController {
         userEntity.setPersonId(personId);
         userEntity.setEmail(email);
         userEntity.setPhonenum(phonenum);
-        if(personType == "成人")
+        if(personType.equals("成人"))
             userEntity.setIsstudent((byte) 0);
         else
             userEntity.setIsstudent((byte) 1);
