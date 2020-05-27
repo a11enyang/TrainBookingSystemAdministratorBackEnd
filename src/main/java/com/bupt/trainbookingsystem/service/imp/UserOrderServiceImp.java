@@ -34,6 +34,11 @@ public class UserOrderServiceImp implements UserOrderService {
     }
 
     @Override
+    public List<UserOrderEntity> findAll() {
+        return uor.findAll();
+    }
+
+    @Override
     public UserOrderEntity findUserOrderEntityById(int id) {
         return uor.findUserOrderEntityById(id);
     }
@@ -49,8 +54,14 @@ public class UserOrderServiceImp implements UserOrderService {
     }
 
     @Override
-    public void updateUserOrderEntityById(String condition, int id) {
+    public UserOrderEntity updateUserOrderEntityById1(String condition, int id) {
+        uor.updateUserOrderEntityById(condition, id);
+        return uor.findUserOrderEntityById(id);
+    }
+    @Override
+    public void updateUserOrderEntityById(String condition,int id) {
         userOrderRepository.updateUserOrderEntityById(condition, id);
+
     }
 
     @Override

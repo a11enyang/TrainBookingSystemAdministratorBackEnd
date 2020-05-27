@@ -1,5 +1,7 @@
 package com.bupt.trainbookingsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -25,6 +27,7 @@ public class TripEntity {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)  // 自增
     public int getId() {
         return id;
     }
@@ -122,8 +125,8 @@ public class TripEntity {
     public int hashCode() {
         return Objects.hash(id, trainNumber, startStation, endStation, departureTime, remainseatInfo, tripStatus, trainId);
     }
-
-    @OneToMany(mappedBy = "tripByTripId")
+    @JsonIgnore
+    @OneToMany(mappedBy = "tripByTripId",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     public Collection<FareEntity> getFaresById() {
         return faresById;
     }
@@ -131,8 +134,8 @@ public class TripEntity {
     public void setFaresById(Collection<FareEntity> faresById) {
         this.faresById = faresById;
     }
-
-    @OneToMany(mappedBy = "tripByTripId")
+    @JsonIgnore
+    @OneToMany(mappedBy = "tripByTripId",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     public Collection<RoutelineEntity> getRoutelinesById() {
         return routelinesById;
     }
@@ -140,8 +143,8 @@ public class TripEntity {
     public void setRoutelinesById(Collection<RoutelineEntity> routelinesById) {
         this.routelinesById = routelinesById;
     }
-
-    @OneToMany(mappedBy = "tripByTripId")
+    @JsonIgnore
+    @OneToMany(mappedBy = "tripByTripId",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     public Collection<SeatEntity> getSeatsById() {
         return seatsById;
     }
@@ -149,8 +152,8 @@ public class TripEntity {
     public void setSeatsById(Collection<SeatEntity> seatsById) {
         this.seatsById = seatsById;
     }
-
-    @OneToMany(mappedBy = "tripByTripId")
+    @JsonIgnore
+    @OneToMany(mappedBy = "tripByTripId",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     public Collection<StationsEntity> getStationsById() {
         return stationsById;
     }
@@ -168,8 +171,8 @@ public class TripEntity {
     public void setTrainByTrainId(TrainEntity trainByTrainId) {
         this.trainByTrainId = trainByTrainId;
     }
-
-    @OneToMany(mappedBy = "tripByTripId")
+    @JsonIgnore
+    @OneToMany(mappedBy = "tripByTripId",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     public Collection<UserOrderEntity> getUserOrdersById() {
         return userOrdersById;
     }
