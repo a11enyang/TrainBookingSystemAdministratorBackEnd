@@ -20,8 +20,28 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/register")
-    public String register(){return "register";}
+    @PostMapping("/register")
+    public String register(@RequestParam String name,
+                           @RequestParam String password,
+                           @RequestParam String cardType,
+                           @RequestParam String personId,
+                           @RequestParam String email,
+                           @RequestParam String phonenum,
+                           @RequestParam String personType){
+        OrdinaryUserEntity userEntity = new OrdinaryUserEntity();
+        userEntity.setName(name);
+        userEntity.setPassword(password);
+        userEntity.setType(cardType);
+        userEntity.setPersonId(personId);
+        userEntity.setEmail(email);
+        userEntity.setPhonenum(phonenum);
+        if(personType=="成人")
+            userEntity.setIsstudent((byte) 0);
+        else
+            userEntity.setIsstudent((byte) 1);
+        userLogin.createOrdinaryUserEntity(userEntity);
+        return "redirect:login";
+    }
 
 
     @PostMapping("/admin/login")
