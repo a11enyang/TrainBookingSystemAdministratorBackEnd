@@ -9,16 +9,16 @@ import java.util.Objects;
 @Table(name = "trip", schema = "booking", catalog = "")
 public class TripEntity {
     private int id;
-    private String trainNumber;
-    private String startStation;
-    private String endStation;
-    private Timestamp departureTime;
-    private String remainseatInfo;
-    private Byte tripStatus;
-    private Integer trainId;
+    private String trainNumber;//车次编号
+    private String startStation;//起点
+    private String endStation;//终点
+    private Timestamp departureTime;//开始日期
+    private String remainseatInfo;//剩余座位信息
+    private Byte tripStatus;//该车次的状态 0表示停运  1表示正常运行
+    private Integer trainId;//关联的列车
     private Collection<FareEntity> faresById;
     private Collection<RoutelineEntity> routelinesById;
-    private Collection<SeatEntity> seatsById;
+    private Collection<SeatEntity> seatsById;//关联的座位信息
     private Collection<StationsEntity> stationsById;
     private TrainEntity trainByTrainId;
     private Collection<UserOrderEntity> userOrdersById;
