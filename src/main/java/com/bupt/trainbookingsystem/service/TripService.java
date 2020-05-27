@@ -25,6 +25,7 @@ public interface TripService {
     List<TripEntity> findTripEntitiesByDepartureTimeIsStartingWith(Timestamp departureTime);
     //根据状态搜索
     List<TripEntity> findTripEntitiesByTripStatus(Byte status);
+    List<TripEntity> findTripEntitiesByTrainNumberContaining(String number);
     //根据ID删除
     void deleteTripEntityById(int id);
     //更改车次信息

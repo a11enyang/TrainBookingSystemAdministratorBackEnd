@@ -62,6 +62,11 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
+    public List<TripEntity> findTripEntitiesByTrainNumberContaining(String number) {
+        return tpr.findTripEntitiesByTrainNumberContaining(number);
+    }
+
+    @Override
     public void deleteTripEntityById(int id) {
         tpr.deleteTripEntityById(id);
     }

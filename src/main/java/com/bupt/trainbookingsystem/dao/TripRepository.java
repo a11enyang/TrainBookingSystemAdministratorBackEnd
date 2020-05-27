@@ -27,11 +27,13 @@ public interface TripRepository extends JpaRepository<TripEntity,Integer> {
     List<TripEntity> findTripEntitiesByDepartureTimeIsStartingWith(Timestamp departureTime);
     //根据状态搜索
     List<TripEntity> findTripEntitiesByTripStatus(Byte status);
+    //根据编号搜索
+    List<TripEntity> findTripEntitiesByTrainNumberContaining(String number);
     //根据ID删除
     void deleteTripEntityById(int id);
     //更改车次信息
     @Transactional
     @Modifying
-    @Query(value="update trip set train_number = ?1, departure_time=?2 trip_status=?3 where id =?4",nativeQuery=true)
+    @Query(value="update trip set train_number = ?1, departure_time=?2, trip_status=?3 where id =?4",nativeQuery=true)
     void updateTripEntityById(String train_number,Timestamp departureTime, Byte status, int id);
 }
