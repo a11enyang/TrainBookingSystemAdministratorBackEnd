@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -11,7 +11,8 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css"></linkrel>
-
+    <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
+    <script src="/webjars/vue/2.6.11/vue.min.js"></script>
     <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
     <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
     <!--[if lt IE 9]>
@@ -34,7 +35,7 @@
 
             </div>
             <div class="col-md-2" style="margin-top: 15px ; padding-left: 50px">
-                <button type="button" class="btn btn-danger">退出登录</button>
+                <button type="button" class="btn btn-danger"><a href="/ticketLoginBack" style="color: white">退出登录</a></button>
             </div>
         </div>
     </div>
@@ -51,28 +52,57 @@
                 <div class="tab-content">
                     <!--个人信息-->
                     <div class="tab-pane active" id="personInfoManage">
+                        <div id="ticket_manager">
                         <div class="panel panel-info">
                             <!-- Default panel contents -->
                             <div class="panel-heading" style="height: 60px;">
                                 <div style="margin-top: 10px; width: 100px; float: left;">个人信息</div>
                             </div>
                             <div class="info-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="myInputName">name</label>
-                                        <input type="text" class="form-control" id="myInputName" placeholder="name">
+                                <form @submit.prevent="postEditTicketManager()">
+                                  <div class="form-group">
+                                        <label for="myInputName">账号</label>
+                                        <input type="text" readonly="readonly" class="form-control" id="myInputId"  th:value="${ticketManager.id}">
                                     </div>
                                     <div class="form-group">
-                                        <label for="myInputPsw">性别</label>
-                                        <input type="text" class="form-control" id="myInputPsw" placeholder="性别">
+                                        <label for="myInputName">账号</label>
+                                        <input type="text" class="form-control" id="myInputName" v-model="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="myInputPsw">密码</label>
+                                        <input type="text" class="form-control" id="myInputPsw" v-model="password">
                                     </div>
                                     <div class="form-group row" style="height:30px">
-                                        <div class="col-md-1" style="font-weight: bold; padding: 0px;">工号:</div>
-                                        <div class="col-md-6">3108</div>
+                                        <label for="myInputName">工号</label>
+                                        <input type="text" readonly="readonly" class="form-control" id="myInputsid" th:value="${ticketManager.staffId}">
                                     </div>
+                                    <br>
+                                    <br>
                                     <button type="submit" class="btn btn-danger">保存修改</button>
                                 </form>
+                                <!--<form @submit.prevent="postEditTicketManager()">
+                                    <div class="form-group">
+                                        <label for="myInputName">账号</label>
+                                        <input type="text" class="form-control" id="myInputId" v-model="id">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="myInputName">账号</label>
+                                        <input type="text" class="form-control" id="myInputName" v-model="name" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="myInputPsw">密码</label>
+                                        <input type="text" class="form-control" id="myInputPsw" v-model="password">
+                                    </div>
+                                    <div class="form-group row" style="height:30px">
+                                        <label for="myInputName">工号</label>
+                                        <input type="text" readonly="readonly" class="form-control"v-model="staffId" >
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <button type="submit" class="btn btn-danger">保存修改</button>
+                                </form>-->
                             </div>
+                        </div>
                         </div>
                     </div>
                     <!-- 列车和车次管理 -->
@@ -422,6 +452,36 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
+    <script>
+        new Vue({
+            el: "#ticket_manager",
+            data() {
+                return {
+                    id:"",
+                    name: "",
+                    password: "",
+                    staffId:"",
+                    ticket_manager_this:null,
+                }
+            },
+            mounted() {
+            },
+            methods: {
+                //修改信息
+                postEditTicketManager: function (event) {
+                    let param = new URLSearchParams();
+                    this.id  = document.getElementById("myInputId").value;
+                    param.append("id",this.id);
+                    param.append("name",this.name);
+                    param.append("password",this.password);
+                    axios.post("http://localhost:8080/api/ticketCenter/ticketManagerUpdate", param)
+                        .then(response=>(this.ticket_manager_this = response.data))
+                    this.name = this.ticket_manager_this.name;
+                    this.password = this.ticket_manager_this.password;
+                },
+            }
+        });
+    </script>
     <style>
         .main-tap {
             margin-top: 20px;
@@ -452,8 +512,7 @@
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
-    <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
-    <script src="/webjars/vue/2.6.11/vue.min.js"></script>
+
 </body>
 
 </html>

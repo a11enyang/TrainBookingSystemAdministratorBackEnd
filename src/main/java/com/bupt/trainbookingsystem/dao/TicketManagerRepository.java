@@ -19,6 +19,8 @@ public interface TicketManagerRepository extends JpaRepository<TicketManagerEnti
     TicketManagerEntity findTicketManagerEntityById(int id);
     //通过名字找票务端用户
     TicketManagerEntity findTicketManagerEntityByNameContains(String name);
+    //通过名字密码寻找用户
+    TicketManagerEntity findTicketManagerEntityByNameAndPassword(String name,String pw);
     List<TicketManagerEntity> findTicketManagerEntitiesByNameContaining(String name);
     //通过工号找票务端用户
     TicketManagerEntity findTicketManagerEntityByStaffIdNotContains(String staff_id);
@@ -28,6 +30,10 @@ public interface TicketManagerRepository extends JpaRepository<TicketManagerEnti
     //通过ID修改票务端用户信息
     @Transactional
     @Modifying
-    @Query(value="update ticket_manager set name = ?1,password=?2,staff_id=?3  where id =?4",nativeQuery=true)
-    void updateTicketManagerById(String name,String password,String staff_id, int id);
+    @Query(value="update ticket_manager set name = ?1,password=?2,staff_id=?3 where id =?4",nativeQuery=true)
+    void updateTicketManagerById1(String name,String password,String staff_id,int id);
+    @Transactional
+    @Modifying
+    @Query(value="update ticket_manager set name = ?1,password=?2 where id =?3",nativeQuery=true)
+    void updateTicketManagerById2(String name,String password,int id);
 }
