@@ -44,7 +44,8 @@ public class UserOrderServiceImp implements UserOrderService {
     }
 
     @Override
-    public void updateUserOrderEntityById(String condition, int id) {
+    public UserOrderEntity updateUserOrderEntityById(String condition, int id) {
         uor.updateUserOrderEntityById(condition, id);
+        return uor.findUserOrderEntityById(id);
     }
 }

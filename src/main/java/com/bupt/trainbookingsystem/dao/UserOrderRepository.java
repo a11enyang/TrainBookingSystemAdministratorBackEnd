@@ -33,11 +33,12 @@ public interface UserOrderRepository extends JpaRepository<UserOrderEntity,Integ
     //通过乘车人ID找订单price
 
     //通过ID删除订单
+    @Transactional
     void deleteUserOrderEntityById(int id);
     //修改订单信息
     @Transactional
     @Modifying
-    @Query(value="update user_order set  condition =?1 where id =?2",nativeQuery=true)
+    @Query(value="update user_order set  user_order_condition =?1 where id =?2",nativeQuery=true)
     void updateUserOrderEntityById(String condition, int id);
 
 }

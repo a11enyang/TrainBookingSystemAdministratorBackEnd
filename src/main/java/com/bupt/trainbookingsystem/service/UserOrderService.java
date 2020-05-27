@@ -22,5 +22,5 @@ public interface UserOrderService {
     //通过ID删除订单
     void deleteUserOrderEntityById(int id);
     //修改订单信息
-    void updateUserOrderEntityById(String condition, int id);
+    UserOrderEntity updateUserOrderEntityById(String condition, int id);
 }

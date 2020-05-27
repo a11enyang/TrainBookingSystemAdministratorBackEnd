@@ -12,7 +12,7 @@ public interface TrainService {
     //所有列车信息
     List<TrainEntity> findAll();
     //存储列车信息
-    void save(TrainEntity t);
+    TrainEntity save(TrainEntity t);
     //根据ID找列车
     TrainEntity findTrainEntityById(int id);
     //根据车型找列车
