@@ -1,5 +1,7 @@
 package com.bupt.trainbookingsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -22,7 +24,7 @@ public class OrdinaryUserEntity {
     private Collection<UserOrderEntity> userOrdersById;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public int getId() {
         return id;
     }
@@ -32,7 +34,7 @@ public class OrdinaryUserEntity {
     }
 
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = true, length = 100)
     public String getName() {
         return name;
     }
@@ -42,7 +44,7 @@ public class OrdinaryUserEntity {
     }
 
     @Basic
-    @Column(name = "password")
+    @Column(name = "password", nullable = true, length = 100)
     public String getPassword() {
         return password;
     }
@@ -52,7 +54,7 @@ public class OrdinaryUserEntity {
     }
 
     @Basic
-    @Column(name = "person_id")
+    @Column(name = "person_id", nullable = true, length = 100)
     public String getPersonId() {
         return personId;
     }
@@ -62,7 +64,7 @@ public class OrdinaryUserEntity {
     }
 
     @Basic
-    @Column(name = "email")
+    @Column(name = "email", nullable = true, length = 100)
     public String getEmail() {
         return email;
     }
@@ -72,7 +74,7 @@ public class OrdinaryUserEntity {
     }
 
     @Basic
-    @Column(name = "phonenum")
+    @Column(name = "phonenum", nullable = true, length = 100)
     public String getPhonenum() {
         return phonenum;
     }
@@ -82,7 +84,7 @@ public class OrdinaryUserEntity {
     }
 
     @Basic
-    @Column(name = "type")
+    @Column(name = "type", nullable = true, length = 100)
     public String getType() {
         return type;
     }
@@ -92,7 +94,7 @@ public class OrdinaryUserEntity {
     }
 
     @Basic
-    @Column(name = "balance")
+    @Column(name = "balance", nullable = true, precision = 2)
     public BigDecimal getBalance() {
         return balance;
     }
@@ -102,7 +104,7 @@ public class OrdinaryUserEntity {
     }
 
     @Basic
-    @Column(name = "isstudent")
+    @Column(name = "isstudent", nullable = true)
     public Byte getIsstudent() {
         return isstudent;
     }
@@ -112,7 +114,7 @@ public class OrdinaryUserEntity {
     }
 
     @Basic
-    @Column(name = "credit")
+    @Column(name = "credit", nullable = true)
     public Byte getCredit() {
         return credit;
     }
@@ -142,8 +144,8 @@ public class OrdinaryUserEntity {
     public int hashCode() {
         return Objects.hash(id, name, password, personId, email, phonenum, type, balance, isstudent, credit);
     }
-
-    @OneToMany(mappedBy = "ordinaryUserByOrdineryUserId")
+    @JsonIgnore
+    @OneToMany(mappedBy = "ordinaryUserByOrdineryUserId",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     public Collection<ContactEntity> getContactsById() {
         return contactsById;
     }
@@ -151,8 +153,8 @@ public class OrdinaryUserEntity {
     public void setContactsById(Collection<ContactEntity> contactsById) {
         this.contactsById = contactsById;
     }
-
-    @OneToMany(mappedBy = "ordinaryUserByOrdineryUserId")
+    @JsonIgnore
+    @OneToMany(mappedBy = "ordinaryUserByOrdineryUserId",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     public Collection<UserOrderEntity> getUserOrdersById() {
         return userOrdersById;
     }

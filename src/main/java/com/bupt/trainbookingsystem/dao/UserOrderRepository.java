@@ -24,6 +24,7 @@ import java.util.List;
 @Repository
 public interface UserOrderRepository extends JpaRepository<UserOrderEntity,Integer> {
     //通过ID找订单
+
     UserOrderEntity findUserOrderEntityById(int id);
     //通过车次编号找订单
     List<UserOrderEntity> findUserOrderEntitiesByTripNumber(String trip_number);

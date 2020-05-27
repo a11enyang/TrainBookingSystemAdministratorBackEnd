@@ -46,7 +46,6 @@ public class TicketCenterController {
             System.out.println("用户"+name+"登录");
             //doPost("127.0.0.1:8080", String.valueOf(ticketManagerEntity.getId()));
             model.addAttribute("ticketManager",ticketManagerEntity);
-
             return "ticketCenter";
 
         }

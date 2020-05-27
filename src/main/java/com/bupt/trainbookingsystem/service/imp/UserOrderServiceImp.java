@@ -19,6 +19,11 @@ public class UserOrderServiceImp implements UserOrderService {
     }
 
     @Override
+    public List<UserOrderEntity> findAll() {
+        return uor.findAll();
+    }
+
+    @Override
     public void save(UserOrderEntity u) {
         uor.save(u);
     }

@@ -7,6 +7,8 @@ import com.bupt.trainbookingsystem.entity.UserOrderEntity;
 import java.util.List;
 
 public interface UserOrderService {
+
+    List<UserOrderEntity> findAll();
     void save(UserOrderEntity u);
 
     //通过ID找订单
