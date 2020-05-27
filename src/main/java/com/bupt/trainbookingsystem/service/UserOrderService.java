@@ -30,7 +30,7 @@ public interface UserOrderService {
 
     void updateUserOrderEntityById(String condition, int id);
 
-    List<Userorder_search> orderpaystate(int id, String state);
+    List<Userorder_search> order_paystate(int id, String state);
 
 
 

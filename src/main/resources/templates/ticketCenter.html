@@ -679,6 +679,7 @@
                     .get("http://localhost:8080/api/ticketCenter/trains")
                     .then(response => (this.trains = response.data))
                 },
+                //增加列车
                 newTrain: function (event) {
                     let param = new URLSearchParams();
                     param.append("trainType", this.new_type);

@@ -65,7 +65,7 @@ public class UserOrderServiceImp implements UserOrderService {
     }
 
     @Override
-    public List<Userorder_search> orderpaystate(int id, String state) {
+    public List<Userorder_search> order_paystate(int id, String state) {
        List<Object[]> users= userOrderRepository.notpayorder(id,state);
        List<Userorder_search> orderlist=EntityUtils.castEntity(users,Userorder_search.class,new Userorder_search());
        return orderlist;
