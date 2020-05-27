@@ -30,10 +30,10 @@ public class TicketCenterRestController {
             String password, @RequestParam(value = "id",required = false) String id){
         return ticketManagerService.updateTicketManagerById2(name, password, Integer.parseInt(id));
     }
-    @GetMapping("/userOrders")
+/*    @GetMapping("/userOrders")
     public List<UserOrderEntity> userOrders(){
         return  userOrderService.findAll();
-    }
+    }*/
 
     @PostMapping("/findOrderByOrderId")
     public UserOrderEntity findOrderByOrderId(@RequestParam(value = "id",required = false) String id){

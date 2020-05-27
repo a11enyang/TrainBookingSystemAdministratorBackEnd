@@ -4,11 +4,14 @@
  **/
 package com.bupt.trainbookingsystem.service;
 import com.bupt.trainbookingsystem.entity.UserOrderEntity;
+import com.bupt.trainbookingsystem.entity.custom.Userorder_search;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
+import java.util.Map;
 
 public interface UserOrderService {
-
-    List<UserOrderEntity> findAll();
     void save(UserOrderEntity u);
 
     //通过ID找订单
@@ -23,4 +26,9 @@ public interface UserOrderService {
     void deleteUserOrderEntityById(int id);
     //修改订单信息
     void updateUserOrderEntityById(String condition, int id);
+
+    //
+    List<Userorder_search> order_paystate(int id, String state);
+
+
 }

@@ -27,7 +27,7 @@ public class OrdinaryUserServiceImp implements OrdinaryUserService {
 
     @Override
     public List<OrdinaryUserEntity> findAll() {
-        return ordinaryUserRepository.myfindAll();
+        return ordinaryUserRepository.findAll();
     }
 
     @Override
