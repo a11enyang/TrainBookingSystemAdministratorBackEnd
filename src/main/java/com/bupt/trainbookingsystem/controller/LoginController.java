@@ -19,6 +19,10 @@ public class LoginController {
     public String login(){
         return "login";
     }
+    @GetMapping("/register")
+    public String register(){
+        return "register";
+    }
 
     @PostMapping("/register")
     public String register(@RequestParam String name,
@@ -35,7 +39,7 @@ public class LoginController {
         userEntity.setPersonId(personId);
         userEntity.setEmail(email);
         userEntity.setPhonenum(phonenum);
-        if(personType=="成人")
+        if(personType == "成人")
             userEntity.setIsstudent((byte) 0);
         else
             userEntity.setIsstudent((byte) 1);
