@@ -26,6 +26,8 @@ public interface OrdinaryUserRepository extends JpaRepository<OrdinaryUserEntity
     //根据ID查找用户
     OrdinaryUserEntity findOrdinaryUserEntityById(int id);
     //根据ID删除用户
+    @Query(value = "select   o   from OrdinaryUserEntity o")
+    List<OrdinaryUserEntity> myfindAll();
     @Transactional
     void deleteOrdinaryUserEntityById(int id);
     //根据姓名查找用户

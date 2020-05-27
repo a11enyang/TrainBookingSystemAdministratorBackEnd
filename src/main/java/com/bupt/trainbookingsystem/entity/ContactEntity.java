@@ -3,6 +3,8 @@ package com.bupt.trainbookingsystem.entity;
 import javax.persistence.*;
 import java.util.Objects;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Table(name = "contact", schema = "booking", catalog = "")
 public class ContactEntity {
@@ -14,7 +16,7 @@ public class ContactEntity {
     private OrdinaryUserEntity ordinaryUserByOrdineryUserId;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public int getId() {
         return id;
     }
@@ -24,7 +26,7 @@ public class ContactEntity {
     }
 
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = true, length = 100)
     public String getName() {
         return name;
     }
@@ -34,7 +36,7 @@ public class ContactEntity {
     }
 
     @Basic
-    @Column(name = "person_id")
+    @Column(name = "person_id", nullable = true, length = 100)
     public String getPersonId() {
         return personId;
     }
@@ -54,7 +56,7 @@ public class ContactEntity {
     }
 
     @Basic
-    @Column(name = "ordinery_user_id")
+    @Column(name = "ordinery_user_id", nullable = true)
     public Integer getOrdineryUserId() {
         return ordineryUserId;
     }
@@ -80,7 +82,7 @@ public class ContactEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "ordinery_user_id", referencedColumnName = "id",insertable = false,updatable = false)
+    @JoinColumn(name = "ordinery_user_id",referencedColumnName = "id",insertable = false,updatable = false)
     public OrdinaryUserEntity getOrdinaryUserByOrdineryUserId() {
         return ordinaryUserByOrdineryUserId;
     }
