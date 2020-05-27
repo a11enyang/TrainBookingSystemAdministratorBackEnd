@@ -33,6 +33,7 @@ public class TicketCenterRestController {
             String password, @RequestParam(value = "id",required = false) String id){
         return ticketManagerService.updateTicketManagerById2(name, password, Integer.parseInt(id));
     }
+
     //获取订单
     @GetMapping("/trains")
     public List<TrainEntity> trains(){
@@ -44,6 +45,7 @@ public class TicketCenterRestController {
         return  userOrderService.findAll();
     }
     //查找对应的订单
+
     @PostMapping("/findOrderByOrderId")
     public UserOrderEntity findOrderByOrderId(@RequestParam(value = "id",required = false) String id){
         UserOrderEntity u = userOrderService.findUserOrderEntityById(Integer.parseInt(id));
@@ -53,7 +55,7 @@ public class TicketCenterRestController {
     @PostMapping("/editOrder")
     public UserOrderEntity editOrder(@RequestParam(value = "condition",required = false)String condition,@RequestParam("id") int id){
         System.out.println(condition);
-        return userOrderService.updateUserOrderEntityById(condition, id);
+        return userOrderService.updateUserOrderEntityById1(condition, id);
     }
     //删除订单
     @DeleteMapping("/deleteOrder/{id}")

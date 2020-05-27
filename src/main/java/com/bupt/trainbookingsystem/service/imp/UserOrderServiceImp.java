@@ -4,14 +4,24 @@
  **/
 package com.bupt.trainbookingsystem.service.imp;
 import com.bupt.trainbookingsystem.dao.UserOrderRepository;
+
 import com.bupt.trainbookingsystem.entity.UserOrderEntity;
+import com.bupt.trainbookingsystem.entity.custom.EntityUtils;
+import com.bupt.trainbookingsystem.entity.custom.Userorder_search;
 import com.bupt.trainbookingsystem.service.UserOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+
 @Service
 public class UserOrderServiceImp implements UserOrderService {
+    @Autowired
+    UserOrderRepository userOrderRepository;
+
+
     private final UserOrderRepository uor;
 
     public UserOrderServiceImp(UserOrderRepository uor) {
@@ -19,13 +29,13 @@ public class UserOrderServiceImp implements UserOrderService {
     }
 
     @Override
-    public List<UserOrderEntity> findAll() {
-        return uor.findAll();
+    public void save(UserOrderEntity u) {
+        uor.save(u);
     }
 
     @Override
-    public void save(UserOrderEntity u) {
-        uor.save(u);
+    public List<UserOrderEntity> findAll() {
+        return uor.findAll();
     }
 
     @Override
@@ -44,8 +54,24 @@ public class UserOrderServiceImp implements UserOrderService {
     }
 
     @Override
-    public UserOrderEntity updateUserOrderEntityById(String condition, int id) {
+    public UserOrderEntity updateUserOrderEntityById1(String condition, int id) {
         uor.updateUserOrderEntityById(condition, id);
         return uor.findUserOrderEntityById(id);
     }
+    @Override
+    public void updateUserOrderEntityById(String condition,int id) {
+        userOrderRepository.updateUserOrderEntityById(condition, id);
+
+    }
+
+    @Override
+    public List<Userorder_search> orderpaystate(int id, String state) {
+       List<Object[]> users= userOrderRepository.notpayorder(id,state);
+       List<Userorder_search> orderlist=EntityUtils.castEntity(users,Userorder_search.class,new Userorder_search());
+       return orderlist;
+    }
+
+
+
+
 }

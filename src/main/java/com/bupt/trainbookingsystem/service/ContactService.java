@@ -14,5 +14,11 @@ public interface ContactService {
 
     Page<ContactEntity> findallcontator(int id, Pageable pageable);
 
+    void delecontactbyid(int id);
+
+    void addcontatcor(ContactEntity c);
+
+    void altercontactor(String phonenum,int id);
+
 
 }
