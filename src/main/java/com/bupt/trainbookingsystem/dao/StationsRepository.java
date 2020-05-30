@@ -2,8 +2,13 @@ package com.bupt.trainbookingsystem.dao;
 
 import com.bupt.trainbookingsystem.entity.StationsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * 开发者：严智琪
@@ -11,4 +16,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface StationsRepository extends JpaRepository<StationsEntity,Integer> {
+    List<StationsEntity> findStationsEntitiesByTripId(int id);
+    @Transactional
+    @Modifying
+    @Query(value="update stations set  arrive_time =?1 where id =?2",nativeQuery=true)
+    void updateRoutelineEntityById(Timestamp arrive_time , int id);
+    @Transactional
+    void deleteStationsEntityById(int id);
 }
