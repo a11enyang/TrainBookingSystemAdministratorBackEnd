@@ -245,10 +245,10 @@ public class TicketCenterRestController {
                     fareEntity2.setTripId(id);
                     fareEntity2.setTripByTripId(tripService.findTripEntityById(id));
                     fareService.save(fareEntity2);
-                }
+                }}
                 //add seat records
                 String seatinfo  = tripService.findTripEntityById(id).getTrainByTrainId().getSeatInfo();
-                String seatInfo[] = seatinfo.split(".");
+                String [] seatInfo = seatinfo.split("-");
                 int seat1 = Integer.parseInt(seatInfo[0]);
                 int seat2 = Integer.parseInt(seatInfo[1]);
                 String seat1String = "";
@@ -262,6 +262,7 @@ public class TicketCenterRestController {
                 String seatString = seat1String+seat2String;
                 byte []bytes = seatString.getBytes();
                 for(int p=0;p<newCity.length-1;p++){
+                    System.out.println(p);
                     SeatEntity seatEntity = new SeatEntity();
                     seatEntity.setFirstStation(newCity[p]);
                     seatEntity.setNextStation(newCity[p+1]);
@@ -271,7 +272,7 @@ public class TicketCenterRestController {
                     seatService.save(seatEntity);
                 }
 
-            }
+
             return routelineEntity1;
         }
         else {

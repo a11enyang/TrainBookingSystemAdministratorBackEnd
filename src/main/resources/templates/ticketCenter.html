@@ -312,7 +312,7 @@
                                                             </tbody>
                                                         </table>
                                                         <h3>新增站点</h3>
-                                                        <table>
+                                                        <table border="5">
                                                             <thead>
                                                             <tr>
                                                                 <th>车站</th>
@@ -409,12 +409,14 @@
                                         </div>
                                     <div class="panel panel-info">
                                         <!-- Default panel contents -->
+
+
                                         <div class="panel-heading" style="height: 40px;">
                                             <div style="width: 100px; float: left;">搜索条件</div>
                                         </div>
                                         <div class="info-body row" style="padding: 0 50px 20px 50px;">
                                             <form @submit.prevent="searchTrips">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <label >搜索方式</label>
                                                 <div class="input-group">
                                                     <select v-model="search_way">
@@ -434,6 +436,11 @@
                                                 </div>
                                             </div>
                                             </form>
+                                                <div class="col-md-2">
+                                                    <br>
+                                                    <button class="btn btn-success"@click="myflush()" type="submit" style="top:10px">刷新列表</button>
+                                                </div>
+
                                         </div>
                                     </div>
                                     <div class="panel panel-info">
@@ -890,6 +897,9 @@
                 this.get();
             },
             methods: {
+                myflush(){
+                    this.get();
+                },
                 //获取车次页面
                 get: function(){axios
                     .get("http://localhost:8080/api/ticketCenter/trips")
@@ -1023,6 +1033,7 @@
                     .then(this.seeFares(this.edit_trip))
 
                 },
+
 
           /*
 
