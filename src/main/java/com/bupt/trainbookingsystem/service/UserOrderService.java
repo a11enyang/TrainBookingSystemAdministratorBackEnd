@@ -31,15 +31,11 @@ public interface UserOrderService {
     void updateUserOrderEntityById(String condition, int id);
 
 
-    List<Userorder_search> order_paystate(int id, String state);
 
-
-
-=======
     //根据状态查找订单
     List<Userorder_search> order_paystate(int id, String state);
 
     //根据id查找订单及列车信息
     List<Userorder_search> orderinfo(int id);
->>>>>>> Stashed changes
+
 }
