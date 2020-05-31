@@ -52,7 +52,14 @@ public class OrdinaryUserServiceImp implements OrdinaryUserService {
     }
 
     @Override
+
     public void createOrdinaryUserEntity(OrdinaryUserEntity userEntity){
         ordinaryUserRepository.save(userEntity);
     }
+
+    public void edituinfo(String phonenum, String name) {
+        ordinaryUserRepository.updatebynames(phonenum,name);
+    }
+
+
 }

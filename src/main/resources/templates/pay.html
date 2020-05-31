@@ -73,7 +73,9 @@
     <div style="background: dodgerblue"><span style="margin-left: 20px;color: white;font-size: 20px">订单信息</span></div>
 
     <div><span style="font-weight: bold;font-size: 18px;margin-left: 20px">
-        2020-4-22(周一)&nbsp;&nbsp;&nbsp;车次：G477&nbsp;&nbsp;&nbsp;上海南站(8:20开)->北京西站</span>
+        时间(起)：<b th:text="${time}"></b>&nbsp;&nbsp;&nbsp;
+        车次：<b th:text="${tripnum}"></b>&nbsp;&nbsp;&nbsp;
+        <b th:text="${start}"></b> -> <b th:text="${end}"></b></span>
         <HR style=" border-top: 1px dashed red;margin-top: 5px" width="100%" >
     </div>
     <div style="padding: 0 50px">
@@ -93,16 +95,16 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>1</td>
-      <td>张三</td>
+    <tr th:each="people,iterStat : ${person}">
+      <td th:text="${iterStat.count}"></td>
+      <td th:text="${people.name}"></td>
       <td>中国居民身份证</td>
-        <td>3308**********311</td>
+        <td th:text="${people.personid}"></td>
       <td>学生票</td>
       <td>二等座</td>
-        <td>03</td>
-      <td>05C号</td>
-      <td>415.0元</td>
+       <td th:text="${people.carriage}"></td>
+      <td th:text="${people.seat}"></td>
+      <td th:text="${people.pricelist}"></td>
 
     </tr>
   </tbody>
@@ -123,7 +125,7 @@
             <label><input name="type-check" type="radio" value="delivery" />车票快递 </label>
                 <br>
                 <br>
-                <span style="float: right">总票价：&nbsp;&nbsp;&nbsp;<span style="color:orangered">415.0元</span>
+                <span style="float: right">总票价：&nbsp;&nbsp;&nbsp;<span style="color:orangered"><b th:text="${price}"></b></span>
 
                 </span>
         </div>
@@ -163,11 +165,11 @@
 			<option>银行卡</option>
         </select>
         <br>
-        <img src="pay.png" style="width: 300px"/>
+        <img th:src="@{/picture/pay.png}" style="width: 300px"/>
         <br>
         <br>
 
-        <button type="button" class="btn btn-success" style="width: 300px">前往支付</button>
+        <a th:href="@{/pcenter/{id}/paytheorder(id=${orderid})}"><button type="button" class="btn btn-success" style="width: 300px">前往支付</button></a>
         </div>
     </div>
 </div>
@@ -179,7 +181,7 @@
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
 
-<script>
+<!--<script>
     new Vue({
         el:'#ordermanage',
         data(){
@@ -198,7 +200,7 @@
             }
         }
     })
-</script>
+</script>-->
 
 <script type="text/javascript">
     function logout() {

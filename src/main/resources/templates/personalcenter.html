@@ -101,7 +101,7 @@
                                         <td th:text="${type2.depaturetime}"></td>
                                         <td>
                                             <a th:href="@{/pcenter/{id}/returnticket(id=${type2.id})}"> <button type="button" class="btn btn-danger">退票</button></a>
-                                            <a th:href="@{/pay}"> <button type="button" class="btn btn-warning">支付</button></a>
+                                            <a th:href="@{/pay/{id}(id=${type2.id})}"> <button type="button" class="btn btn-warning">支付</button></a>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -205,7 +205,8 @@
                         <!-- Default panel contents -->
                         <div class="panel-heading" style="height: 60px;">
                             <div style="margin-top: 10px; width: 100px; float: left;">用户信息</div>
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myInfoEdit" style="float: right;">编辑</button>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myInfoEdit" style="float: right;"
+                             th:onclick="editinfo([[${names}]],[[${realname}]],[[${types}]],[[${personIds}]],[[${phonenums}]])">编辑</button>
                         </div>
                         <div class="info-body">
                             <div class="info-item row">
@@ -214,7 +215,7 @@
                             </div>
                             <div class="info-item row">
                                 <div class="info-label col-md-2">姓名:</div>
-                                <div class="info-bd col-md-6"><span th:text="${names}"></span></div>
+                                <div class="info-bd col-md-6"><span th:text="${realname}"></span></div>
                             </div>
                             <div class="info-item row">
                                 <div class="info-label col-md-2">性别:</div>
@@ -326,7 +327,7 @@
                 <form @submit.prevent="altercontactor">
                     <div class="form-group">
                         <label for="contactInputName" >序号:</label>
-                        <label  id="selectnum" name="selectnum"  style="font-size: 18px" text="21414" innerHtml="234" value="123">65757</label>
+                        <label  id="selectnum" name="selectnum"  style="font-size: 18px" ></label>
 
                     </div>
                     <div class="form-group">
@@ -357,26 +358,26 @@
                 <h4 class="modal-title" id="myInfoEditLabel">编辑个人信息</h4>
             </div>
             <div class="modal-body">
-                <form>
+                <form @submit.prevent="edituinfo">
                     <div class="form-group">
-                        <label for="myInputVname">用户名</label>
-                        <input type="text" class="form-control" id="myInputVname" placeholder="用户名">
+                        <label >用户名:&nbsp;</label>
+                        <label  id="editname" name="selectnum"  style="font-size: 18px" ></label>
                     </div>
                     <div class="form-group">
-                        <label for="myInputName">姓名</label>
-                        <input type="text" class="form-control" id="myInputName" placeholder="姓名">
+                        <label >姓名:&nbsp;</label>
+                        <label  id="editrealname" name="selectnum"  style="font-size: 18px" ></label>
                     </div>
                     <div class="form-group">
-                        <label for="MyInputSex">性别</label>
-                        <input type="text" class="form-control" id="myInputSex" placeholder="性别">
+                        <label>性别:&nbsp;</label>
+                        <label  id="edittype" name="selectnum"  style="font-size: 18px" ></label>
                     </div>
                     <div class="form-group">
-                        <label for="myInputIDNum">身份证号</label>
-                        <input type="text" class="form-control" id="myInputIDNum" placeholder="身份证号">
+                        <label>身份证号:&nbsp;</label>
+                        <label  id="editpersonid" name="selectnum"  style="font-size: 18px" ></label>
                     </div>
                     <div class="form-group">
-                        <label for="myInputPhoneNum">联系电话</label>
-                        <input type="text" class="form-control" id="myInputPhoneNum" placeholder="联系电话">
+                        <label>联系电话</label>
+                        <input type="text" class="form-control" id="editphonenum" placeholder="联系电话" >
                     </div>
                     <button type="submit" class="btn btn-danger">提交</button>
                 </form>
@@ -448,6 +449,28 @@
             }
         }
     })
+    new Vue({
+        el:'#myInfoEdit',
+        methods:{
+            edituinfo:function () {
+                var name1=$("#editname").text();
+                var phonenum=$("#editphonenum").val();
+                var hrf=window.location.href;
+                var formdata=new FormData();
+                formdata.append("editname",name1);
+                formdata.append("editphonenum",phonenum);
+                axios
+                    .post("/pcenter/editinfo",formdata)
+                    .then(response=>{
+                        if(String(response.data)=='success'){
+                            window.location=hrf;
+                        }
+                        else {
+                            alert("上传失败");}
+                        })
+            }
+        }
+    })
 /*    new Vue({
         el:'#ordermanage',
         data(){
@@ -475,6 +498,13 @@
         $("#selectnum").text(ids);
         //console.log( $("#selectnum").text());
      }
+    function editinfo(names,realnames,type,personids,phonenums) {
+        $("#editname").text(names);
+        $("#editrealname").text(realnames);
+        $("#edittype").text(type);
+        $("#editpersonid").text(personids);
+        $("#editphonenum").val(phonenums);
+    }
 </script>
 <script type="text/javascript">
     $(".tab-title li").click(function () {

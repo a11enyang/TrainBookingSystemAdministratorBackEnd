@@ -58,8 +58,17 @@ public class UserOrderServiceImp implements UserOrderService {
         uor.updateUserOrderEntityById(condition, id);
         return uor.findUserOrderEntityById(id);
     }
+
+
+    public List<Userorder_search> orderinfo(int id) {
+        List<Object[]> order=userOrderRepository.findorderbyid(id);
+        List<Userorder_search> orderinfo=EntityUtils.castEntity(order,Userorder_search.class,new Userorder_search());
+        return orderinfo;
+    }
+
     @Override
-    public void updateUserOrderEntityById(String condition,int id) {
+    public void updateUserOrderEntityById(String condition, int id) {
+
         userOrderRepository.updateUserOrderEntityById(condition, id);
 
     }

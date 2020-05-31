@@ -14,6 +14,8 @@ public interface ContactService {
 
     Page<ContactEntity> findallcontator(int id, Pageable pageable);
 
+    ContactEntity findbyname(String name);
+
     void delecontactbyid(int id);
 
     void addcontatcor(ContactEntity c);

@@ -5,7 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 /**
@@ -37,6 +38,10 @@ public interface OrdinaryUserRepository extends JpaRepository<OrdinaryUserEntity
             nativeQuery=true)
     void updateUserById(String name,String password,String person_id,Byte is_student,Byte credit ,int id);
 
-
+    //根据name修改用户
+    @Transactional
+    @Modifying
+    @Query("update OrdinaryUserEntity u set u.phonenum=?1 where u.name=?2 ")
+    void updatebynames(String phonenum,String names);
 
 }

@@ -9,16 +9,19 @@ public class Userorder_search {
     private  String trainnum;
     private  String namelist;
     private  String seat;
+
     private  BigDecimal price;
     private  String startstation;
     private  String endstation;
     private  Timestamp depaturetime;
+    private  String pricelist;
 
     public Userorder_search(){
         super();
     }
 
-    public Userorder_search(int id, String trainnum, String namelist, String seat, BigDecimal price, String startstation, String endstation, Timestamp depaturetime) {
+
+    public Userorder_search(int id, String trainnum, String namelist, String seat, BigDecimal price, String startstation, String endstation, Timestamp depaturetime, String pricelist) {
         this.id = id;
         this.trainnum = trainnum;
         this.namelist = namelist;
@@ -27,20 +30,7 @@ public class Userorder_search {
         this.startstation = startstation;
         this.endstation = endstation;
         this.depaturetime = depaturetime;
-    }
-
-    @Override
-    public String toString() {
-        return "Userorder_search{" +
-                "id=" + id +
-                ", trainnum='" + trainnum + '\'' +
-                ", namelist='" + namelist + '\'' +
-                ", seat='" + seat + '\'' +
-                ", price=" + price +
-                ", startstation='" + startstation + '\'' +
-                ", endstation='" + endstation + '\'' +
-                ", depaturetime=" + depaturetime +
-                '}';
+        this.pricelist = pricelist;
     }
 
     public int getId() {
@@ -104,4 +94,11 @@ public class Userorder_search {
     }
 
 
+    public String getPricelist() {
+        return pricelist;
+    }
+
+    public void setPricelist(String pricelist) {
+        this.pricelist = pricelist;
+    }
 }

@@ -42,13 +42,15 @@ public class TicketCenterRestController {
         return ticketManagerService.updateTicketManagerById2(name, password, Integer.parseInt(id));
     }
 
+
     //获取订单
     @GetMapping("/trains")
-    public List<TrainEntity> trains(){
-        return  trainService.findAll();
+    public List<TrainEntity> trains() {
+        return trainService.findAll();
     }
+
     //获取订单
-    @GetMapping("/userOrders")
+/*   @GetMapping("/userOrders")
     public List<UserOrderEntity> userOrders(){
         return  userOrderService.findAll();
     }
@@ -307,7 +309,7 @@ public class TicketCenterRestController {
             }
             return routelineEntity;
         }
-    }
+    }*/
 
 
 }
