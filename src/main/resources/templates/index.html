@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>index</title>
     <link href='/webjars/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet'>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css"></linkrel>
+    <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
+    <script src="/webjars/vue/2.6.11/vue.min.js"></script>
 </head>
 
 <body>
@@ -35,27 +40,29 @@
             </div>
         </div>
     </div>
+    <div id="SearchTrip">
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6" id="search-form">
-            <form class="form-horizontal">
+
+            <form class="form-horizontal" @submit.prevent="getTrips()">
                 <h2 style="text-align: center;">查询车票</h2>
                 <div class="form-group">
-                    <label for="startPoint" class="col-md-3 control-label">出发地</label>
+                    <label class="col-md-3 control-label">出发地</label>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" id="startPoint" placeholder="上海">
+                        <input type="text" class="form-control" v-model="start_station">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="destination" class="col-md-3 control-label">目的地</label>
+                    <label class="col-md-3 control-label">目的地</label>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" id="destination" placeholder="北京">
+                        <input type="text" class="form-control" v-model="end_station">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="date" class="col-md-3 control-label">日期</label>
                     <div class="col-md-6">
-                        <input type="date" class="form-control" id="date" placeholder="2020/4/26">
+                        <input type="date" class="form-control" id="date" v-model="start_time">
                     </div>
                 </div>
                 <div class="form-group" style="padding-left: 350px;">
@@ -64,8 +71,62 @@
                     </div>
                 </div>
             </form>
+
         </div>
         <div class="col-md-3"></div>
+    </div>
+    <span style="font-size: 12px;margin-left: 250px">
+            共...个搜索结果
+    </span>
+        <div v-show="in_search">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" id="search-result">
+            <table class="table table-striped">
+                <caption></caption>
+                <thead>
+                <tr>
+                    <th><span style="margin-left: 20px">车次</span></th>
+                    <th>出发站<br>到达站</th>
+                    <th>出发时间<br>到达时间</th>
+                    <th>历时</th>
+                    <th>特等座</th>
+                    <th>一等座</th>
+                    <th>二等座</th>
+                    <th>软卧</th>
+                    <th>软座</th>
+                    <th>硬卧</th>
+                    <th>硬座</th>
+                    <th>其他</th>
+                    <th>备注</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="trip in show_trips">
+                    <td>{{trip.trainNumber}}</td>
+                    <td>上海<br>北京南</td>
+                    <td>21:24<br>9:22</td>
+                    <td>11:58<br>次日到达</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>有</td>
+                    <td>--</td>
+                    <td>有</td>
+                    <td>--</td>
+                    <td>有</td>
+                    <td>有</td>
+                    <td>
+                        <button type="button" class="btn btn-primary">预定</button>
+                    </td>
+                </tr>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+        </div>
     </div>
     <hr />
     <div class="row" id="news">
@@ -94,6 +155,38 @@
             </a>
         </div>
     </div>
+    <script>
+        new Vue({
+            el: "#SearchTrip",
+            data() {
+                return {
+                    in_search:false,
+                    start_station: "",
+                    end_station: "",
+                    start_time:"",
+                    show_trips:null,
+                }
+            },
+            mounted() {
+            },
+            methods: {
+                //修改信息
+                getTrips(){
+                    let param = new URLSearchParams();
+                    param.append("start",this.start_station);
+                    param.append("end",this.end_station);
+                    param.append("time",this.start_time);
+                    axios.post("http://localhost:8080/api/index/getTrips", param)
+                        .then(response => {
+                            this.show_trips= response.data;
+                            console.log("data",this.show_trips);
+                        })
+                    this.in_search=true;
+                }
+            }
+        });
+
+    </script>
     <style>
         #search-form {
             border: 1px solid blueviolet;
@@ -110,8 +203,7 @@
     </style>
     <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
     <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
-    <script src="/webjars/vue/2.6.11/vue.min.js"></script>
+
     <br>
 
 </body>

@@ -9,6 +9,8 @@ import com.bupt.trainbookingsystem.service.RoutelineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoutelineServiceImp implements RoutelineService {
 
@@ -31,5 +33,10 @@ public class RoutelineServiceImp implements RoutelineService {
     @Override
     public void updateRoutelineEntityById(String route_line, int id) {
         routelineRepository.updateRoutelineEntityById(route_line, id);
+    }
+
+    @Override
+    public List<RoutelineEntity> findRouteEntitiesByStations(String start, String end) {
+        return routelineRepository.findRouteEntitiesByStations(start, end);
     }
 }

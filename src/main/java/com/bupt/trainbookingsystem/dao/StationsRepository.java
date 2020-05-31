@@ -23,4 +23,7 @@ public interface StationsRepository extends JpaRepository<StationsEntity,Integer
     void updateRoutelineEntityById(Timestamp arrive_time , int id);
     @Transactional
     void deleteStationsEntityById(int id);
+    @Transactional
+    @Query(value="select arrive_time from stations where station_name=?1 and trip_id=?2",nativeQuery=true)
+    Timestamp getStationTimeByTripIdAndStation(String start,int tripId);
 }

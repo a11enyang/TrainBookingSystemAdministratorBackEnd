@@ -10,4 +10,5 @@ public interface StationsService {
     List<StationsEntity> findStationsEntitiesByTripId(int id);
     void updateRoutelineEntityById(Timestamp arrive_time , int id);
     void deleteStationsEntityById(int id);
+    Timestamp getStationTimeByTripIdAndStation(String start,int tripId);
 }

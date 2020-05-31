@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.*;
 
 /**
  * 开发者：严智琪
@@ -23,4 +23,8 @@ public interface RoutelineRepository extends JpaRepository<RoutelineEntity,Integ
     @Modifying
     @Query(value="update routeline set  route_line =?1 where id =?2",nativeQuery=true)
     void updateRoutelineEntityById(String route_line , int id);
+    @Transactional
+    @Modifying
+    @Query(value = "select * from routeline where route_line like concat('%', ?1, '%', ?2, '%') ",nativeQuery=true)
+    List<RoutelineEntity> findRouteEntitiesByStations(String start,String end);
 }

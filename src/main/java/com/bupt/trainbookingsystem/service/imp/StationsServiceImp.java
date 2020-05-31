@@ -36,4 +36,9 @@ public class StationsServiceImp implements StationsService {
     public void deleteStationsEntityById(int id) {
         stationsRepository.deleteStationsEntityById(id);
     }
+
+    @Override
+    public Timestamp getStationTimeByTripIdAndStation(String start, int tripId) {
+        return stationsRepository.getStationTimeByTripIdAndStation(start, tripId);
+    }
 }

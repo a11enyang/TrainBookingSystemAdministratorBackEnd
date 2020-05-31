@@ -50,7 +50,7 @@ public class TicketCenterRestController {
     }
 
     //获取订单
-/*   @GetMapping("/userOrders")
+   @GetMapping("/userOrders")
     public List<UserOrderEntity> userOrders(){
         return  userOrderService.findAll();
     }
@@ -104,6 +104,7 @@ public class TicketCenterRestController {
                               @RequestParam(value = "train_status",required = false)String train_status,
                               @RequestParam(value = "train_id",required = false)int train_id){
         TripEntity tripEntity = new TripEntity();
+        tripEntity.setRemainseatInfo(trainService.findTrainEntityById(train_id).getSeatInfo());
         tripEntity.setTrainId(train_id);
         tripEntity.setTrainByTrainId(trainService.findTrainEntityById(train_id));
         tripEntity.setStartStation(start_station);
@@ -309,7 +310,7 @@ public class TicketCenterRestController {
             }
             return routelineEntity;
         }
-    }*/
+    }
 
 
 }
