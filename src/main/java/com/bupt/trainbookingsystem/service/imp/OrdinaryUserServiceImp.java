@@ -52,14 +52,14 @@ public class OrdinaryUserServiceImp implements OrdinaryUserService {
     }
 
     @Override
-<<<<<<< Updated upstream
+
     public void createOrdinaryUserEntity(OrdinaryUserEntity userEntity){
         ordinaryUserRepository.save(userEntity);
     }
-=======
+
     public void edituinfo(String phonenum, String name) {
         ordinaryUserRepository.updatebynames(phonenum,name);
     }
 
->>>>>>> Stashed changes
+
 }

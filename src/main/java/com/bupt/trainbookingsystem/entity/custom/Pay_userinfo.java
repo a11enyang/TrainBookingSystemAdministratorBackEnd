@@ -9,11 +9,12 @@ public class Pay_userinfo {
     private String carriage;
     private String seat;
     private String price;
+    private String pricelist;
 
     public Pay_userinfo() {
     }
 
-    public Pay_userinfo(String name, String idcardtype, String personid, String tickettype, String seatkind, String carriage, String seat, String price) {
+    public Pay_userinfo(String name, String idcardtype, String personid, String tickettype, String seatkind, String carriage, String seat, String price,String pricelist) {
         this.name = name;
         this.idcardtype = idcardtype;
         this.personid = personid;
@@ -22,6 +23,7 @@ public class Pay_userinfo {
         this.carriage = carriage;
         this.seat = seat;
         this.price = price;
+        this.pricelist=pricelist;
     }
 
     @Override
@@ -100,5 +102,13 @@ public class Pay_userinfo {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getPricelist() {
+        return pricelist;
+    }
+
+    public void setPricelist(String pricelist) {
+        this.pricelist = pricelist;
     }
 }

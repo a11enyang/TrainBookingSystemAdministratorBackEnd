@@ -50,8 +50,6 @@ public interface UserOrderRepository extends JpaRepository<UserOrderEntity,Integ
     void updateUserOrderEntityById(String condition, int id);
 
 
-   /* @Query(value = "select b.trainNumber,c.name,a.seatList,a.price,b.startStation,b.endStation,b.departureTime from UserOrderEntity a,TripEntity b,OrdinaryUserEntity c where a.tripId=b.id and a.ordineryUserId=c.id and c.id=?1 and a.userOrderCondition=?2")
-    List<Object[]> notpayorder(int id, String state);*/
 
     //根据userid查找未支付订单信息
     @Query(value = "select a.id,b.trainNumber,a.nameList,a.seatList,a.price,b.startStation,b.endStation,b.departureTime from " +
