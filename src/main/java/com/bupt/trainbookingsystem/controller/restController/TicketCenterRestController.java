@@ -42,6 +42,7 @@ public class TicketCenterRestController {
         return ticketManagerService.updateTicketManagerById2(name, password, Integer.parseInt(id));
     }
 
+
     //获取订单
     @GetMapping("/trains")
     public List<TrainEntity> trains(){
@@ -49,6 +50,9 @@ public class TicketCenterRestController {
     }
     //获取订单
     @GetMapping("/userOrders")
+
+/*   @GetMapping("/userOrders")
+>>>>>>> Stashed changes
     public List<UserOrderEntity> userOrders(){
         return  userOrderService.findAll();
     }

@@ -49,14 +49,18 @@ public interface UserOrderRepository extends JpaRepository<UserOrderEntity,Integ
     @Query(value="update UserOrderEntity u set u.userOrderCondition =?1 where u.id=?2")
     void updateUserOrderEntityById(String condition, int id);
 
-    //根据userid查找未支付订单信息
+
    /* @Query(value = "select b.trainNumber,c.name,a.seatList,a.price,b.startStation,b.endStation,b.departureTime from UserOrderEntity a,TripEntity b,OrdinaryUserEntity c where a.tripId=b.id and a.ordineryUserId=c.id and c.id=?1 and a.userOrderCondition=?2")
     List<Object[]> notpayorder(int id, String state);*/
 
-
+    //根据userid查找未支付订单信息
     @Query(value = "select a.id,b.trainNumber,a.nameList,a.seatList,a.price,b.startStation,b.endStation,b.departureTime from " +
             "UserOrderEntity a,TripEntity b where a.tripId=b.id  and a.ordineryUserId=?1 and a.userOrderCondition=?2")
     List<Object[]> notpayorder(int id, String state);
+
+    @Query(value = "select a.id,b.trainNumber,a.nameList,a.seatList,a.price,b.startStation,b.endStation,b.departureTime from " +
+            "UserOrderEntity a,TripEntity b where a.tripId=b.id and a.id=?1")
+    List<Object[]> findorderbyid(int id);
 
 
 

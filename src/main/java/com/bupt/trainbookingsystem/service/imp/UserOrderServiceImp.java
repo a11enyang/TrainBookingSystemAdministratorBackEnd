@@ -54,17 +54,29 @@ public class UserOrderServiceImp implements UserOrderService {
     }
 
     @Override
+<<<<<<< Updated upstream
     public UserOrderEntity updateUserOrderEntityById1(String condition, int id) {
         uor.updateUserOrderEntityById(condition, id);
         return uor.findUserOrderEntityById(id);
     }
     @Override
     public void updateUserOrderEntityById(String condition,int id) {
+=======
+    public List<Userorder_search> orderinfo(int id) {
+        List<Object[]> order=userOrderRepository.findorderbyid(id);
+        List<Userorder_search> orderinfo=EntityUtils.castEntity(order,Userorder_search.class,new Userorder_search());
+        return orderinfo;
+    }
+
+    @Override
+    public void updateUserOrderEntityById(String condition, int id) {
+>>>>>>> Stashed changes
         userOrderRepository.updateUserOrderEntityById(condition, id);
 
     }
 
     @Override
+
     public List<Userorder_search> order_paystate(int id, String state) {
        List<Object[]> users= userOrderRepository.notpayorder(id,state);
        List<Userorder_search> orderlist=EntityUtils.castEntity(users,Userorder_search.class,new Userorder_search());
