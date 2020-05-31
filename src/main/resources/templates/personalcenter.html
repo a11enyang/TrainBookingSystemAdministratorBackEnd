@@ -206,7 +206,7 @@
                         <div class="panel-heading" style="height: 60px;">
                             <div style="margin-top: 10px; width: 100px; float: left;">用户信息</div>
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myInfoEdit" style="float: right;"
-                             th:onclick="editinfo([[${names}]],[[${names}]],[[${types}]],[[${personIds}]],[[${phonenums}]])">编辑</button>
+                             th:onclick="editinfo([[${names}]],[[${realname}]],[[${types}]],[[${personIds}]],[[${phonenums}]])">编辑</button>
                         </div>
                         <div class="info-body">
                             <div class="info-item row">
@@ -215,7 +215,7 @@
                             </div>
                             <div class="info-item row">
                                 <div class="info-label col-md-2">姓名:</div>
-                                <div class="info-bd col-md-6"><span th:text="${names}"></span></div>
+                                <div class="info-bd col-md-6"><span th:text="${realname}"></span></div>
                             </div>
                             <div class="info-item row">
                                 <div class="info-label col-md-2">性别:</div>

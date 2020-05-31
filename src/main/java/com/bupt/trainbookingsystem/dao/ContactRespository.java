@@ -27,6 +27,9 @@ public interface ContactRespository extends JpaRepository<ContactEntity, Integer
        @Query("select t from ContactEntity t where t.ordineryUserId=:id")
        List<ContactEntity> findContactEntitiesByUserId(@Param("id") int id);
 
+
+       ContactEntity findContactEntityByName(String name);
+
        @QueryHints(value = {@QueryHint(name=HINT_COMMENT,value = "a query for pageable")},forCounting = false)
        @Query("select t from ContactEntity t where t.ordineryUserId=:id")
        Page<ContactEntity> findallcontactpage(@Param("id") int id, Pageable pageable);

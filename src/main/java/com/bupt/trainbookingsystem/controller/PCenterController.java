@@ -63,6 +63,7 @@ public class PCenterController {
             model.addAttribute("notgopage",notgoorders);
             model.addAttribute("completepage",completeorders);
             model.addAttribute("names", user.getName());
+            model.addAttribute("realname",user.getRealname());
             model.addAttribute("types", user.getType());
             model.addAttribute("personIds", user.getPersonId());
             model.addAttribute("phonenums", user.getPhonenum());
@@ -139,12 +140,22 @@ public class PCenterController {
             List<Pay_userinfo> payUserinfos=new ArrayList<>();
             String[] namelist=payorder.getNamelist().split(",");
             String[] seatlist=payorder.getSeat().split(",");
+            String[] pricelist=payorder.getPricelist().split(",");
             for(int i=0;i<namelist.length;i++){
                 Pay_userinfo payUserinfo=new Pay_userinfo();
                 String[] carriage=seatlist[i].split("-");
                 payUserinfo.setName(namelist[i]);
-                payUserinfo.setSeat(seatlist[i]);
+                //payUserinfo.setSeat(seatlist[i]);
+                payUserinfo.setPricelist(pricelist[i]);
                 payUserinfo.setCarriage(carriage[0]);
+                payUserinfo.setSeat(carriage[1]);
+                if(namelist[i].equals(user.getRealname())){
+                    payUserinfo.setPersonid(user.getPersonId());
+                }
+                else {
+                   ContactEntity contact=contactorsmethods.findbyname(namelist[i]);
+                   payUserinfo.setPersonid(contact.getPersonId());
+                }
                 payUserinfos.add(payUserinfo);
             }
             model.addAttribute("names", user.getName());
@@ -153,8 +164,16 @@ public class PCenterController {
             model.addAttribute("tripnum",payorder.getTrainnum());
             model.addAttribute("time",payorder.getDepaturetime());
             model.addAttribute("price",payorder.getPrice());
-            model.addAttribute("person",payorder);
+            model.addAttribute("person",payUserinfos);
+            model.addAttribute("orderid",id);
         }
         return "pay";
+    }
+
+    @GetMapping("/pcenter/{id}/paytheorder")
+    public String paytheorder(@PathVariable int id){
+        userOrderService.updateUserOrderEntityById("1",id);
+       // String url="redirect:/pcenter/"+id;
+        return "redirect:/pcenter";
     }
 }

@@ -74,8 +74,8 @@
 
     <div><span style="font-weight: bold;font-size: 18px;margin-left: 20px">
         时间(起)：<b th:text="${time}"></b>&nbsp;&nbsp;&nbsp;
-        车次：<a th:text="${tripnum}"></a>&nbsp;&nbsp;&nbsp;
-        <a th:text="${start}"></a> -> <a th:text="${end}"></a></span>
+        车次：<b th:text="${tripnum}"></b>&nbsp;&nbsp;&nbsp;
+        <b th:text="${start}"></b> -> <b th:text="${end}"></b></span>
         <HR style=" border-top: 1px dashed red;margin-top: 5px" width="100%" >
     </div>
     <div style="padding: 0 50px">
@@ -89,7 +89,7 @@
               <th>证件号码</th>
               <th>票种</th>
               <th>席别</th>
-<!--              <th>车厢</th>-->
+              <th>车厢</th>
               <th>座位号</th>
               <th>票价(元)</th>
     </tr>
@@ -97,14 +97,14 @@
   <tbody>
     <tr th:each="people,iterStat : ${person}">
       <td th:text="${iterStat.count}"></td>
-      <td th:text="${people.namelist}"></td>
+      <td th:text="${people.name}"></td>
       <td>中国居民身份证</td>
-        <td>3308**********311</td>
+        <td th:text="${people.personid}"></td>
       <td>学生票</td>
       <td>二等座</td>
-<!--        <td >03</td>-->
+       <td th:text="${people.carriage}"></td>
       <td th:text="${people.seat}"></td>
-      <td th:text="${people.price}"></td>
+      <td th:text="${people.pricelist}"></td>
 
     </tr>
   </tbody>
@@ -165,11 +165,11 @@
 			<option>银行卡</option>
         </select>
         <br>
-        <img src="pay.png" style="width: 300px"/>
+        <img th:src="@{/picture/pay.png}" style="width: 300px"/>
         <br>
         <br>
 
-        <button type="button" class="btn btn-success" style="width: 300px">前往支付</button>
+        <a th:href="@{/pcenter/{id}/paytheorder(id=${orderid})}"><button type="button" class="btn btn-success" style="width: 300px">前往支付</button></a>
         </div>
     </div>
 </div>
@@ -181,7 +181,7 @@
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
 
-<script>
+<!--<script>
     new Vue({
         el:'#ordermanage',
         data(){
@@ -200,7 +200,7 @@
             }
         }
     })
-</script>
+</script>-->
 
 <script type="text/javascript">
     function logout() {

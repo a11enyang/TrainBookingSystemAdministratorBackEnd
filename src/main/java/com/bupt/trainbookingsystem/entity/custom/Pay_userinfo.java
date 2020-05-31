@@ -1,5 +1,7 @@
 package com.bupt.trainbookingsystem.entity.custom;
 
+import java.math.BigDecimal;
+
 public class Pay_userinfo {
     private String name;
     private String idcardtype;
@@ -8,13 +10,13 @@ public class Pay_userinfo {
     private String seatkind;
     private String carriage;
     private String seat;
-    private String price;
+    private BigDecimal price;
     private String pricelist;
 
     public Pay_userinfo() {
     }
 
-    public Pay_userinfo(String name, String idcardtype, String personid, String tickettype, String seatkind, String carriage, String seat, String price,String pricelist) {
+    public Pay_userinfo(String name, String idcardtype, String personid, String tickettype, String seatkind, String carriage, String seat, BigDecimal price, String pricelist) {
         this.name = name;
         this.idcardtype = idcardtype;
         this.personid = personid;
@@ -37,6 +39,7 @@ public class Pay_userinfo {
                 ", carriage='" + carriage + '\'' +
                 ", seat='" + seat + '\'' +
                 ", price='" + price + '\'' +
+                ", pricelist='" + pricelist + '\'' +
                 '}';
     }
 
@@ -96,11 +99,11 @@ public class Pay_userinfo {
         this.seat = seat;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
