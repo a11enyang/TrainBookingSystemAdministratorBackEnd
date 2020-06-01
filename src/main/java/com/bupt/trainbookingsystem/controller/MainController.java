@@ -63,23 +63,10 @@ public class MainController{
         return "search";
     }
 
-    /**
-     * 买票页面
-     * @return
-     */
-    @RequestMapping("/buyTicket")
-    public String getBuyTicket(){
-        return "buyticket";
-    }
 
-    /**
-     * 支付页面
-     * @return
-     */
-    @RequestMapping("/pay")
-    public String getPay(){
-        return "pay";
-    }
+
+
+
 
 
     /**

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+
+    <![endif]-->
+    <style>
+        .carinfo{
+            border: 1px solid blue;
+            border-radius: 4px;
+            margin-left: 100px;
+            width: 1200px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+<div>请选择你的爱好(vue)</div>
+<input type="checkbox" v-model="hobby2" value="游泳">游泳
+<input type="checkbox" v-model="hobby2" value="健身">健身
+<input type="checkbox" v-model="hobby2" value="旅游">旅游
+<div>你已选中：{{hobby2}}</div>
+</div>
+<section class="layout" id="app1">
+    <section class="content content-login">
+        <label>
+            <input type="checkbox" :value="dataList" v-model="param">
+            {{dataList.name}}
+            <br/>
+        </label>
+        <label v-for="item in dataList.list">
+            <input type="checkbox" :value="item" v-model="param"/>
+            {{item.name}}
+            <br/>
+        </label>
+        <br/>
+
+        <label > <input type="checkbox" v-model="selectAll" @change="allChange"> 全选</label>
+
+        <br/>
+
+        {{param}}
+    </section>
+</section>
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data:{
+            msg:'hello',
+            hobby2:[]
+        },
+        created(){
+            console.log('created')
+        },
+        method:{
+            login:function(){
+                alert(1)
+            }
+        }
+    })
+    new Vue({
+        el: '#app1',
+        data: {
+            selectAll: false,
+            dataList: {
+                recno: 1,
+                name: 'd1',
+                list: [{
+                    recno: 2,
+                    name: 'd2'
+                }, {
+                    recno: 3,
+                    name: 'd3'
+                }, {
+                    recno: 4,
+                    name: 'd4'
+                }]
+            },
+            param:[]
+        },
+        methods: {
+            allChange: function() {
+                if(this.selectAll) {
+                    this.param = [];
+                    this.param.push(this.dataList);
+                    for(var i in this.dataList.list) {
+                        this.param.push(this.dataList.list[i]);
+                    }
+                }else {
+                    this.param = [];
+                }
+            }
+        }
+    })
+</script>
+<script type="text/javascript">
+    function checktets() {
+        var checkid=document.getElementsByName("check");
+        var checkvalue=[];
+        for(var i=0;i<checkid.length;i++){
+            if(checkid[i].checked) {
+                console.log(checkid[i].innerText);
+                checkvalue.splice(i, 1, checkid[i].value);
+            }
+            console.log(checkvalue);
+        }
+    }
+</script>
+<!--<script type="text/javascript">
+    $(function () {
+        $("input[name='check']").click(function () {
+            var checkid=document.getElementsByName("check");
+            var checkvalue=[];
+            for(var i=0;i<checkid.length;i++){
+                if(checkid[i].checked) {
+                    console.log(checkid[i].innerText);
+                    checkvalue.splice(i, 1, checkid[i].value);
+                }
+                console.log(checkvalue);
+            }
+            $.ajax({
+                type: 'post',
+                url: "/admin/buyticket", //上传文件的请求路径必须是绝对路劲
+                data: JSON.stringify(checkvalue),
+                contentType:"application/json; charset=utf-8",
+
+                success:function (data) {
+                    var html="";
+                    for(var i=0;i<data.length;i++){
+                        html +="<tr>"+
+                            "<td>"+data[i].email+"</td>"+
+                            "<td>"+data[i].id+"</td>"+
+                            "<td>"+data[i].job+"</td>"+
+                            "<td>"+data[i].name+"</td>"+
+                            "<td>"+data[i].password+"</td>"+
+                            "</tr>"
+                        console.log(data[i]);
+                    }
+                    $("#content").html(html);
+                },
+            })
+        });
+    });
+</script>-->
+</body>
+</html>

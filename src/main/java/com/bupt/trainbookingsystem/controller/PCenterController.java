@@ -2,11 +2,15 @@ package com.bupt.trainbookingsystem.controller;
 
 import com.bupt.trainbookingsystem.entity.ContactEntity;
 import com.bupt.trainbookingsystem.entity.OrdinaryUserEntity;
+import com.bupt.trainbookingsystem.entity.UserOrderEntity;
 import com.bupt.trainbookingsystem.entity.custom.Pay_userinfo;
+import com.bupt.trainbookingsystem.entity.custom.Selectcontactor;
 import com.bupt.trainbookingsystem.entity.custom.Userorder_search;
 import com.bupt.trainbookingsystem.service.ContactService;
 import com.bupt.trainbookingsystem.service.OrdinaryUserService;
 import com.bupt.trainbookingsystem.service.UserOrderService;
+
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,8 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+
+import java.sql.Timestamp;
+import java.util.*;
 
 
 /**
@@ -168,6 +174,7 @@ public class PCenterController {
             model.addAttribute("orderid",id);
         }
         return "pay";
+
     }
 
     @GetMapping("/pcenter/{id}/paytheorder")
@@ -176,4 +183,89 @@ public class PCenterController {
        // String url="redirect:/pcenter/"+id;
         return "redirect:/pcenter";
     }
+
+    /**
+     * 买票页面
+     * @return
+     */
+    @RequestMapping("/buyTicket")
+    public String getBuyTicket(HttpSession session,Model model)
+    {
+        OrdinaryUserEntity user=(OrdinaryUserEntity) session.getAttribute("user");
+        if(user!=null){
+            model.addAttribute("names",user.getName());
+        }
+        return "buyticket";
+    }
+
+    @GetMapping("buyticket/getcontators")
+    @ResponseBody
+    public Map<String,Object> getallcontator(HttpSession session){
+        OrdinaryUserEntity user=(OrdinaryUserEntity)session.getAttribute("user");
+        Map<String,Object> map=new HashMap<>();
+        if(user!=null){
+            List<ContactEntity> contators=contactorsmethods.findcontactors(user.getId());
+            map.put("myuser",user);
+            map.put("mycontactors",contators);
+            return map;
+        }
+        return map;
+    }
+
+    @PostMapping("buyticket/getchooseperson")
+    @ResponseBody
+    public List<Selectcontactor> getchooseperson(@RequestBody List<String> checknames, HttpSession session){
+        OrdinaryUserEntity user=(OrdinaryUserEntity)session.getAttribute("user");
+        List<Selectcontactor> selectcontactors=new ArrayList<>();
+       if(user!=null){
+         for(int i=0;i<checknames.size();i++){
+               if(checknames.get(i).equals(user.getRealname())){
+                   Selectcontactor selectuser=new Selectcontactor();
+                   selectuser.setName(user.getRealname());
+                   selectuser.setPersonid(user.getPersonId());
+                   selectuser.setPhonenum(user.getPhonenum());
+                   selectcontactors.add(selectuser);
+               }
+               else {
+                   ContactEntity contactor=contactorsmethods.findbyname(checknames.get(i));
+                   Selectcontactor selectuser=new Selectcontactor();
+                   selectuser.setName(contactor.getName());
+                   selectuser.setPersonid(contactor.getPersonId());
+                   selectuser.setPhonenum(contactor.getPhonenum());
+                   selectcontactors.add(selectuser);
+               }
+          }
+       }
+       return selectcontactors;
+    }
+
+    @PostMapping("buyticket/createorder")
+    public void createorder(@RequestBody List<Selectcontactor> selectcontactor,HttpSession session){
+        OrdinaryUserEntity user=(OrdinaryUserEntity)session.getAttribute("user");
+        String namelist="",seatlist="";
+        BigDecimal price=new BigDecimal(100);
+        if(user!=null) {
+            UserOrderEntity userOrderEntity = new UserOrderEntity();
+            Timestamp time=new Timestamp(new Date().getTime());
+            for (int i = 0; i < selectcontactor.size(); i++) {
+                if (i == 0) {
+                    namelist = selectcontactor.get(i).getName();
+                    seatlist="1-11";
+                } else {
+                    namelist = namelist + "," + selectcontactor.get(i).getName();
+                    seatlist += ","+"1-11";
+                }
+            }
+            userOrderEntity.setUserOrderCondition("0");
+            userOrderEntity.setTripId(1);
+            userOrderEntity.setPrice(price);
+            userOrderEntity.setOrdineryUserId(user.getId());
+            userOrderEntity.setNameList(namelist);
+            userOrderEntity.setSeatList(seatlist);
+            userOrderEntity.setTripTime(time);
+            userOrderService.save(userOrderEntity);
+        }
+    }
+
+
 }
