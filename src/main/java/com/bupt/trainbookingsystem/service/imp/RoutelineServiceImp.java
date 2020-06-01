@@ -39,4 +39,9 @@ public class RoutelineServiceImp implements RoutelineService {
     public List<RoutelineEntity> findRouteEntitiesByStations(String start, String end) {
         return routelineRepository.findRouteEntitiesByStations(start, end);
     }
+
+    @Override
+    public String getRouteLineByTripId(int id) {
+        return getRouteLineByTripId(id);
+    }
 }

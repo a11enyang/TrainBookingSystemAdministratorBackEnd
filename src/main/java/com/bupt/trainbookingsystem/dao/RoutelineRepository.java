@@ -27,4 +27,6 @@ public interface RoutelineRepository extends JpaRepository<RoutelineEntity,Integ
     @Modifying
     @Query(value = "select * from routeline where route_line like concat('%', ?1, '%', ?2, '%') ",nativeQuery=true)
     List<RoutelineEntity> findRouteEntitiesByStations(String start,String end);
+    @Query(value = "select route_line from routeline where trip_id = ?1 ",nativeQuery=true)
+    String getRouteLineByTripId(int id);
 }

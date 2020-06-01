@@ -41,4 +41,9 @@ public class FareServiceImp implements FareService {
     public void deleteFareEntityById(int id) {
         fareRespository.deleteFareEntityById(id);
     }
+
+    @Override
+    public BigDecimal getFareByStationsAndTripId(String start, String end, String type, int tripId) {
+        return fareRespository.getFareByStationsAndTripId(start, end, type, tripId);
+    }
 }

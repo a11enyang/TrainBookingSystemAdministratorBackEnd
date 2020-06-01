@@ -19,4 +19,9 @@ public class SeatServiceImp implements SeatService {
     public void deleteSeatEntitiesByTripId(int id) {
         seatRepository.deleteSeatEntitiesByTripId(id);
     }
+
+    @Override
+    public byte[] getSeatByStartEndTripId(String first, String next, int trip_id) {
+        return seatRepository.getSeatByStartEndTripId(first, next, trip_id);
+    }
 }

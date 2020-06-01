@@ -14,4 +14,5 @@ public interface RoutelineService {
     void save(RoutelineEntity r);
     void updateRoutelineEntityById(String route_line , int id);
     List<RoutelineEntity> findRouteEntitiesByStations(String start, String end);
+    String getRouteLineByTripId(int id);
 }

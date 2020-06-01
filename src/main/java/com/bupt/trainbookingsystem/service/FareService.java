@@ -10,4 +10,5 @@ public interface FareService {
     List<FareEntity>  findFareEntitiesByTripId(int id);
     void updateFareEntityById(BigDecimal price , int id);
     void deleteFareEntityById(int id);
+    BigDecimal getFareByStationsAndTripId(String start,String end,String type,int tripId);
 }
