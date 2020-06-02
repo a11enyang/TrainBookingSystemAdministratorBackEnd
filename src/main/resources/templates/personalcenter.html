@@ -50,7 +50,7 @@
         <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px"  th:if="${names}">
             <ul class="nav nav-pills">
                 <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
-                <img th:src="@{/picture/userimg.jpg}"  style="float: left;width: 50px;height: 50px;margin-left: 20px;margin-top: -5px">
+                <img th:src="@{/static/picture/userimg.jpg}"  style="float: left;width: 50px;height: 50px;margin-left: 20px;margin-top: -5px">
                 <li role="presentation" ><a href="#" th:text="${names}"></a></li>
                 <li role="presentation" onclick="logout()"><a href="#" >注销</a></li>
             </ul>

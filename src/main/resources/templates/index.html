@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>index</title>
-    <link href='/webjars/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet'>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css"></linkrel>
 
-    <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
-    <script src="/webjars/vue/2.6.11/vue.min.js"></script>
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>-->
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+
+ <!--<script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
+    <script src="/webjars/vue/2.6.11/vue.min.js"></script>-->
 </head>
 
 <body>
@@ -70,11 +74,9 @@
                         <button type="submit" class="btn btn-warning" @click="getTrips">查询</button>
                     </div>
                 </div>
-<<<<<<< HEAD
-=======
+
             </form>
 
->>>>>>> 7815805ed5eed3051a8052ef5200dd0d27972ae5
         </div>
 
     </div>
@@ -83,29 +85,35 @@
     <div class="row" id="news">
         <div class="col-xs-6 col-md-3">
             <a href="#" class="thumbnail">
-                <img src="./image/logo.png" alt="...">
+                <img src="static/image/logo.png" alt="...">
                 <p class="new-name">“环西部火车游”高品质旅游版高品质列车</p>
             </a>
         </div>
         <div class="col-xs-6 col-md-3">
             <a href="#" class="thumbnail">
-                <img src="./image/logo.png" alt="...">
+                <img src="static/image/logo.png" alt="...">
                 <p class="new-name">“环西部火车游”高品质旅游版高品质列车</p>
             </a>
         </div>
         <div class="col-xs-6 col-md-3">
             <a href="#" class="thumbnail">
-                <img src="./image/logo.png" alt="...">
+                <img src="static/image/logo.png" alt="...">
                 <p class="new-name">“环西部火车游”高品质旅游版高品质列车</p>
             </a>
         </div>
         <div class="col-xs-6 col-md-3">
             <a href="#" class="thumbnail">
-                <img src="./image/logo.png" alt="...">
+                <img src="static/image/logo.png" alt="...">
                 <p class="new-name">“环西部火车游”高品质旅游版高品质列车</p>
             </a>
         </div>
     </div>
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
    <script>
         new Vue({
             el: "#SearchTrip",
@@ -119,16 +127,18 @@
             methods: {
                 //修改信息
                 getTrips:function () {
+                    console.log(this.start_station+this.end_station);
                     axios.get("http://localhost:8080/api/gettrip")
-                        .then(response => {
+                         .then(response => {
                             var start=this.start_station;
                             var end=this.end_station;
                             var time=this.start_time;
-                            var createNewTab = window.open('about:blank', '_blank');
-                            setTimeout(function() {
-                                createNewTab.location.href = "/search?start="+start+"&end="+end+"&starttime="+time;
-                        }, 100);
-                        })
+                            console.log(start);
+                          var createNewTab = window.open('about:blank', '_blank');
+                             setTimeout(function() {
+                                 createNewTab.location.href = "/search?starttime="+time+"&start="+start+"&end="+end;
+                             }, 100);
+                       })
                   }
                 }
 
@@ -148,9 +158,7 @@
             text-align: center;
         }
     </style>
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-<!--    <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
-    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+
 
     <br>
 
