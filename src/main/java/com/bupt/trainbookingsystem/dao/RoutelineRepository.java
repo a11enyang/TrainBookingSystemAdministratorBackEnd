@@ -19,14 +19,18 @@ import java.util.*;
 public interface RoutelineRepository extends JpaRepository<RoutelineEntity,Integer> {
     //根据车次ID找到车次
      RoutelineEntity findRoutelineEntityByTripId(int id);
+
     @Transactional
     @Modifying
     @Query(value="update routeline set  route_line =?1 where id =?2",nativeQuery=true)
     void updateRoutelineEntityById(String route_line , int id);
+
     @Transactional
     @Modifying
     @Query(value = "select * from routeline where route_line like concat('%', ?1, '%', ?2, '%') ",nativeQuery=true)
     List<RoutelineEntity> findRouteEntitiesByStations(String start,String end);
+
     @Query(value = "select route_line from routeline where trip_id = ?1 ",nativeQuery=true)
     String getRouteLineByTripId(int id);
+
 }

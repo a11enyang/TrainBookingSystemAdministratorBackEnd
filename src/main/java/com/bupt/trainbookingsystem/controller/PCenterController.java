@@ -1,14 +1,12 @@
 package com.bupt.trainbookingsystem.controller;
 
-import com.bupt.trainbookingsystem.entity.ContactEntity;
-import com.bupt.trainbookingsystem.entity.OrdinaryUserEntity;
-import com.bupt.trainbookingsystem.entity.UserOrderEntity;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.bupt.trainbookingsystem.entity.*;
 import com.bupt.trainbookingsystem.entity.custom.Pay_userinfo;
 import com.bupt.trainbookingsystem.entity.custom.Selectcontactor;
 import com.bupt.trainbookingsystem.entity.custom.Userorder_search;
-import com.bupt.trainbookingsystem.service.ContactService;
-import com.bupt.trainbookingsystem.service.OrdinaryUserService;
-import com.bupt.trainbookingsystem.service.UserOrderService;
+import com.bupt.trainbookingsystem.service.*;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -240,13 +238,42 @@ public class PCenterController {
        return selectcontactors;
     }
 
+    //生成订单
+    @Autowired
+    TripService tripService;
+
+    @Autowired
+    RoutelineService routelineService;
+
     @PostMapping("buyticket/createorder")
-    public void createorder(@RequestBody List<Selectcontactor> selectcontactor,HttpSession session){
+    @ResponseBody
+    public void createorder(@RequestBody Map<String,Object> data, HttpSession session){
+        String trainnum=(String)data.get("trainnum");
+        String start=(String)data.get("start");
+        String end=(String)data.get("end");
+        String str=(String)data.get("selectcontactors");
+        List<Selectcontactor> selectcontactor= JSONObject.parseArray(str,Selectcontactor.class);
+       // JSONArray jsonArray=new JSONArray();
+
+
         OrdinaryUserEntity user=(OrdinaryUserEntity)session.getAttribute("user");
-        String namelist="",seatlist="";
-        BigDecimal price=new BigDecimal(100);
+        TripEntity tripEntity=tripService.findTripEntityByTrainNumber(trainnum);
+        String namelist="",seatlist="",myroute="";
+        RoutelineEntity routelineEntity=routelineService.findRoutelineEntityByTripId(tripEntity.getId());
         if(user!=null) {
             UserOrderEntity userOrderEntity = new UserOrderEntity();
+            String rou=routelineEntity.getRouteLine();
+            String[] routeline=rou.split("-");
+            int startindex=getindex(routeline,start);
+            int endindex=getindex(routeline,end);
+            for(int j=startindex;j<=endindex;j++){
+                if(j==startindex){
+                    myroute=myroute.concat(routeline[j]);
+                }
+                else{
+                    myroute=myroute.concat("-").concat(routeline[j]);
+                }
+            }
             Timestamp time=new Timestamp(new Date().getTime());
             for (int i = 0; i < selectcontactor.size(); i++) {
                 if (i == 0) {
@@ -258,14 +285,25 @@ public class PCenterController {
                 }
             }
             userOrderEntity.setUserOrderCondition("0");
-            userOrderEntity.setTripId(1);
-            userOrderEntity.setPrice(price);
+            userOrderEntity.setTripId(tripEntity.getId());
+            userOrderEntity.setPrice(new BigDecimal(100));
             userOrderEntity.setOrdineryUserId(user.getId());
             userOrderEntity.setNameList(namelist);
             userOrderEntity.setSeatList(seatlist);
             userOrderEntity.setTripTime(time);
+            userOrderEntity.setRoutLine(myroute);
+            userOrderEntity.setTripNumber(trainnum);
             userOrderService.save(userOrderEntity);
         }
+    }
+
+
+    private int getindex(String[] arr,String str){
+        for(int i=0;i<arr.length;i++){
+            if(arr[i].equals(str))
+                return i;
+        }
+        return -1;
     }
 
     @GetMapping("/api/gettrip")

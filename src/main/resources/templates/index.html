@@ -45,7 +45,7 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6" id="search-form">
-            
+
                 <h2 style="text-align: center;">查询车票</h2>
                 <div class="form-group">
                     <label class="col-md-3 control-label">出发地</label>
@@ -122,11 +122,10 @@
                             var start=this.start_station;
                             var end=this.end_station;
                             var time=this.start_time;
-                            console.log(time);
                             var createNewTab = window.open('about:blank', '_blank');
                             setTimeout(function() {
                                 createNewTab.location.href = "/search?start="+start+"&end="+end+"&starttime="+time;
-                            }, 100);
+                        }, 100);
                         })
                   }
                 }

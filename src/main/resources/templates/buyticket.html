@@ -64,12 +64,12 @@
         </div>
     </div>
 </div>
-
+<div id="AllContactors">
 <div class="row carinfo" >
     <div style="background: dodgerblue"><span style="margin-left: 20px;color: white;font-size: 20px">列车信息</span></div>
 
     <div><span style="font-weight: bold;font-size: 18px;margin-left: 20px">
-        2020-4-22(周一)&nbsp;&nbsp;&nbsp;车次：G477&nbsp;&nbsp;&nbsp;上海南站(8:20开)->北京西站</span>
+        {{start_time}}&nbsp;&nbsp;&nbsp;车次：{{trainnum}}&nbsp;&nbsp;&nbsp;{{start_station}}&nbsp;->&nbsp;{{end_station}}</span>
         <HR style=" border-top: 1px dashed red;margin-top: 5px" width="100%" >
     </div>
     <div>
@@ -80,7 +80,7 @@
     </div>
 </div>
 <br>
-<div id="AllContactors">
+
 <div class="row carinfo" >
         <div style="background: dodgerblue"><span style="margin-left: 20px;color: white;font-size: 20px">乘客信息</span></div>
         <div>
@@ -110,6 +110,7 @@
               <th>证件类型</th>
                <th>证件号码</th>
               <th>手机号码</th>
+              <th>价格</th>
          </tr>
           </thead>
        <tbody>
@@ -131,6 +132,7 @@
             <td>中国居民身份证</td>
         <td>{{selectcontactor.personid}}</td>
         <td>{{selectcontactor.phonenum}}</td>
+            <td></td>
         </tr>
         </tbody>
        </table>
@@ -183,9 +185,17 @@
                 contators:{},
                 checknames:[],
                 selectcontactors:{},
+                start_station: "",
+                end_station: "",
+                start_time:"",
+                trainnum:"",
             }
         },
         mounted(){
+            this.start_station=this.getparams("start");
+            this.end_station=this.getparams("end");
+            this.start_time=this.getparams("starttime");
+            this.trainnum=this.getparams("trainnum");
             this.getallcontactors();
         },
         methods:{
@@ -193,7 +203,7 @@
                 axios
                     .get("buyticket/getcontators")
                     .then(response =>{
-                        var x=$("#usernamel").value;
+                      //  var x=$("#usernamel").value;
                         this.user_name=response.data["myuser"];
                         this.contators=response.data["mycontactors"];
                     })
@@ -211,13 +221,45 @@
             },
             
             createorder:function () {
+                var m=this.selectcontactors;
                 var formdata=new FormData();
+/*                formdata.append("start",this.start_station);
+                formdata.append("end",this.end_station);
+                formdata.append("trainnum",this.trainnum);
+                formdata.append("selectcontactors",JSON.stringify(m));*/
+                console.log(m);
+                console.log(JSON.stringify(m));
+                var dataform={
+                    "start":this.start_station,
+                    "end":this.end_station,
+                    "trainnum":this.trainnum,
+                    "selectcontactors":JSON.stringify(m),
+                }
                 axios
-                    .post("buyticket/createorder",this.selectcontactors)
+                    .post("buyticket/createorder",dataform,{headers: {'Content-Type':'application/json;charset=UTF-8'}})       /*{headers: {'Content-Type': "multipart/form-data" }}*/
                     .then(response =>{
 
                     })
-            }
+            },
+
+            getparams: function (name) {
+                var search = document.location.search;
+                var pattern = new RegExp("[?&]"+name+"\=([^&]+)", "g");
+                var matcher = pattern.exec(search);
+                var items = null;
+                if(null != matcher){
+                    try{
+                        items = decodeURIComponent(decodeURIComponent(matcher[1]));
+                    }catch(e){
+                        try{
+                            items = decodeURIComponent(matcher[1]);
+                        }catch(e){
+                            items = matcher[1];
+                        }
+                    }
+                }
+                return items;
+            },
         }
     })
 </script>

@@ -240,7 +240,7 @@
                     <td>有</td>
                     <td>有</td>
                     <td>
-                        <button type="button" class="btn btn-primary">预定</button>
+                        <button type="button" class="btn btn-primary" @click="buytheTicket(trip.trainNumber)">预定</button>
                     </td>
                 </tr>
                 </tbody>
@@ -265,6 +265,7 @@
                 end_station: "",
                 start_time:"",
                 size:"",
+                trainnum:"",
             }
         },
         mounted(){
@@ -301,9 +302,18 @@
                 axios.post("http://localhost:8080/api/index/getTrips", param)
                     .then(response => {
                         this.gettrips= response.data;
-                        this.size=this.gettrips.
                         console.log("data",this.gettrips);
                     })
+            },
+            buytheTicket:function (trainnumber) {
+                var createNewTab = window.open('about:blank', '_blank');
+                var train=trainnumber;
+                var time=this.start_time;
+                var start=this.start_station;
+                var end=this.end_station;
+                setTimeout(function() {
+                    createNewTab.location.href = "/buyTicket?trainnum="+train+"&starttime="+time+"&start="+start+"&end="+end;
+                }, 100);
             },
         }
     })
