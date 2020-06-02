@@ -65,10 +65,6 @@ public class MainController{
 
 
 
-
-
-
-
     /**
      * 买票页面
      * @return

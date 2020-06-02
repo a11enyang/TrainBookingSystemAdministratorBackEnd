@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 
+import java.security.PublicKey;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -267,5 +268,10 @@ public class PCenterController {
         }
     }
 
+    @GetMapping("/api/gettrip")
+    @ResponseBody
+    public String gettrp(){
+        return "success";
+    }
 
 }

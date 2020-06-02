@@ -34,27 +34,7 @@
 <input type="checkbox" v-model="hobby2" value="旅游">旅游
 <div>你已选中：{{hobby2}}</div>
 </div>
-<section class="layout" id="app1">
-    <section class="content content-login">
-        <label>
-            <input type="checkbox" :value="dataList" v-model="param">
-            {{dataList.name}}
-            <br/>
-        </label>
-        <label v-for="item in dataList.list">
-            <input type="checkbox" :value="item" v-model="param"/>
-            {{item.name}}
-            <br/>
-        </label>
-        <br/>
 
-        <label > <input type="checkbox" v-model="selectAll" @change="allChange"> 全选</label>
-
-        <br/>
-
-        {{param}}
-    </section>
-</section>
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
@@ -64,104 +44,9 @@
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
 <script>
-    new Vue({
-        el: '#app',
-        data:{
-            msg:'hello',
-            hobby2:[]
-        },
-        created(){
-            console.log('created')
-        },
-        method:{
-            login:function(){
-                alert(1)
-            }
-        }
-    })
-    new Vue({
-        el: '#app1',
-        data: {
-            selectAll: false,
-            dataList: {
-                recno: 1,
-                name: 'd1',
-                list: [{
-                    recno: 2,
-                    name: 'd2'
-                }, {
-                    recno: 3,
-                    name: 'd3'
-                }, {
-                    recno: 4,
-                    name: 'd4'
-                }]
-            },
-            param:[]
-        },
-        methods: {
-            allChange: function() {
-                if(this.selectAll) {
-                    this.param = [];
-                    this.param.push(this.dataList);
-                    for(var i in this.dataList.list) {
-                        this.param.push(this.dataList.list[i]);
-                    }
-                }else {
-                    this.param = [];
-                }
-            }
-        }
-    })
-</script>
-<script type="text/javascript">
-    function checktets() {
-        var checkid=document.getElementsByName("check");
-        var checkvalue=[];
-        for(var i=0;i<checkid.length;i++){
-            if(checkid[i].checked) {
-                console.log(checkid[i].innerText);
-                checkvalue.splice(i, 1, checkid[i].value);
-            }
-            console.log(checkvalue);
-        }
-    }
-</script>
-<!--<script type="text/javascript">
-    $(function () {
-        $("input[name='check']").click(function () {
-            var checkid=document.getElementsByName("check");
-            var checkvalue=[];
-            for(var i=0;i<checkid.length;i++){
-                if(checkid[i].checked) {
-                    console.log(checkid[i].innerText);
-                    checkvalue.splice(i, 1, checkid[i].value);
-                }
-                console.log(checkvalue);
-            }
-            $.ajax({
-                type: 'post',
-                url: "/admin/buyticket", //上传文件的请求路径必须是绝对路劲
-                data: JSON.stringify(checkvalue),
-                contentType:"application/json; charset=utf-8",
 
-                success:function (data) {
-                    var html="";
-                    for(var i=0;i<data.length;i++){
-                        html +="<tr>"+
-                            "<td>"+data[i].email+"</td>"+
-                            "<td>"+data[i].id+"</td>"+
-                            "<td>"+data[i].job+"</td>"+
-                            "<td>"+data[i].name+"</td>"+
-                            "<td>"+data[i].password+"</td>"+
-                            "</tr>"
-                        console.log(data[i]);
-                    }
-                    $("#content").html(html);
-                },
-            })
-        });
-    });
-</script>-->
+
+
+
 </body>
 </html>

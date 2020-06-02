@@ -203,7 +203,7 @@
         </el-row>
         <br>
         <span style="font-size: 12px;margin-left: 100px">
-            共...个搜索结果
+            共{{size}}个搜索结果
         </span>
         <el-row class="row-1">
             <table class="table table-striped">
@@ -226,43 +226,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>D710</td>
-                    <td>上海<br>北京南</td>
-                    <td>21:24<br>9:22</td>
-                    <td>11:58<br>次日到达</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>有</td>
-                    <td>
-                        <button type="button" class="btn btn-primary">预定</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>D710</td>
-                    <td>上海<br>北京南</td>
-                    <td>21:24<br>9:22</td>
-                    <td>11:58<br>次日到达</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>有</td>
-                    <td>
-                        <button type="button" class="btn btn-primary">预定</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>D710</td>
-                    <td>上海<br>北京南</td>
+                <tr v-for="trip in gettrips">
+                    <td><span style="margin-left: 20px">{{trip.trainNumber}}</span></td>
+                    <td>{{start_station}}<br>{{end_station}}</td>
                     <td>21:24<br>9:22</td>
                     <td>11:58<br>次日到达</td>
                     <td>--</td>
@@ -291,7 +257,55 @@
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script>
     new Vue({
-        el: '#app'
+        el: '#app',
+        data(){
+            return{
+                gettrips:{},
+                start_station: "",
+                end_station: "",
+                start_time:"",
+                size:"",
+            }
+        },
+        mounted(){
+            this.start_station=this.getparams("start");
+            this.end_station=this.getparams("end");
+            this.start_time=this.getparams("starttime");
+            console.log(this.start_station+" "+this.end_station+" "+this.start_time);
+            this.getTrips();
+        },
+        methods:{
+            getparams: function (name) {
+                var search = document.location.search;
+                var pattern = new RegExp("[?&]"+name+"\=([^&]+)", "g");
+                var matcher = pattern.exec(search);
+                var items = null;
+                if(null != matcher){
+                    try{
+                        items = decodeURIComponent(decodeURIComponent(matcher[1]));
+                    }catch(e){
+                        try{
+                            items = decodeURIComponent(matcher[1]);
+                        }catch(e){
+                            items = matcher[1];
+                        }
+                    }
+                }
+                return items;
+            },
+            getTrips:function () {
+                let param = new URLSearchParams();
+                param.append("start",this.start_station);
+                param.append("end",this.end_station);
+                param.append("time",this.start_time);
+                axios.post("http://localhost:8080/api/index/getTrips", param)
+                    .then(response => {
+                        this.gettrips= response.data;
+                        this.size=this.gettrips.
+                        console.log("data",this.gettrips);
+                    })
+            },
+        }
     })
 </script>
 
