@@ -5,6 +5,7 @@
 package com.bupt.trainbookingsystem.service.imp;
 import com.bupt.trainbookingsystem.dao.UserOrderRepository;
 
+import com.bupt.trainbookingsystem.entity.OrdinaryUserEntity;
 import com.bupt.trainbookingsystem.entity.UserOrderEntity;
 import com.bupt.trainbookingsystem.entity.custom.EntityUtils;
 import com.bupt.trainbookingsystem.entity.custom.Userorder_search;
@@ -23,6 +24,11 @@ public class UserOrderServiceImp implements UserOrderService {
 
 
     private final UserOrderRepository uor;
+
+    @Override
+    public List<UserOrderEntity> orderstate_get(int id, String state) {
+        return userOrderRepository.orderstate_get(id,state);
+    }
 
     public UserOrderServiceImp(UserOrderRepository uor) {
         this.uor = uor;

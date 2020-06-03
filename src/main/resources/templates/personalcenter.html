@@ -95,10 +95,11 @@
                                     <tr th:each="type2 : ${notpaypage.content}">
                                         <td th:text="${type2.trainnum}"></td>
                                         <td th:text="${type2.namelist}"></td>
-                                        <td th:text="${type2.seat}"></td>
+                                        <td th:text="${type2.seatlist}"></td>
                                         <td th:text="${type2.price}"></td>
                                         <td th:text="${type2.startstation}+'/'+${type2.endstation}"></td>
-                                        <td th:text="${type2.depaturetime}"></td>
+                                        <td ><b th:text="${type2.starttime}"></b>
+                                            <br><b th:text="${type2.endtime}"></b></td>
                                         <td>
                                             <a th:href="@{/pcenter/{id}/returnticket(id=${type2.id})}"> <button type="button" class="btn btn-danger">退票</button></a>
                                             <a th:href="@{/pay/{id}(id=${type2.id})}"> <button type="button" class="btn btn-warning">支付</button></a>
@@ -136,10 +137,11 @@
                                     <tr th:each="type1 : ${notgopage.content}">
                                         <td th:text="${type1.trainnum}"></td>
                                         <td th:text="${type1.namelist}"></td>
-                                        <td th:text="${type1.seat}"></td>
+                                        <td th:text="${type1.seatlist}"></td>
                                         <td th:text="${type1.price}"></td>
                                         <td th:text="${type1.startstation}+'/'+${type1.endstation}"></td>
-                                        <td th:text="${type1.depaturetime}"></td>
+                                        <td ><b th:text="${type1.starttime}"></b>
+                                            <br><b th:text="${type1.endtime}"></b></td>
                                         <td>
                                             <a th:href="@{/pcenter/{id}/returnticket(id=${type1.id})}"><button type="button" class="btn btn-danger">退票</button></a>
                                             <button type="button" class="btn btn-warning">改签</button>
@@ -173,13 +175,14 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="type2 : ${completepage.content}">
-                                    <td th:text="${type2.trainnum}"></td>
-                                    <td th:text="${type2.namelist}"></td>
-                                    <td th:text="${type2.seat}"></td>
-                                    <td th:text="${type2.price}"></td>
-                                    <td th:text="${type2.startstation}+'/'+${type2.endstation}"></td>
-                                    <td th:text="${type2.depaturetime}"></td>
+                                    <tr th:each="type3 : ${completepage.content}">
+                                        <td th:text="${type3.trainnum}"></td>
+                                        <td th:text="${type3.namelist}"></td>
+                                        <td th:text="${type3.seatlist}"></td>
+                                        <td th:text="${type3.price}"></td>
+                                        <td th:text="${type3.startstation}+'/'+${type3.endstation}"></td>
+                                        <td><b th:text="${type3.starttime}"></b>
+                                              <br><b th:text="${type3.endtime}"></b></td>
                                     </tr>
                                     </tbody>
                                     <tfoot>
