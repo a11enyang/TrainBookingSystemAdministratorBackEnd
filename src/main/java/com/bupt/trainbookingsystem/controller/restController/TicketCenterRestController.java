@@ -263,13 +263,12 @@ public class TicketCenterRestController {
                     seat2String = seat2String+"0";
                 }
                 String seatString = seat1String+seat2String;
-                byte []bytes = seatString.getBytes();
                 for(int p=0;p<newCity.length-1;p++){
                     System.out.println(p);
                     SeatEntity seatEntity = new SeatEntity();
                     seatEntity.setFirstStation(newCity[p]);
                     seatEntity.setNextStation(newCity[p+1]);
-                    seatEntity.setSeatInfo(bytes);
+                    seatEntity.setSeatInfo(seatString);
                     seatEntity.setTripId(id);
                     seatEntity.setTripByTripId(tripService.findTripEntityById(id));
                     seatService.save(seatEntity);
@@ -303,7 +302,7 @@ public class TicketCenterRestController {
                 SeatEntity seatEntity = new SeatEntity();
                 seatEntity.setFirstStation(newCity[p]);
                 seatEntity.setNextStation(newCity[p+1]);
-                seatEntity.setSeatInfo(bytes);
+                seatEntity.setSeatInfo(seatString);
                 seatEntity.setTripId(id);
                 seatEntity.setTripByTripId(tripService.findTripEntityById(id));
                 seatService.save(seatEntity);
