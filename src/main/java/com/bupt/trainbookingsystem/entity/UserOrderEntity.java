@@ -8,16 +8,16 @@ import java.util.Objects;
 @Entity
 @Table(name = "user_order", schema = "booking", catalog = "")
 public class UserOrderEntity {
-    private int id;
-    private String tripNumber;
-    private String routLine;
-    private Timestamp tripTime;
-    private String nameList;
-    private String seatList;
-    private BigDecimal price;
+    private int id;//订单id
+    private String tripNumber;//车次的编号
+    private String routLine;//路线
+    private Timestamp tripTime;//时间
+    private String nameList;//
+    private String seatList;//座位列表
+    private BigDecimal price;//价格
     private String userOrderCondition;
-    private Integer ordineryUserId;
-    private Integer tripId;
+    private Integer ordineryUserId;//外键用户id
+    private Integer tripId;//行程id
     private OrdinaryUserEntity ordinaryUserByOrdineryUserId;
     private TripEntity tripByTripId;
 

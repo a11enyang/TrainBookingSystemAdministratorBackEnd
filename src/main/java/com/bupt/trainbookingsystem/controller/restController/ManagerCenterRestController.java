@@ -4,17 +4,13 @@
  * 处理管理端的各类数据请求
  */
 package com.bupt.trainbookingsystem.controller.restController;
-import com.bupt.trainbookingsystem.dao.UserOrderRepository;
 import com.bupt.trainbookingsystem.entity.AdvertisementEntity;
-import com.bupt.trainbookingsystem.entity.FileUtils;
 import com.bupt.trainbookingsystem.entity.OrdinaryUserEntity;
 import com.bupt.trainbookingsystem.entity.TicketManagerEntity;
 import com.bupt.trainbookingsystem.service.AdvertisementService;
 import com.bupt.trainbookingsystem.service.OrdinaryUserService;
 import com.bupt.trainbookingsystem.service.TicketManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,4 +1,4 @@
-package com.bupt.trainbookingsystem.entity;
+package com.bupt.trainbookingsystem.util;
 
 import org.springframework.web.multipart.MultipartFile;
 
