@@ -184,5 +184,5 @@ public class IndexRestController {
             map.put("sum",searchTrips.size());
             return map;
     }
-    
+
 }
