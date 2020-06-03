@@ -30,6 +30,7 @@ public class LoginController {
                            @RequestParam String cardType,
                            @RequestParam String personId,
                            @RequestParam String email,
+                           @RequestParam String realname,
                            @RequestParam String phonenum,
                            @RequestParam String personType){
         OrdinaryUserEntity userEntity = new OrdinaryUserEntity();
@@ -38,13 +39,14 @@ public class LoginController {
         userEntity.setType(cardType);
         userEntity.setPersonId(personId);
         userEntity.setEmail(email);
+        userEntity.setRealname(realname);
         userEntity.setPhonenum(phonenum);
         if(personType.equals("成人"))
             userEntity.setIsstudent((byte) 0);
         else
             userEntity.setIsstudent((byte) 1);
         userLogin.createOrdinaryUserEntity(userEntity);
-        return "redirect:login";
+        return "redirect:/login";
     }
 
 
@@ -56,7 +58,7 @@ public class LoginController {
         if(ordinaryuser!=null){
             ordinaryuser.setPassword(null);
             session.setAttribute("user",ordinaryuser);
-            return "redirect:/search";
+            return "redirect:/index";
         }
         else {
             attributes.addFlashAttribute("message","用户名或密码错误");
