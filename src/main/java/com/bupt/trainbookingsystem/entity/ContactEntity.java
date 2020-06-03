@@ -17,6 +17,7 @@ public class ContactEntity {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)  // 自增
     public int getId() {
         return id;
     }

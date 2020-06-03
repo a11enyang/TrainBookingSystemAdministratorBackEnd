@@ -84,6 +84,13 @@
         </dependency>
         <!--            mysql end-->
 
+        <!--            fastjson-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.35</version>
+        </dependency>
+
         <!--        jackson begin-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -102,6 +109,12 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin.external.google</groupId>
+            <artifactId>android-json</artifactId>
+            <version>0.0.20131108.vaadin1</version>
+            <scope>compile</scope>
         </dependency>
         <!--        热部署 end-->
 

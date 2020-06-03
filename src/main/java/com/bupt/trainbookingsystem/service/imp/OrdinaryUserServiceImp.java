@@ -27,7 +27,7 @@ public class OrdinaryUserServiceImp implements OrdinaryUserService {
 
     @Override
     public List<OrdinaryUserEntity> findAll() {
-        return ordinaryUserRepository.myfindAll();
+        return ordinaryUserRepository.findAll();
     }
 
     @Override
@@ -50,5 +50,16 @@ public class OrdinaryUserServiceImp implements OrdinaryUserService {
         ordinaryUserRepository.updateUserById(name, password, person_id, is_student, credit, id);
         return ordinaryUserRepository.findOrdinaryUserEntityById(id);
     }
+
+    @Override
+
+    public void createOrdinaryUserEntity(OrdinaryUserEntity userEntity){
+        ordinaryUserRepository.save(userEntity);
+    }
+
+    public void edituinfo(String phonenum, String name) {
+        ordinaryUserRepository.updatebynames(phonenum,name);
+    }
+
 
 }

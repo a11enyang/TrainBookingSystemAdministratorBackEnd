@@ -40,7 +40,7 @@
             <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px" th:if="${names}">
                 <ul class="nav nav-pills">
                     <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
-                    <img th:src="@{/picture/userimg.jpg}"
+                    <img th:src="@{/static/picture/userimg.jpg}"
                          style="float: left;width: 50px;height: 50px;margin-left: 20px;margin-top: -5px">
                     <li role="presentation"><a href="#" th:text="${names}"></a></li>
                     <li role="presentation" onclick="logout()"><a href="#">注销</a></li>
@@ -203,7 +203,7 @@
         </el-row>
         <br>
         <span style="font-size: 12px;margin-left: 100px">
-            共...个搜索结果
+            共{{size}}个搜索结果
         </span>
         <el-row class="row-1">
             <table class="table table-striped">
@@ -211,70 +211,31 @@
                 <thead>
                 <tr>
                     <th><span style="margin-left: 20px">车次</span></th>
-                    <th>出发站<br>到达站</th>
-                    <th>出发时间<br>到达时间</th>
+                    <th>出发站</th>
+                    <th>到达站</th>
+                    <th>出发时间</th>
+                    <th>到达时间</th>
                     <th>历时</th>
-                    <th>特等座</th>
                     <th>一等座</th>
                     <th>二等座</th>
-                    <th>软卧</th>
-                    <th>软座</th>
-                    <th>硬卧</th>
-                    <th>硬座</th>
-                    <th>其他</th>
-                    <th>备注</th>
+                    <th>一等座票价</th>
+                    <th>二等座票价</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>D710</td>
-                    <td>上海<br>北京南</td>
-                    <td>21:24<br>9:22</td>
-                    <td>11:58<br>次日到达</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>有</td>
+                <tr v-for="trip in gettrips">
+                    <td><span style="margin-left: 20px">{{trip.tripNumber}}</span></td>
+                    <td>{{trip.startStation}}</td>
+                    <td>{{trip.endStation}}</td>
+                    <td>{{trip.startTime}}</td>
+                    <td>{{trip.endTime}}</td>
+                    <td>{{trip.spendTime}}</td>
+                    <td>{{trip.seatFirstRemain}}</td>
+                    <td>{{trip.seatSecondRemain}}</td>
+                    <td>{{trip.fareFirst}}</td>
+                    <td>{{trip.fareSecond}}</td>
                     <td>
-                        <button type="button" class="btn btn-primary">预定</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>D710</td>
-                    <td>上海<br>北京南</td>
-                    <td>21:24<br>9:22</td>
-                    <td>11:58<br>次日到达</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>有</td>
-                    <td>
-                        <button type="button" class="btn btn-primary">预定</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>D710</td>
-                    <td>上海<br>北京南</td>
-                    <td>21:24<br>9:22</td>
-                    <td>11:58<br>次日到达</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>有</td>
-                    <td>
-                        <button type="button" class="btn btn-primary">预定</button>
+                        <button type="button" class="btn btn-primary" @click="buytheTicket(trip.tripNumber)">预定</button>
                     </td>
                 </tr>
                 </tbody>
@@ -291,7 +252,66 @@
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script>
     new Vue({
-        el: '#app'
+        el: '#app',
+        data(){
+            return{
+                gettrips:{},
+                start_station: "",
+                end_station: "",
+                start_time:"",
+                size:"",
+                trainnum:"",
+            }
+        },
+        mounted(){
+            this.start_station=this.getparams("start");
+            this.end_station=this.getparams("end");
+            this.start_time=this.getparams("starttime");
+            console.log(this.start_station+" "+this.end_station+" "+this.start_time);
+            this.getTrips();
+        },
+        methods:{
+            getparams: function (name) {
+                var search = document.location.search;
+                var pattern = new RegExp("[?&]"+name+"\=([^&]+)", "g");
+                var matcher = pattern.exec(search);
+                var items = null;
+                if(null != matcher){
+                    try{
+                        items = decodeURIComponent(decodeURIComponent(matcher[1]));
+                    }catch(e){
+                        try{
+                            items = decodeURIComponent(matcher[1]);
+                        }catch(e){
+                            items = matcher[1];
+                        }
+                    }
+                }
+                return items;
+            },
+            getTrips:function () {
+                let param = new URLSearchParams();
+                param.append("start",this.start_station);
+                param.append("end",this.end_station);
+                param.append("time",this.start_time);
+                axios.post("http://localhost:8080/api/index/getTrips", param)
+                    .then(response => {
+                        this.gettrips= response.data["searchTrips"];
+                        this.size = response.data["sum"];
+                        console.log("data",this.gettrips);
+                    })
+            },
+            buytheTicket:function (trainnumber) {
+                var createNewTab = window.open('about:blank', '_blank');
+                var train=trainnumber;
+                var time=this.start_time;
+                var start=this.start_station;
+                var end=this.end_station;
+                setTimeout(function() {
+                    createNewTab.location.href = "/buyTicket?trainnum="+train+"&starttime="+time+"&start="+start+"&end="+end;
+                }, 100);
+            },
+        }
     })
 </script>
 

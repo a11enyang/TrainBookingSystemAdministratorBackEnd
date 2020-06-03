@@ -22,9 +22,11 @@ public class OrdinaryUserEntity {
     private Byte credit;
     private Collection<ContactEntity> contactsById;
     private Collection<UserOrderEntity> userOrdersById;
+    private String realname;
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)  // 自增
     public int getId() {
         return id;
     }
@@ -42,6 +44,12 @@ public class OrdinaryUserEntity {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Basic
+    @Column(name = "realname",nullable = false)
+    public String getRealname() { return realname; }
+
+    public void setRealname(String realname) { this.realname = realname; }
 
     @Basic
     @Column(name = "password", nullable = true, length = 100)
@@ -159,7 +167,10 @@ public class OrdinaryUserEntity {
         return userOrdersById;
     }
 
+
     public void setUserOrdersById(Collection<UserOrderEntity> userOrdersById) {
         this.userOrdersById = userOrdersById;
     }
+
+
 }

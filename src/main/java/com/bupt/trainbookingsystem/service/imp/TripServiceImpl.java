@@ -15,6 +15,7 @@ import java.util.List;
 
 @Service
 public class TripServiceImpl implements TripService {
+    @Autowired
     private final TripRepository tpr;
 
     public TripServiceImpl(TripRepository tpr) {
@@ -59,6 +60,11 @@ public class TripServiceImpl implements TripService {
     @Override
     public List<TripEntity> findTripEntitiesByTripStatus(Byte status) {
         return tpr.findTripEntitiesByTripStatus(status);
+    }
+
+    @Override
+    public List<TripEntity> findTripEntitiesByTrainNumberContaining(String number) {
+        return tpr.findTripEntitiesByTrainNumberContaining(number);
     }
 
     @Override

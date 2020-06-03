@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -46,21 +46,30 @@
                 </div><!-- /input-group -->
             </div>
         </div>
-        <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px">
+        <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px" th:unless="${names}">
             <ul class="nav nav-pills">
-                <li role="presentation" class="active"><a href="#">个人中心</a></li>
-                <li role="presentation"><a href="#">登录</a></li>
-                <li role="presentation"><a href="#">注册</a></li>
+                <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
+                <li role="presentation"><a href="#" th:href="@{/login}">登录</a></li>
+                <li role="presentation"><a href="#" th:href="@{/register}">注册</a></li>
+            </ul>
+        </div>
+
+        <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px"  th:if="${names}">
+            <ul class="nav nav-pills">
+                <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
+                <img th:src="@{/static/picture/userimg.jpg}"  style="float: left;width: 50px;height: 50px;margin-left: 20px;margin-top: -5px">
+                <li role="presentation" ><a href="#" th:text="${names}"></a></li>
+                <li role="presentation" onclick="logout()"><a href="#" >注销</a></li>
             </ul>
         </div>
     </div>
 </div>
-
+<div id="AllContactors">
 <div class="row carinfo" >
     <div style="background: dodgerblue"><span style="margin-left: 20px;color: white;font-size: 20px">列车信息</span></div>
 
     <div><span style="font-weight: bold;font-size: 18px;margin-left: 20px">
-        2020-4-22(周一)&nbsp;&nbsp;&nbsp;车次：G477&nbsp;&nbsp;&nbsp;上海南站(8:20开)->北京西站</span>
+        {{start_time}}&nbsp;&nbsp;&nbsp;车次：{{trainnum}}&nbsp;&nbsp;&nbsp;{{start_station}}&nbsp;->&nbsp;{{end_station}}</span>
         <HR style=" border-top: 1px dashed red;margin-top: 5px" width="100%" >
     </div>
     <div>
@@ -71,17 +80,20 @@
     </div>
 </div>
 <br>
-<div class="row carinfo">
+
+<div class="row carinfo" >
         <div style="background: dodgerblue"><span style="margin-left: 20px;color: white;font-size: 20px">乘客信息</span></div>
         <div>
             <span class="glyphicon glyphicon-user" style="margin-left: 20px">&nbsp;乘车人</span>
             <br>
             <span style="margin-left: 20px">
-                <label class="checkbox-inline">
-                    <input type="checkbox"  value="option1">张三
+                <label class="checkbox-inline" >
+                    <input type="checkbox"   name="check" @change="chooseperson(user_name.realname)"
+                           v-model="checknames" :value="user_name.realname">{{user_name.realname}}
                 </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox"  value="option2">李四
+                <label class="checkbox-inline" v-for="contactor in contators">
+                    <input type="checkbox"   name="check" @change="chooseperson(contactor.name)"
+                           v-model="checknames" :value="contactor.name">{{contactor.name}}
                 </label>
             </span>
         </div>
@@ -90,7 +102,7 @@
         <table class="table">
         <caption></caption>
          <thead>
-          <tr>
+         <tr>
               <th>序号</th>
               <th>票种</th>
               <th>席别</th>
@@ -98,27 +110,29 @@
               <th>证件类型</th>
                <th>证件号码</th>
               <th>手机号码</th>
+              <th>价格</th>
          </tr>
           </thead>
        <tbody>
-        <tr>
-        <td>1</td>
-        <td><select class="form-control" style="width">
+        <tr  v-for="(selectcontactor,index) in  selectcontactors">
+        <td>{{index+1}}</td>
+        <td><select class="form-control" >
 			<option>成人票</option>
 			<option>儿童票</option>
 			<option>学生票</option>
         </select></td>
 
-            <td><select class="form-control" style="width">
+            <td><select class="form-control" >
 			<option>软卧</option>
 			<option>硬卧</option>
-			<option>有座</option>
-                <option>无座</option>
+			<option>站票</option>
+                <option>座票</option>
         </select></td>
-        <td>张三</td>
+        <td>{{selectcontactor.name}}</td>
             <td>中国居民身份证</td>
-        <td>3308**********8213</td>
-        <td>177****8821</td>
+        <td>{{selectcontactor.personid}}</td>
+        <td>{{selectcontactor.phonenum}}</td>
+            <td></td>
         </tr>
         </tbody>
        </table>
@@ -132,8 +146,8 @@
     <div class="col-md-4" ></div>
     <button type="button" class="btn btn-primary" style="width:100px;margin-left: 70px">上一步</button>
     &nbsp;&nbsp;&nbsp;&nbsp;
-
-    <button type="button" class="btn btn-warning" style="width:100px;">生成订单</button>
+    <button type="button" class="btn btn-warning" style="width:100px;" @click="createorder">生成订单</button>
+</div>
 </div>
 <br>
 <div class="row carinfo" style="border: 1px solid red;background: bisque">
@@ -160,5 +174,103 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+<script>
+    new Vue({
+        el:'#AllContactors',
+        data(){
+            return{
+                user_name:{},
+                contators:{},
+                checknames:[],
+                selectcontactors:{},
+                start_station: "",
+                end_station: "",
+                start_time:"",
+                trainnum:"",
+            }
+        },
+        mounted(){
+            this.start_station=this.getparams("start");
+            this.end_station=this.getparams("end");
+            this.start_time=this.getparams("starttime");
+            this.trainnum=this.getparams("trainnum");
+            this.getallcontactors();
+        },
+        methods:{
+            getallcontactors:function () {
+                axios
+                    .get("buyticket/getcontators")
+                    .then(response =>{
+                      //  var x=$("#usernamel").value;
+                        this.user_name=response.data["myuser"];
+                        this.contators=response.data["mycontactors"];
+                    })
+            },
+
+            chooseperson:function (e) {
+                var val;
+                    val=this.checknames;
+                    axios
+                        .post("buyticket/getchooseperson",val)
+                        .then(response =>{
+                            this.selectcontactors=response.data;
+                            console.log(this.selectcontactors);
+                        })
+            },
+            
+            createorder:function () {
+                var m=this.selectcontactors;
+                var formdata=new FormData();
+/*                formdata.append("start",this.start_station);
+                formdata.append("end",this.end_station);
+                formdata.append("trainnum",this.trainnum);
+                formdata.append("selectcontactors",JSON.stringify(m));*/
+                console.log(m);
+                console.log(JSON.stringify(m));
+                var dataform={
+                    "start":this.start_station,
+                    "end":this.end_station,
+                    "trainnum":this.trainnum,
+                    "selectcontactors":JSON.stringify(m),
+                }
+                axios
+                    .post("buyticket/createorder",dataform,{headers: {'Content-Type':'application/json;charset=UTF-8'}})       /*{headers: {'Content-Type': "multipart/form-data" }}*/
+                    .then(response =>{
+
+                    })
+            },
+
+            getparams: function (name) {
+                var search = document.location.search;
+                var pattern = new RegExp("[?&]"+name+"\=([^&]+)", "g");
+                var matcher = pattern.exec(search);
+                var items = null;
+                if(null != matcher){
+                    try{
+                        items = decodeURIComponent(decodeURIComponent(matcher[1]));
+                    }catch(e){
+                        try{
+                            items = decodeURIComponent(matcher[1]);
+                        }catch(e){
+                            items = matcher[1];
+                        }
+                    }
+                }
+                return items;
+            },
+        }
+    })
+</script>
+<script type="text/javascript">
+    function logout() {
+        var url="/admin/logout";
+        var urlatnow=window.location.href;
+        $.post(url,null,function () {
+            window.location=urlatnow;
+        });
+    }
+</script>
 </body>
 </html>

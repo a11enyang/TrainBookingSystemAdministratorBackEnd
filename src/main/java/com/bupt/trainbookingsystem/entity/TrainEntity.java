@@ -1,5 +1,7 @@
 package com.bupt.trainbookingsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
@@ -14,6 +16,7 @@ public class TrainEntity {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)  // 自增
     public int getId() {
         return id;
     }
@@ -56,8 +59,8 @@ public class TrainEntity {
     public int hashCode() {
         return Objects.hash(id, trainType, seatInfo);
     }
-
-    @OneToMany(mappedBy = "trainByTrainId")
+    @JsonIgnore
+    @OneToMany(mappedBy = "trainByTrainId",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     public Collection<TripEntity> getTripsById() {
         return tripsById;
     }

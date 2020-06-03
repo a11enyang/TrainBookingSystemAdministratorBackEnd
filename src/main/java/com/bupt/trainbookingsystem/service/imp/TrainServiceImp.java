@@ -24,8 +24,8 @@ public class TrainServiceImp implements TrainService {
     }
 
     @Override
-    public void save(TrainEntity t) {
-        tr.save(t);
+    public TrainEntity save(TrainEntity t) {
+        return  tr.save(t);
     }
 
     @Override

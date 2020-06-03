@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>Bootstrap 101 Template</title>
+    <title>支付</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,6 +15,7 @@
     <!--[if lt IE 9]>
     <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+
 
     <![endif]-->
     <style>
@@ -49,11 +50,20 @@
                 </div><!-- /input-group -->
             </div>
         </div>
-        <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px">
+        <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px" th:unless="${names}">
             <ul class="nav nav-pills">
-                <li role="presentation" class="active"><a href="#">个人中心</a></li>
-                <li role="presentation"><a href="#">登录</a></li>
-                <li role="presentation"><a href="#">注册</a></li>
+                <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
+                <li role="presentation"><a href="#" th:href="@{/login}">登录</a></li>
+                <li role="presentation"><a href="#" th:href="@{/register}">注册</a></li>
+            </ul>
+        </div>
+
+        <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px"  th:if="${names}">
+            <ul class="nav nav-pills">
+                <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
+                <img th:src="@{/static/picture/userimg.jpg}"  style="float: left;width: 50px;height: 50px;margin-left: 20px;margin-top: -5px">
+                <li role="presentation" ><a href="#" th:text="${names}"></a></li>
+                <li role="presentation" onclick="logout()"><a href="#" >注销</a></li>
             </ul>
         </div>
     </div>
@@ -63,7 +73,11 @@
     <div style="background: dodgerblue"><span style="margin-left: 20px;color: white;font-size: 20px">订单信息</span></div>
 
     <div><span style="font-weight: bold;font-size: 18px;margin-left: 20px">
-        2020-4-22(周一)&nbsp;&nbsp;&nbsp;车次：G477&nbsp;&nbsp;&nbsp;上海南站(8:20开)->北京西站</span>
+        出发时间：<b th:text="${starttime}"></b>&nbsp;&nbsp;&nbsp;
+        抵达时间：<b th:text="${endtime}"></b>&nbsp;&nbsp;&nbsp;
+        车次：<b th:text="${tripnum}"></b>&nbsp;&nbsp;&nbsp;
+        <b th:text="${start}"></b> => <b th:text="${end}"></b></span>
+
         <HR style=" border-top: 1px dashed red;margin-top: 5px" width="100%" >
     </div>
     <div style="padding: 0 50px">
@@ -83,16 +97,16 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>1</td>
-      <td>张三</td>
+    <tr th:each="people,iterStat : ${person}">
+      <td th:text="${iterStat.count}"></td>
+      <td th:text="${people.name}"></td>
       <td>中国居民身份证</td>
-        <td>3308**********311</td>
+        <td th:text="${people.personid}"></td>
       <td>学生票</td>
       <td>二等座</td>
-        <td>03</td>
-      <td>05C号</td>
-      <td>415.0元</td>
+       <td th:text="${people.carriage}"></td>
+      <td th:text="${people.seat}"></td>
+      <td th:text="${people.pricelist}"></td>
 
     </tr>
   </tbody>
@@ -113,7 +127,7 @@
             <label><input name="type-check" type="radio" value="delivery" />车票快递 </label>
                 <br>
                 <br>
-                <span style="float: right">总票价：&nbsp;&nbsp;&nbsp;<span style="color:orangered">415.0元</span>
+                <span style="float: right">总票价：&nbsp;&nbsp;&nbsp;<span style="color:orangered"><b th:text="${price}"></b></span>
 
                 </span>
         </div>
@@ -147,17 +161,17 @@
             <br>
         <p style="color: forestgreen;font-weight: bold;font-size: 15px">付款方式：</p>
 
-        <select class="form-control" style="width: 300px">
-			<option>支付宝</option>
-			<option>微信</option>
-			<option>银行卡</option>
+        <select id="payway" onchange="selectpayway()" class="form-control"  style="width: 300px">
+			<option value="1">支付宝</option>
+			<option value="2">微信</option>
         </select>
         <br>
-        <img src="pay.png" style="width: 300px"/>
+            <div id="img1"><img th:src="@{/static/picture/pay.png}" style="width: 300px"/></div>
+            <div id="img2" style="display: none"><img th:src="@{/static/picture/weixin.jpg}" style="width: 300px;"/></div>
         <br>
         <br>
 
-        <button type="button" class="btn btn-success" style="width: 300px">前往支付</button>
+        <a th:href="@{/pcenter/{id}/paytheorder(id=${orderid})}"><button type="button" class="btn btn-success" style="width: 300px">前往支付</button></a>
         </div>
     </div>
 </div>
@@ -165,5 +179,53 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+
+<!--<script>
+    new Vue({
+        el:'#ordermanage',
+        data(){
+            return{
+                ordernotpay:null,
+            }
+        },
+        mounted(){
+            this.order_notpay();
+        },
+        methods:{
+            order_notpay:function () {
+                axios
+                    .get("/pcenter/ordernotpay")
+                    .then(response => (this.ordernotpay=response.data))
+            }
+        }
+    })
+</script>-->
+
+<script type="text/javascript">
+    function logout() {
+        var url="/admin/logout";
+        var urlatnow=window.location.href;
+        $.post(url,null,function () {
+            window.location=urlatnow;
+        });
+    }
+</script>
+<script type="text/javascript">
+    function selectpayway() {
+        var tabindex=document.getElementById("payway").value;
+        for(var i=1;i<3;i++){
+            if(i==tabindex) {
+                document.getElementById("img"+i).style.display="block";
+            }
+               else{
+                document.getElementById("img"+i).style.display="none";
+            }
+
+        }
+    }
+</script>
 </body>
 </html>

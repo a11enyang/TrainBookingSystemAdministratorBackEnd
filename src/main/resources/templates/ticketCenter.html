@@ -94,7 +94,93 @@
                             <div class="tab-content">
                                 <!-- 列车管理 -->
                                 <div class="tab-pane fade active in" id="tab11">
-                                    <div class="panel panel-info">
+                                        <div id="Trains">
+                                        <!-- 新增列车的弹窗 -->
+                                        <div class="modal fade" id="moretrain" tabindex="-1" role="dialog" aria-labelledby="moretrainLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title">新增列车</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form @submit.prevent="newTrain()">
+                                                            <div class="form-group">
+                                                                <label >车型</label>
+                                                                <input type="text" class="form-control" v-model="new_type">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label >座位信息</label>
+                                                                <input type="text" class="form-control"  v-model="new_seatInformation">
+                                                            </div>
+                                                            <button type="submit" class="btn btn-danger">提交</button>
+                                                        </form>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
+                                        <!-- 修改列车的弹窗 -->
+                                        <div class="modal fade" id="edittrain" tabindex="-1" role="dialog" aria-labelledby="moretrainLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="moretrainLabel">新增乘车信息</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form @submit.prevent="editTrain()">
+                                                            <div class="form-group">
+                                                                <label >车型</label>
+                                                                <input type="text" class="form-control" v-model="edit_type">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label >座位信息</label>
+                                                                <input type="text" class="form-control" v-model="edit_seatInformation">
+                                                            </div>
+                                                            <button type="submit" class="btn btn-danger">提交</button>
+                                                        </form>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
+                                        <!-- 新增车次的弹窗 -->
+                                            <div class="modal fade" id="moretrip" tabindex="-1" role="dialog" aria-labelledby="moretripLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="moretripLabel">新增乘车信息</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form @submit.prevent="addTrip()">
+                                                            <div class="form-group">
+                                                                <label >车次编号</label>
+                                                                <input type="text" class="form-control"v-model="train_number">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>车次状态</label>
+                                                                <input type="text" class="form-control"v-model="train_status">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label >起点站</label>
+                                                                <input type="text" class="form-control"v-model="start_station">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label >终点站</label>
+                                                                <input type="text" class="form-control" v-model="end_station">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label >起发日期</label>
+                                                                <input type="text" class="form-control" v-model="de_time" >
+                                                            </div>
+                                                            <button type="submit" class="btn btn-danger">提交</button>
+                                                        </form>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
+
+                                            <div class="panel panel-info">
                                         <!-- Default panel contents -->
                                         <div class="panel-heading" style="height: 60px;">
                                             <div style="margin-top: 10px; width: 100px; float: left;">列车列表</div>
@@ -107,73 +193,268 @@
                                             <table class="table table-striped">
                                                 <thead>
                                                     <tr>
+                                                        <th>ID</th>
                                                         <th>车型</th>
                                                         <th>座位信息</th>
                                                         <th>操作</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>11</td>
+                                                    <tr v-for="train in trains">
+                                                        <td>{{train.id}}</td>
+                                                        <td>{{train.trainType}}</td>
+                                                        <td>{{train.seatInfo}}</td>
                                                         <td>
-                                                            <button type="button" class="btn btn-danger">删除</button>
-                                                            <button type="button" class="btn btn-warning">修改信息</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>22</td>
-                                                        <td>
-                                                            <button type="button" class="btn btn-danger">删除</button>
-                                                            <button type="button" class="btn btn-warning">修改信息</button>
+                                                            <button type="button" class="btn btn-danger"
+                                                            @click="deleteTrain(train)"
+                                                            >删除</button>
+                                                            <button type="button" class="btn btn-warning"
+                                                                    data-toggle="modal"
+                                                                    data-target="#edittrain"@click="seeTrain(train)"
+                                                            >修改信息</button>
+                                                            <button type="button" class="btn btn-success"
+                                                                    data-toggle="modal"
+                                                                    data-target="#moretrip"@click="checkTrip(train)"
+                                                            >新增车次</button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
+                                          </div>
                                 </div>
                                 <!-- 车次管理 -->
                                 <div class="tab-pane fade" id="tab12">
+                                    <div id="Trips">
+                                        <!--修改车次弹窗-->
+                                        <div class="modal fade" id="editTrip" tabindex="-1" role="dialog" aria-labelledby="moretripLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="moretripLabel">修改车次信息</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form @submit.prevent="editTrip()">
+                                                            <div class="form-group">
+                                                                <label>车次编号</label>
+                                                                <input type="text" class="form-control"v-model="edit_number">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>车次状态</label>
+                                                                <input type="text" class="form-control"v-model="edit_status">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label >起发日期</label>
+                                                                <input type="text" class="form-control" v-model="edit_time" >
+                                                            </div>
+                                                            <button type="submit" class="btn btn-danger">提交</button>
+                                                        </form>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
+                                        <!-- 路线设置的弹窗 -->
+                                        <div class="modal fade" id="RoutefixModel" tabindex="-1" role="dialog" aria-labelledby="RoutefixModelLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="RouteModelLabel">路线设置</h4>
+                                                    </div>
+                                                    <form @submit.prevent="editRoute()">
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label>路线设置</label>
+                                                            <input type="text" class="form-control" v-model="edit_route">
+                                                        </div>
+                                                        <button type="submit" class="btn btn-default" >Submit</button>
+                                                    </div>
+                                                    </form>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
+                                        <!-- 时间设置的弹窗 -->
+                                        <div class="modal fade" id="TimefixModel" tabindex="-1" role="dialog" aria-labelledby="TimefixModelLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="TimefixModelLabel">时间设置</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table border="5">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>序号</th>
+                                                                <th>车站</th>
+                                                                <th>到达时间</th>
+                                                                <th>修改时间</th>
+                                                                <th>操作</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr v-for="station in stations">
+                                                                <td>{{station.id}}</td>
+                                                                <td>{{station.stationName}}</td>
+                                                                <td>{{station.arriveTime}}</td>
+                                                                <td><input :id="station.id" ></td>
+                                                                <td>
+                                                                    <button type="submit" class="btn btn-warning" @click="editStation(station)"
+                                                                    >修改</button>
+                                                                    <button type="button" class="btn btn-danger"
+                                                                    @click="deleteStation(station)">删除</button>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <h3>新增站点</h3>
+                                                        <table border="5">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>车站</th>
+                                                                <th>到达时间</th>
+                                                                <th>操作</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td><input type="text" id="new_stationName" ></td>
+                                                                <td><input type="text" id="new_arriveTime" ></td>
+                                                                <td>
+                                                                    <button type="submit" class="btn btn-warning" @click="newStation()"
+                                                                    >新增站点</button>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
+                                        <!-- 票价设置的弹窗 -->
+                                        <div class="modal fade" id="PricefixModel" tabindex="-1" role="dialog" aria-labelledby="PricefixModelLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="background-color:  #d9edf7;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="PricefixModelLabel">时间设置</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table  border="5">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>序号</th>
+                                                                <th>起发站</th>
+                                                                <th>终点站</th>
+                                                                <th>车座</th>
+                                                                <th>原票价</th>
+                                                                <th>修改票价</th>
+                                                                <th>操作</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr v-for="fare in fares">
+                                                                <td>{{fare.id}}</td>
+                                                                <td>{{fare.startStation}}</td>
+                                                                <td>{{fare.endStation}}</td>
+                                                                <td>{{fare.seatType}}</td>
+                                                                <td>{{fare.price}}</td>
+                                                                <td><input :id="fare.id" ></td>
+                                                                <td>
+                                                                    <button type="submit" class="btn btn-warning" @click="editFare(fare)"
+                                                                    >修改</button>
+                                                                    <button type="button" class="btn btn-danger" @click="deleteFare(fare)"
+                                                                            >删除</button>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <h3>新增票价</h3>
+                                                        <table  border="5">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>起发站</th>
+                                                                <th>终点站</th>
+                                                                <th>车座</th>
+                                                                <th>票价</th>
+                                                                <th>操作</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td><input style="width: 100px"id="newStartStation"></td>
+                                                                <td><input style="width: 100px"id="newEndStation"></td>
+                                                                <td><input style="width: 100px"id="newSeatType"></td>
+                                                                <td><input style="width: 100px"id="newPrice"></td>
+                                                                <td >
+                                                                    <button type="submit" class="btn btn-warning"  @click="newFare()"
+                                                                    >修改</button>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer">
+
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal -->
+                                        </div>
                                     <div class="panel panel-info">
                                         <!-- Default panel contents -->
+
+
                                         <div class="panel-heading" style="height: 40px;">
                                             <div style="width: 100px; float: left;">搜索条件</div>
                                         </div>
                                         <div class="info-body row" style="padding: 0 50px 20px 50px;">
-                                            <div class="col-md-6">
-                                                <label for="searchMode">搜索方式</label>
+                                            <form @submit.prevent="searchTrips">
+                                            <div class="col-md-4">
+                                                <label >搜索方式</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" id="searchMode"
-                                                        placeholder="id搜索">
+                                                    <select v-model="search_way">
+                                                        <option disabled value="">请选择</option>
+                                                        <option>车次编号</option>
+                                                        <option>车次状态</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="searchContant">搜索内容</label>
+                                                <label >搜索内容</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" id="searchContant"
-                                                        placeholder="请输入关键字">
+                                                    <input type="text" class="form-control" v-model="search_value">
                                                     <span class="input-group-btn">
-                                                        <button class="btn btn-default" type="button">搜索</button>
+                                                        <button class="btn btn-default" type="submit">搜索</button>
                                                     </span>
                                                 </div>
                                             </div>
+                                            </form>
+                                                <div class="col-md-2">
+                                                    <br>
+                                                    <button class="btn btn-success"@click="myflush()" type="submit" style="top:10px">刷新列表</button>
+                                                </div>
+
                                         </div>
                                     </div>
                                     <div class="panel panel-info">
                                         <!-- Default panel contents -->
                                         <div class="panel-heading" style="height: 60px;">
-                                            <div style="margin-top: 10px; width: 100px; float: left;">列车列表</div>
-                                            <button type="button" class="btn btn-success" data-toggle="modal"
-                                            data-target="#moretrip"
-                                                style="float: right;">新增车次</button>
+                                            <div style="margin-top: 10px; width: 100px; float: left;">车次列表</div>
                                         </div>
                                         <div class="info-body">
                                             <!-- Table -->
+                                            <div v-show="not_search">
                                             <table class="table table-striped">
                                                 <thead>
                                                     <tr>
+                                                        <th>ID</th>
                                                         <th>编号</th>
                                                         <th>状态</th>
                                                         <th>起点站</th>
@@ -184,51 +465,82 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>11</td>
-                                                        <td>111</td>
-                                                        <td>1111</td>
-                                                        <td>11111</td>
+                                                    <tr v-for="trip in trips">
+                                                        <td>{{trip.id}}</td>
+                                                        <td>{{trip.trainNumber}}</td>
+                                                        <td>{{trip.tripStatus}}</td>
+                                                        <td>{{trip.startStation}}</td>
+                                                        <td>{{trip.endStation}}</td>
+                                                        <td>{{trip.departureTime}}</td>
                                                         <td style="width: 200px;">
                                                             <button type="button" class="btn btn-warning"
                                                                     data-toggle="modal"
-                                                                    data-target="#RoutefixModel">路线</button>
+                                                                    data-target="#RoutefixModel"
+                                                            @click="seeRoute(trip)">路线</button>
                                                             <button type="button" class="btn btn-warning"
                                                                 data-toggle="modal"
-                                                                data-target="#TimefixModel">时间</button>
+                                                                data-target="#TimefixModel"@click="seeStations(trip)">时间</button>
                                                             <button type="button" class="btn btn-warning"
                                                                 data-toggle="modal"
-                                                                data-target="#PricefixModel">票价</button>
+                                                                data-target="#PricefixModel"@click="seeFares(trip)">票价</button>
                                                         </td>
                                                         <td style="width: 160px;">
-                                                            <button type="button" class="btn btn-danger">删除</button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>22</td>
-                                                        <td>222</td>
-                                                        <td>2222</td>
-                                                        <td>22222</td>
-                                                        <td style="width: 200px;">
-                                                            <button type="button" class="btn btn-warning"
+                                                            <button type="button" class="btn btn-danger"
                                                                     data-toggle="modal"
-                                                                    data-target="#RoutefixModel">路线</button>
-                                                            <button type="button" class="btn btn-warning"
-                                                                data-toggle="modal"
-                                                                data-target="#TimefixModel">时间</button>
-                                                            <button type="button" class="btn btn-warning"
-                                                                data-toggle="modal"
-                                                                data-target="#PricefixModel">票价</button>
-                                                        </td>
-                                                        <td style="width: 160px;">
-                                                            <button type="button" class="btn btn-danger">删除</button>
+                                                                    data-target="#editTrip"
+                                                           @click="seeTrip(trip)" >修改</button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                            </div>
+                                            <div v-show="in_search">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>编号</th>
+                                                        <th>状态</th>
+                                                        <th>起点站</th>
+                                                        <th>终点站</th>
+                                                        <th>起发日期</th>
+                                                        <th>设置</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr v-for="trip in search_trips">
+                                                        <td>{{trip.id}}</td>
+                                                        <td>{{trip.trainNumber}}</td>
+                                                        <td>{{trip.tripStatus}}</td>
+                                                        <td>{{trip.startStation}}</td>
+                                                        <td>{{trip.endStation}}</td>
+                                                        <td>{{trip.departureTime.toString()}}</td>
+                                                        <td style="width: 200px;">
+                                                            <button type="button" class="btn btn-warning"
+                                                                    data-toggle="modal"
+                                                                    data-target="#RoutefixModel"
+                                                                    @click="seeRoute(trip)">路线</button>
+                                                            <button type="button" class="btn btn-warning"
+                                                                    data-toggle="modal"
+                                                                    data-target="#TimefixModel"@click="seeStations(trip)">时间</button>
+                                                            <button type="button" class="btn btn-warning"
+                                                                    data-toggle="modal"
+                                                                    data-target="#PricefixModel"@click="seeFares(trip)">票价</button>
+                                                        </td>
+                                                        <td style="width: 160px;">
+                                                            <button type="button" class="btn btn-danger"
+                                                                    data-toggle="modal"
+                                                                    data-target="#editTrip"
+                                                                    @click="seeTrip(trip)" >修改</button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <button type="button" class="btn btn-warning"style="margin-top: -6px;"@click="go_back()">返回原列表</button>
+                                            </div>
                                         </div>
+                                    </div>
                                     </div>
                                 </div>
                                 <!-- 中间图表结束 -->
@@ -247,14 +559,14 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                             <h4 class="modal-title" id="RouteModelLabel">订单状态设置</h4>
                                         </div>
-                                        <form>
+                                        <form @submit.prevent="postEditOrder">
                                         <div class="modal-body">
                                             <div class="form-group">
                                                 <label for="InputRoute">状态设置</label>
-                                                <input type="text" class="form-control" id="InputRoute" placeholder="北京-天津-黑龙江">
+                                                <input type="text" class="form-control" v-model="edit_condition">
                                             </div>
-                                            <button type="submit" class="btn btn-default" data-dismiss="modal" >确认</button>
-                                        </div>
+                                            <button type="submit" class="btn btn-default">确认</button>
+                                          </div>
                                         </form>
                                     </div><!-- /.modal-content -->
                                 </div><!-- /.modal -->
@@ -265,7 +577,7 @@
                                 <!-- Default panel contents -->
 
                                 <div class="panel-heading" style="height: 40px;">
-                                    <div style="width: 100px; float: left;">搜索条件</div>
+                                    <div style="width: 100px; float: left;">搜索</div>
                                 </div>
                                 <div class="info-body row" style="padding: 0 50px 20px 50px;">
                                <!--     <div class="col-md-6">
@@ -280,7 +592,7 @@
                                     </div>-->
                                     <div class="col-md-3"></div>
                                     <div class="col-md-6">
-                                        <label for="searchContant">搜索内容</label>
+                                        <label for="searchContant">订单ID</label>
                                         <form @submit.prevent="searchOrders">
                                         <div class="input-group">
                                             <input type="text" class="form-control"
@@ -313,9 +625,9 @@
                                             <td>{{order.id}}</td>
                                             <td>{{order.userOrderCondition}}</td>
                                             <td>  <button type="button" class="btn btn-danger"style="margin-top: -6px;"
-                                                >删除</button>
+                                              @click=" deletetUserOrder1(order)"  >删除</button>
                                                 <button type="button" class="btn btn-success"style="margin-top: -6px;"
-                                                        data-toggle="modal" data-target="#updateOrder">修改</button>
+                                                        data-toggle="modal" data-target="#updateOrder"@click="seeOrder1(order)">修改</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -330,13 +642,13 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="order in search_orders">
-                                        <td>{{order.id}}</td>
-                                        <td>{{order.userOrderCondition}}</td>
-                                        <td>  <button type="button" class="btn btn-danger"style="margin-top: -6px;"
+                                    <tr >
+                                        <td>{{search_id}}</td>
+                                        <td>{{search_condition}}</td>
+                                        <td>  <button type="button" class="btn btn-danger"style="margin-top: -6px;"@click="deletetUserOrder2()"
                                         >删除</button>
                                             <button type="button" class="btn btn-success"style="margin-top: -6px;"
-                                                    data-toggle="modal" data-target="#updateOrder">修改</button>
+                                                    data-toggle="modal" data-target="#updateOrder" @click="seeOrder2()">修改</button>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -352,167 +664,10 @@
             </div>
         </div>
     </div>
-    <!-- 路线设置的弹窗 -->
-    <div class="modal fade" id="RoutefixModel" tabindex="-1" role="dialog" aria-labelledby="RoutefixModelLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color:  #d9edf7;">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="RouteModelLabel">路线设置</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="InputRoute">路线设置</label>
-                        <input type="text" class="form-control" id="InputRoute" placeholder="北京-天津-黑龙江">
-                    </div>
-                    <button type="submit" class="btn btn-default" data-dismiss="modal" >Submit</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-    <!-- 时间设置的弹窗 -->
-    <div class="modal fade" id="TimefixModel" tabindex="-1" role="dialog" aria-labelledby="TimefixModelLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color:  #d9edf7;">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="TimefixModelLabel">时间设置</h4>
-                </div>
-                <div class="modal-body">
-                    <table data-toggle="table">
-                        <thead>
-                            <tr>
-                                <th>序号</th>
-                                <th>车站</th>
-                                <th>到达时间</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>上海</td>
-                                <td>12:00</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>北京</td>
-                                <td>14:00</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-    <!-- 票价设置的弹窗 -->
-    <div class="modal fade" id="PricefixModel" tabindex="-1" role="dialog" aria-labelledby="PricefixModelLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color:  #d9edf7;">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="PricefixModelLabel">时间设置</h4>
-                </div>
-                <div class="modal-body">
-                    <table data-toggle="table">
-                        <thead>
-                            <tr>
-                                <th>序号</th>
-                                <th>起发站</th>
-                                <th>终点站</th>
-                                <th>车座类型</th>
-                                <th>票价</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>上海</td>
-                                <td>北京</td>
-                                <td>特等座</td>
-                                <td>¥120</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>北京</td>
-                                <td>天津</td>
-                                <td>特等座</td>
-                                <td>¥36</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-    <!-- 新增列车的弹窗 -->
-    <div class="modal fade" id="moretrain" tabindex="-1" role="dialog" aria-labelledby="moretrainLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color:  #d9edf7;">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="moretrainLabel">新增乘车信息</h4>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="contactInputTrainType">车型</label>
-                            <input type="text" class="form-control" id="contactInputTrainType" placeholder="X-220">
-                        </div>
-                        <div class="form-group">
-                            <label for="contactInputTrainSeat">座位信息</label>
-                            <input type="text" class="form-control" id="contactInputTrainSeat" placeholder="座位信息">
-                        </div>
-                        <button type="submit" class="btn btn-danger">提交</button>
-                    </form>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-    <!-- 新增车次的弹窗 -->
-    <div class="modal fade" id="moretrip" tabindex="-1" role="dialog" aria-labelledby="moretripLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color:  #d9edf7;">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="moretripLabel">新增乘车信息</h4>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="contactInputTripID">车次编号</label>
-                            <input type="text" class="form-control" id="contactInputTripID" placeholder="123456">
-                        </div>
-                        <div class="form-group">
-                            <label for="contactInputTripState">车次状态</label>
-                            <input type="text" class="form-control" id="contactInputTripState" placeholder="运行中">
-                        </div>
-                        <div class="form-group">
-                            <label for="contactInputStartPoint">起点站</label>
-                            <input type="text" class="form-control" id="contactInputStartPoint" placeholder="北京">
-                        </div>
-                        <div class="form-group">
-                            <label for="contactInputDestination">终点站</label>
-                            <input type="text" class="form-control" id="contactInputDestination" placeholder="上海">
-                        </div>
-                        <div class="form-group">
-                            <label for="contactInputStartDate">起发日期</label>
-                            <input type="text" class="form-control" id="contactInputStartDate" placeholder="2020.5.20">
-                        </div>
-                        <button type="submit" class="btn btn-danger">提交</button>
-                    </form>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
+
+
+
+
     <script>
         new Vue({
             el: "#ticket_manager",
@@ -556,12 +711,14 @@
                     userOrderCondition:"",
                     order_user_id: "",
                     order_condition: "",
-                    edit_condition:"",
                     select_way:"",
                     in_search_value:'',
                     in_search:false,
                     not_search:true,
-
+                    search_id:"",
+                    search_condition:"",
+                    edit_id:"",
+                    edit_condition:"",
                 }
             },
             mounted() {
@@ -580,12 +737,10 @@
                         param.append("id",this.in_search_value);
                         axios.post("http://localhost:8080/api/ticketCenter/findOrderByOrderId",param)
                                 .then(
-                                    response => {console.log("data",response.data);
-                                        this.search_orders = response.data[0];
-                                         console.log("data1",this.search_orders);
+                                    response => {
+                                        this.search_id = response.data.id;
+                                        this.search_condition = response.data.userOrderCondition;
                                     })
-
-
                         this.in_search = true;
                         this.not_search = false;
                     },
@@ -594,30 +749,343 @@
                         this.in_search = false;
                         this.not_search = true;
                     },
-                //删除用户
-                /*
-                deletetUser: async function(order) {
-                    await axios
-                        .delete("http://localhost:8080/api/ticketCenter/deleteOrder/" + order.id);
-                    this.get();
+                //列表直接修改
+                seeOrder1:function (order) {
+                    this.edit_id = order.id;
+                    this.edit_condition = order.userOrderCondition;
                 },
-                //编辑用户
-                seeUser:function (order) {
-                    this.edit_condition = order.id;
-                                },
-                postEditUser: function (event) {
+                //搜索列表修改
+                seeOrder2:function () {
+                    this.edit_id = this.search_id;
+                    this.edit_condition = this.search_condition;
+                },
+                //提交订单状态修改
+                postEditOrder: function (event) {
                     let param = new URLSearchParams();
                     param.append("condition",this.edit_condition);
                     param.append("id",this.edit_id);
                     axios.post("http://localhost:8080/api/ticketCenter/editOrder", param)
-                        .then(savedPerson => {
+                        .then(response => {
                             if(this.in_search===true){
-                                this.get();
+                                this.getOrders();
                                 this.searchOrders();
                             }
                             else {
-                                this.get();
+                                this.getOrders();
                             }})
+                },
+                //删除列表的订单
+                deletetUserOrder1: async function(order) {
+                    await axios
+                        .delete("http://localhost:8080/api/ticketCenter/deleteOrder/" + order.id);
+                    this.getOrders();
+                },
+                deletetUserOrder2: async function() {
+                    await axios
+                        .delete("http://localhost:8080/api/ticketCenter/deleteOrder/" + this.search_id);
+                    this.getOrders();
+                },
+            }
+        });
+        new Vue({
+            el: "#Trains",
+            data() {
+                return {
+                    trains: null,
+                    id:"",
+                    new_type:"",
+                    new_seatInformation:"",
+                    edit_type:"",
+                    edit_id:"",
+                    edit_seatInformation:"",
+                    train_id:"",
+                    de_time:null,
+                    start_station:"",
+                    end_station:"",
+                    train_number:"",
+                    train_status:"",
+                }
+            },
+            mounted() {
+                this.get();
+            },
+            methods: {
+                //获取列车页面
+                get: function(){axios
+                    .get("http://localhost:8080/api/ticketCenter/trains")
+                    .then(response => (this.trains = response.data))
+                },
+                //增加列车
+                newTrain: function (event) {
+                    let param = new URLSearchParams();
+                    param.append("trainType", this.new_type);
+                    param.append("seatInfo",this.new_seatInformation);
+                    axios.post("http://localhost:8080/api/ticketCenter/addTrain",param)
+                        .then(savedTrain => {
+                        this.trains.push(savedTrain.data);
+                        this.new_type = '';
+                        this.new_seatInformation= '';
+                    });
+                    this.get();
+                },
+                seeTrain:function(train){
+                    this.edit_seatInformation = train.seatInfo;
+                    this.edit_type = train.trainType;
+                    this.edit_id = train.id;
+                },
+                editTrain:function (event) {
+                    let param = new URLSearchParams();
+                    param.append("trainType", this.edit_type);
+                    param.append("seatInfo",this.edit_seatInformation);
+                    param.append("id",this.edit_id);
+                    axios.post("http://localhost:8080/api/ticketCenter/editTrain",param)
+                        .then(savedTrain => {
+                            this.get();
+                        });
+                },
+                //删除列车
+                deleteTrain: async function(train) {
+                    await axios
+                        .delete("http://localhost:8080/api/ticketCenter/deleteTrain/" + train.id);
+                    this.get();
+                },
+                //新增车次
+                checkTrip:function (train) {
+                    this.train_id = train.id;
+                },
+                addTrip:function (event) {
+                    let param = new URLSearchParams();
+                    param.append("de_time",this.de_time);
+                    param.append("start_station",this.start_station);
+                    param.append("end_station",this.end_station);
+                    param.append("train_number",this.train_number);
+                    param.append("train_status",this.train_status);
+                    param.append("train_id",this.train_id);
+                    axios.post("http://localhost:8080/api/ticketCenter/addTrip",param)
+                        .then(savedTrip => {
+                        });
+                    this.get();
+                },
+            }
+        });
+        new Vue({
+            el: "#Trips",
+            data() {
+                return {
+                    trips:null,
+                    edit_trip:null,
+                    search_trips:null,
+                    edit_time:"",
+                    edit_status:"",
+                    edit_number:"",
+                    edit_id:"",
+                    in_search : false,
+                    not_search : true,
+                    search_way:'',
+                    search_value:"",
+                    edit_route:"",
+                    edit_route_id:"",
+                    edit_stations_id:"",
+                    stations:null,
+                    edit_station_time:"",
+                    edit_update_time:"",
+                    fares:null,
+                    edit_fare_trip_id:"",
+                }
+            },
+            mounted() {
+                this.get();
+            },
+            methods: {
+                myflush(){
+                    this.get();
+                },
+                //获取车次页面
+                get: function(){axios
+                    .get("http://localhost:8080/api/ticketCenter/trips")
+                    .then(response => (this.trips = response.data))
+                },
+                //编辑车次
+                seeTrip:function (trip) {
+                    this.edit_number = trip.trainNumber;
+                    this.edit_time = trip.departureTime;
+                    this.edit_status = trip.tripStatus;
+                    this.edit_id = trip.id;
+                },
+                editTrip:function (event) {
+                    let param = new URLSearchParams();
+                    param.append("edit_number",this.edit_number);
+                    param.append("edit_time",this.edit_time);
+                    param.append("edit_status",this.edit_status);
+                    param.append("id",this.edit_id);
+                    axios.post("http://localhost:8080/api/ticketCenter/editTrip",param)
+                        .then(savedTrip => {
+                            this.get();
+                        });
+                },
+                //搜索车次
+                searchTrips:function(event){
+                    let param = new URLSearchParams()
+                    if(this.search_way==="车次编号"){
+                        param.append("number",this.search_value);
+                        axios.post("http://localhost:8080/api/ticketCenter/searchTripsByNumber",param)
+                            .then(
+                                response => {
+                                    this.search_trips = response.data;
+                                })
+                    }
+                    else{
+                    param.append("status",this.search_value);
+                    axios.post("http://localhost:8080/api/ticketCenter/searchTripsByStatus",param)
+                        .then(
+                            response => {
+                                this.search_trips = response.data;
+                            })
+                    }
+                    this.in_search = true;
+                    this.not_search = false;
+                },
+                go_back:
+                    function(){
+                        this.in_search = false;
+                        this.not_search = true;
+                    },
+                seeRoute:function(trip){
+                    this.edit_route_id = trip.id;
+                    axios
+                    .get("http://localhost:8080/api/ticketCenter/seeRoute/"+this.edit_route_id)
+                    .then(response => (this.edit_route =  response.data.routeLine))
+                },
+                editRoute:function (event) {
+                    let param = new URLSearchParams();
+                    param.append("id",this.edit_route_id);
+                    param.append("route",this.edit_route);
+                    axios.post("http://localhost:8080/api/ticketCenter/editRoute",param)
+                    .then(response => (this.edit_route = response.data))
+                },
+                seeStations:async function (trip) {
+                    this.edit_stations_id = trip.id;
+                    this.edit_trip = trip;
+                    await axios
+                        .get("http://localhost:8080/api/ticketCenter/seeStations/"+this.edit_stations_id)
+                        .then(response => (this.stations =  response.data))
+                },
+                seeFares:async function (trip) {
+                    this.edit_fare_trip_id = trip.id;
+                    this.edit_trip = trip;
+                    await axios
+                        .get("http://localhost:8080/api/ticketCenter/seeFares/"+this.edit_fare_trip_id)
+                        .then(response => (this.fares =  response.data))
+                },
+                editStation:function (station) {
+                    let param = new URLSearchParams();
+                    let myid = station.id;
+                    this.edit_station_time = document.getElementById(myid).value;
+                    document.getElementById(myid).value="";
+                    param.append("id",station.id);
+                    param.append("time",this.edit_station_time);
+                    axios.post("http://localhost:8080/api/ticketCenter/editStation",param)
+                        .then(response=>{this.seeStations(this.edit_trip);});
+                    this.edit_station_time="";
+                },
+                editFare:function(fare){
+                    let param = new URLSearchParams();
+                    let myId = fare.id;
+                    param.append("id",myId);
+                    param.append("price",document.getElementById(myId).value);
+                    axios.post("http://localhost:8080/api/ticketCenter/editFare",param)
+                        .then(response=>{this.seeFares(this.edit_trip);});
+                    document.getElementById(myId).value = "";
+                },
+                newStation: function(){
+                    let param = new URLSearchParams();
+                    param.append("id",this.edit_fare_trip_id);
+                    param.append("name",document.getElementById("new_stationName").value);
+                    param.append("time",document.getElementById("new_arriveTime").value);
+                    axios.post("http://localhost:8080/api/ticketCenter/addStation",param)
+                        .then(response=>{this.seeStations(this.edit_trip);});
+                    document.getElementById("new_stationName").value = "";
+                    document.getElementById("new_arriveTime").value = "";
+                },
+                newFare:
+                    function(){
+                        let param = new URLSearchParams();
+                        param.append("id",this.edit_fare_trip_id);
+                        param.append("start",document.getElementById("newStartStation").value);
+                        param.append("end",document.getElementById("newEndStation").value);
+                        param.append("type",document.getElementById("newSeatType").value);
+                        param.append("price",document.getElementById("newPrice").value);
+                        axios.post("http://localhost:8080/api/ticketCenter/addFare",param)
+                            .then(response=>{this.seeFares(this.edit_trip);});
+                        document.getElementById("newStartStation").value = "";
+                        document.getElementById("newEndStation").value= "";
+                        document.getElementById("newSeatType").value="";
+                        document.getElementById("newPrice").value="";
+                    },
+                deleteStation:async  function (station) {
+                    await axios
+                        .delete("http://localhost:8080/api/ticketCenter/deleteStation/" + station.id)
+                    .then(this.seeStations(this.edit_trip))
+                },
+                deleteFare:async  function (fare) {
+                    await axios
+                        .delete("http://localhost:8080/api/ticketCenter/deleteFare/" + fare.id)
+                    .then(this.seeFares(this.edit_trip))
+
+                },
+
+
+          /*
+
+                //增加列车
+                newTrain: function (event) {
+                    let param = new URLSearchParams();
+                    param.append("trainType", this.new_type);
+                    param.append("seatInfo",this.new_seatInformation);
+                    axios.post("http://localhost:8080/api/ticketCenter/addTrain",param)
+                        .then(savedTrain => {
+                            this.trains.push(savedTrain.data);
+                            this.new_type = '';
+                            this.new_seatInformation= '';
+                        });
+                    this.get();
+                },
+                seeTrain:function(train){
+                    this.edit_seatInformation = train.seatInfo;
+                    this.edit_type = train.trainType;
+                    this.edit_id = train.id;
+                },
+                editTrain:function (event) {
+                    let param = new URLSearchParams();
+                    param.append("trainType", this.edit_type);
+                    param.append("seatInfo",this.edit_seatInformation);
+                    param.append("id",this.edit_id);
+                    axios.post("http://localhost:8080/api/ticketCenter/editTrain",param)
+                        .then(savedTrain => {
+                            this.get();
+                        });
+                },
+                //删除列车
+                deleteTrain: async function(train) {
+                    await axios
+                        .delete("http://localhost:8080/api/ticketCenter/deleteTrain/" + train.id);
+                    this.get();
+                },
+                //新增车次
+                checkTrip:function (train) {
+                    this.train_id = train.id;
+                },
+                addTrip:function (event) {
+                    let param = new URLSearchParams();
+                    param.append("de_time",this.de_time);
+                    param.append("start_station",this.start_station);
+                    param.append("end_station",this.end_station);
+                    param.append("train_number",this.train_number);
+                    param.append("train_status",this.train_status);
+                    param.append("train_id",this.train_id);
+                    axios.post("http://localhost:8080/api/ticketCenter/addTrip",param)
+                        .then(savedTrip => {
+                        });
                 },*/
             }
         });

@@ -26,7 +26,7 @@ import java.util.List;
  *
  */
 @Controller
-public class MainController {
+public class MainController{
 
     /**
      * 首页url
@@ -63,48 +63,7 @@ public class MainController {
         return "search";
     }
 
-    /**
-     * 买票页面
-     * @return
-     */
-    @RequestMapping("/buyTicket")
-    public String getBuyTicket(){
-        return "buyticket";
-    }
 
-    /**
-     * 支付页面
-     * @return
-     */
-    @RequestMapping("/pay")
-    public String getPay(){
-        return "pay";
-    }
-
-    /**
-     * 个人中心
-     * @return
-     */
-    @Autowired
-    ContactService finycontactors;
-
-    @RequestMapping("/pcenter")
-    public String getPersonalCenter(HttpSession session, Model model, @PageableDefault(size=3,sort = {"id"},direction = Sort.Direction.DESC)
-            Pageable pageable) {
-        OrdinaryUserEntity user=(OrdinaryUserEntity) session.getAttribute("user");
-        Page<ContactEntity>  contactuser=finycontactors.findallcontator(1,pageable);
-        model.addAttribute("page",contactuser);
-        if(user!=null) {
-           // List<ContactEntity> contactuser=finycontactors.findcontactors(user.getId());
-//            Page<ContactEntity>  contactuser=finycontactors.findallcontator(user.getId(),pageable);
-            model.addAttribute("names", user.getName());
-            model.addAttribute("types", user.getType());
-            model.addAttribute("personIds", user.getPersonId());
-            model.addAttribute("phonenums", user.getPhonenum());
-//            model.addAttribute("page",contactuser);
-        }
-        return "personalcenter";
-    }
 
     /**
      * 买票页面

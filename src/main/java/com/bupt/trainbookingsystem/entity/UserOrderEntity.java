@@ -20,9 +20,11 @@ public class UserOrderEntity {
     private Integer tripId;//行程id
     private OrdinaryUserEntity ordinaryUserByOrdineryUserId;
     private TripEntity tripByTripId;
+    private String pricelist;
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // 自增
     public int getId() {
         return id;
     }
@@ -30,6 +32,7 @@ public class UserOrderEntity {
     public void setId(int id) {
         this.id = id;
     }
+
 
     @Basic
     @Column(name = "trip_number")
@@ -102,6 +105,12 @@ public class UserOrderEntity {
     }
 
     @Basic
+    @Column(name="pricelist")
+    public String getPricelist() { return pricelist; }
+
+    public void setPricelist(String pricelist) { this.pricelist = pricelist; }
+
+    @Basic
     @Column(name = "ordinery_user_id")
     public Integer getOrdineryUserId() {
         return ordineryUserId;
@@ -162,4 +171,6 @@ public class UserOrderEntity {
     public void setTripByTripId(TripEntity tripByTripId) {
         this.tripByTripId = tripByTripId;
     }
+
+
 }

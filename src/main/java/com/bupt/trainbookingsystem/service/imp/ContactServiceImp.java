@@ -23,6 +23,26 @@ public class ContactServiceImp implements ContactService {
     }
 
     @Override
+    public ContactEntity findbyname(String name) {
+        return contactRespository.findContactEntityByName(name);
+    }
+
+    @Override
+    public void delecontactbyid(int id) {
+        contactRespository.deleteById(id);
+    }
+
+    @Override
+    public void addcontatcor(ContactEntity c) {
+        contactRespository.save(c);
+    }
+
+    @Override
+    public void altercontactor(String phonenum, int id) {
+        contactRespository.updatecontactor(phonenum,id);
+    }
+
+    @Override
     public List<ContactEntity> findcontactors(int id) {
         List<ContactEntity> contactEntities=contactRespository.findContactEntitiesByUserId(id);
         return contactEntities;

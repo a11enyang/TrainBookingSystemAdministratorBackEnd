@@ -19,9 +19,35 @@ public class LoginController {
     public String login(){
         return "login";
     }
-
     @GetMapping("/register")
-    public String register(){return "register";}
+    public String register(){
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String register(@RequestParam String name,
+                           @RequestParam String password,
+                           @RequestParam String cardType,
+                           @RequestParam String personId,
+                           @RequestParam String email,
+                           @RequestParam String realname,
+                           @RequestParam String phonenum,
+                           @RequestParam String personType){
+        OrdinaryUserEntity userEntity = new OrdinaryUserEntity();
+        userEntity.setName(name);
+        userEntity.setPassword(password);
+        userEntity.setType(cardType);
+        userEntity.setPersonId(personId);
+        userEntity.setEmail(email);
+        userEntity.setRealname(realname);
+        userEntity.setPhonenum(phonenum);
+        if(personType.equals("成人"))
+            userEntity.setIsstudent((byte) 0);
+        else
+            userEntity.setIsstudent((byte) 1);
+        userLogin.createOrdinaryUserEntity(userEntity);
+        return "redirect:/login";
+    }
 
 
     @PostMapping("/admin/login")
@@ -32,7 +58,7 @@ public class LoginController {
         if(ordinaryuser!=null){
             ordinaryuser.setPassword(null);
             session.setAttribute("user",ordinaryuser);
-            return "redirect:/search";
+            return "redirect:/index";
         }
         else {
             attributes.addFlashAttribute("message","用户名或密码错误");

@@ -16,9 +16,11 @@ import java.util.List;
 public interface TrainRepository extends JpaRepository<TrainEntity,Integer> {
     //根据ID找列车
     TrainEntity findTrainEntityById(int id);
+
     //根据车型找列车
     List<TrainEntity> findTrainEntitiesByTrainTypeContaining(String type);
     //根据ID删除列车
+    @Transactional
     void deleteTrainEntityById(int id);
     //更新列车信息
     @Transactional

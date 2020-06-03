@@ -17,6 +17,7 @@ public class FareEntity {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)  // 自增
     public int getId() {
         return id;
     }
