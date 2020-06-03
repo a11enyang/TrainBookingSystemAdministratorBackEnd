@@ -73,9 +73,11 @@
     <div style="background: dodgerblue"><span style="margin-left: 20px;color: white;font-size: 20px">订单信息</span></div>
 
     <div><span style="font-weight: bold;font-size: 18px;margin-left: 20px">
-        时间(起)：<b th:text="${time}"></b>&nbsp;&nbsp;&nbsp;
+        出发时间：<b th:text="${starttime}"></b>&nbsp;&nbsp;&nbsp;
+        抵达时间：<b th:text="${endtime}"></b>&nbsp;&nbsp;&nbsp;
         车次：<b th:text="${tripnum}"></b>&nbsp;&nbsp;&nbsp;
-        <b th:text="${start}"></b> -> <b th:text="${end}"></b></span>
+        <b th:text="${start}"></b> => <b th:text="${end}"></b></span>
+
         <HR style=" border-top: 1px dashed red;margin-top: 5px" width="100%" >
     </div>
     <div style="padding: 0 50px">
@@ -159,13 +161,13 @@
             <br>
         <p style="color: forestgreen;font-weight: bold;font-size: 15px">付款方式：</p>
 
-        <select class="form-control" style="width: 300px">
-			<option>支付宝</option>
-			<option>微信</option>
-			<option>银行卡</option>
+        <select id="payway" onchange="selectpayway()" class="form-control"  style="width: 300px">
+			<option value="1">支付宝</option>
+			<option value="2">微信</option>
         </select>
         <br>
-        <img th:src="@{/static/picture/pay.png}" style="width: 300px"/>
+            <div id="img1"><img th:src="@{/static/picture/pay.png}" style="width: 300px"/></div>
+            <div id="img2" style="display: none"><img th:src="@{/static/picture/weixin.jpg}" style="width: 300px;"/></div>
         <br>
         <br>
 
@@ -209,6 +211,20 @@
         $.post(url,null,function () {
             window.location=urlatnow;
         });
+    }
+</script>
+<script type="text/javascript">
+    function selectpayway() {
+        var tabindex=document.getElementById("payway").value;
+        for(var i=1;i<3;i++){
+            if(i==tabindex) {
+                document.getElementById("img"+i).style.display="block";
+            }
+               else{
+                document.getElementById("img"+i).style.display="none";
+            }
+
+        }
     }
 </script>
 </body>

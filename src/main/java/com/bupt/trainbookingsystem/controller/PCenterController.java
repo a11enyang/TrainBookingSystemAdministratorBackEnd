@@ -40,6 +40,9 @@ public class PCenterController {
     @Autowired
     OrdinaryUserService userService;
 
+    @Autowired
+    StationsService stationsService;
+
     @RequestMapping("/pcenter")
     public String showpagestu(HttpSession session, Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                               @RequestParam(value = "page1", defaultValue = "0")int page1,
@@ -50,19 +53,57 @@ public class PCenterController {
             Sort sort = Sort.by(Sort.Direction.DESC,"id");
             Pageable pageable= PageRequest.of(page,3,sort);
             Page<ContactEntity> contactuser=contactorsmethods.findallcontator(user.getId(),pageable);
-
+            List<Userorder_search> not_payorder=new ArrayList<>();
+            List<Userorder_search> not_goorder=new ArrayList<>();
+            List<Userorder_search> complete_order=new ArrayList<>();
 
             Pageable pageable3=PageRequest.of(page4,3,sort);
-            List<Userorder_search> ordernotpay=userOrderService.order_paystate(user.getId(),"0");
-            Page<Userorder_search> notpayorders=listConvertToPage(ordernotpay,pageable3);
+            List<UserOrderEntity> ordernotpay=userOrderService.orderstate_get(user.getId(),"0");
+            for(int i=0;i<ordernotpay.size();i++){
+                UserOrderEntity pay0=ordernotpay.get(i);
+                String[] route=pay0.getRoutLine().split("-");
+                String start=route[0];
+                String end=route[route.length-1];
+                Timestamp starttime=stationsService.getStationTimeByTripIdAndStation(start,pay0.getTripId());
+                Timestamp endtime=stationsService.getStationTimeByTripIdAndStation(end,pay0.getTripId());
+                Userorder_search pay_0=new Userorder_search(pay0.getId(),pay0.getTripNumber(),pay0.getNameList(),pay0.getSeatList()
+                ,pay0.getPrice(),start,end,starttime,endtime);
+                not_payorder.add(pay_0);
+            }
+            Page<Userorder_search> notpayorders=listConvertToPage(not_payorder,pageable3);
 
             Pageable pageable1=PageRequest.of(page1,3,sort);
-            List<Userorder_search> ordernotgo=userOrderService.order_paystate(user.getId(),"1");
-            Page<Userorder_search> notgoorders=listConvertToPage(ordernotgo,pageable1);
+            List<UserOrderEntity> ordernotgo=userOrderService.orderstate_get(user.getId(),"1");
+            for(int i=0;i<ordernotgo.size();i++){
+                UserOrderEntity pay1=ordernotgo.get(i);
+                String[] route=pay1.getRoutLine().split("-");
+                String start=route[0];
+                String end=route[route.length-1];
+                Timestamp starttime=stationsService.getStationTimeByTripIdAndStation(start,pay1.getTripId());
+                Timestamp endtime=stationsService.getStationTimeByTripIdAndStation(end,pay1.getTripId());
+                Userorder_search pay_1=new Userorder_search(pay1.getId(),pay1.getTripNumber(),pay1.getNameList(),pay1.getSeatList()
+                        ,pay1.getPrice(),start,end,starttime,endtime);
+                not_goorder.add(pay_1);
+            }
+            Page<Userorder_search> notgoorders=listConvertToPage(not_goorder,pageable1);
+
+
 
             Pageable pageable2=PageRequest.of(page2,3,sort);
-            List<Userorder_search> ordercomplete=userOrderService.order_paystate(user.getId(),"2");
-            Page<Userorder_search> completeorders=listConvertToPage(ordercomplete,pageable2);
+            List<UserOrderEntity> ordercomplete=userOrderService.orderstate_get(user.getId(),"2");
+            for(int i=0;i<ordercomplete.size();i++){
+                UserOrderEntity pay2=ordercomplete.get(i);
+                String[] route=pay2.getRoutLine().split("-");
+                String start=route[0];
+                String end=route[route.length-1];
+                Timestamp starttime=stationsService.getStationTimeByTripIdAndStation(start,pay2.getTripId());
+                Timestamp endtime=stationsService.getStationTimeByTripIdAndStation(end,pay2.getTripId());
+                Userorder_search pay_2=new Userorder_search(pay2.getId(),pay2.getTripNumber(),pay2.getNameList(),pay2.getSeatList()
+                        ,pay2.getPrice(),start,end,starttime,endtime);
+                complete_order.add(pay_2);
+            }
+            Page<Userorder_search> completeorders=listConvertToPage(complete_order,pageable2);
+
             model.addAttribute("page",contactuser);
             model.addAttribute("notpaypage",notpayorders);
             model.addAttribute("notgopage",notgoorders);
@@ -141,11 +182,16 @@ public class PCenterController {
     public String paypage(@PathVariable int id, Model model,HttpSession session){
         OrdinaryUserEntity user=(OrdinaryUserEntity) session.getAttribute("user");
         if(user!=null){
-            Userorder_search payorder=userOrderService.orderinfo(id).get(0);
+            UserOrderEntity payorder=userOrderService.findUserOrderEntityById(id);
             List<Pay_userinfo> payUserinfos=new ArrayList<>();
-            String[] namelist=payorder.getNamelist().split(",");
-            String[] seatlist=payorder.getSeat().split(",");
+            String[] namelist=payorder.getNameList().split(",");
+            String[] seatlist=payorder.getSeatList().split(",");
             String[] pricelist=payorder.getPricelist().split(",");
+            String[] routelist=payorder.getRoutLine().split("-");
+            String start=routelist[0];
+            String end=routelist[routelist.length-1];
+            Timestamp starttime=stationsService.getStationTimeByTripIdAndStation(start,payorder.getTripId());
+            Timestamp endtime=stationsService.getStationTimeByTripIdAndStation(end,payorder.getTripId());
             for(int i=0;i<namelist.length;i++){
                 Pay_userinfo payUserinfo=new Pay_userinfo();
                 String[] carriage=seatlist[i].split("-");
@@ -164,10 +210,11 @@ public class PCenterController {
                 payUserinfos.add(payUserinfo);
             }
             model.addAttribute("names", user.getName());
-            model.addAttribute("start",payorder.getStartstation());
-            model.addAttribute("end",payorder.getEndstation());
-            model.addAttribute("tripnum",payorder.getTrainnum());
-            model.addAttribute("time",payorder.getDepaturetime());
+            model.addAttribute("start",start);
+            model.addAttribute("end",end);
+            model.addAttribute("tripnum",payorder.getTripNumber());
+            model.addAttribute("starttime",starttime);
+            model.addAttribute("endtime",endtime);
             model.addAttribute("price",payorder.getPrice());
             model.addAttribute("person",payUserinfos);
             model.addAttribute("orderid",id);
