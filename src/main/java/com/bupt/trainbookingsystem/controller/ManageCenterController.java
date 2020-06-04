@@ -16,7 +16,7 @@ import java.util.Map;
  * 内容：重写系统管理员controller
  */
 @Controller
-public class ManageCenterController {
+public class    ManageCenterController {
     public AdministratorEntity Administrator = new AdministratorEntity();
     @Autowired
     private AdministratorService administratorService;
@@ -26,20 +26,20 @@ public class ManageCenterController {
         return "managerlogin";
     }
     //检查管理员登录
-    @RequestMapping("manager/login")
-    public String checkManager(@RequestParam("name") String name,
-                               @RequestParam("pw") String pw, Map<String,Object> map){
-        Administrator = administratorService.findAdministratorEntityByNameAndPassword(name,pw);
-        if(Administrator!=null ) {
-            System.out.println("用户"+name+"登录");
-            return "managercenter";
-        }
-        else{
-            System.out.println("no user");
-            map.put("msg1","用户名密码错误");
-            return "redirect:/managerLogin";
-        }
-    }
+//    @RequestMapping("manager/login")
+//    public String checkManager(@RequestParam("name") String name,
+//                               @RequestParam("pw") String pw, Map<String,Object> map){
+//        Administrator = administratorService.login(name,pw)
+//        if(Administrator!=null ) {
+//            System.out.println("用户"+name+"登录");
+//            return "managercenter";
+//        }
+//        else{
+//            System.out.println("no user");
+//            map.put("msg1","用户名密码错误");
+//            return "redirect:/managerLogin";
+//        }
+//    }
     @RequestMapping("/managerBackLogin")
     public String backLogin(){
         System.out.println("ss");

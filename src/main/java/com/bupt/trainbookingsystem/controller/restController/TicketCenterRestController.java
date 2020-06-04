@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/ticketCenter")
+@CrossOrigin
 public class TicketCenterRestController {
     public final StationsService stationsService;
     public final RoutelineService routelineService;

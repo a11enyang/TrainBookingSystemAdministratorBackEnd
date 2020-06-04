@@ -11,6 +11,17 @@ public class AdministratorEntity {
     private String password; //密码
     private String staffId; //工号
     private String userType; //用户类型
+    @Column(name = "token")
+    private String token;//token
+
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     @Id
     @Column(name = "id")

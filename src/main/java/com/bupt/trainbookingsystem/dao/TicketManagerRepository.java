@@ -5,6 +5,7 @@
 package com.bupt.trainbookingsystem.dao;
 import com.bupt.trainbookingsystem.entity.TicketManagerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public interface TicketManagerRepository extends JpaRepository<TicketManagerEntity,Integer> {
+public interface TicketManagerRepository extends JpaRepository<TicketManagerEntity,Integer>, JpaSpecificationExecutor<TicketManagerEntity> {
 
     //通过id 找票务端用户
     TicketManagerEntity findTicketManagerEntityById(int id);
