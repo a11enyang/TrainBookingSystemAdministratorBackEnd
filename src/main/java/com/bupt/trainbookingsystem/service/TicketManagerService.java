@@ -5,6 +5,7 @@
 package com.bupt.trainbookingsystem.service;
 
 import com.bupt.trainbookingsystem.entity.TicketManagerEntity;
+import org.springframework.data.domain.Page;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -29,4 +30,7 @@ public interface TicketManagerService {
     //通过ID修改票务端用户信息
     TicketManagerEntity updateTicketManagerById1(String name,String password,String staffId,int id);
     TicketManagerEntity updateTicketManagerById2(String name,String password,int id);
+
+    //分页显示售票盾用户
+    Page<TicketManagerEntity> findTicketManagers(int page, int pageSize);
 }

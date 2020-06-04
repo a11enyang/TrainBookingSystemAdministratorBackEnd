@@ -1,5 +1,5 @@
 package com.bupt.trainbookingsystem.controller.restController;
-
+import com.bupt.trainbookingsystem.entity.searchResult.SearchTrip;
 import com.bupt.trainbookingsystem.entity.RoutelineEntity;
 import com.bupt.trainbookingsystem.entity.TripEntity;
 import com.bupt.trainbookingsystem.service.*;
@@ -34,8 +34,32 @@ public class IndexRestController {
         this.fareService = fareService;
         this.seatService = seatService;
     }
+    public static String getDistanceTime(long time1, long time2) {
+        long day = 0;
+        long hour = 0;
+        long min = 0;
+        long sec = 0;
+        long diff;
+
+        if (time1 < time2) {
+            diff = time2 - time1;
+        } else {
+            diff = time1 - time2;
+        }
+        day = diff / (24 * 60 * 60 * 1000);
+        hour = (diff / (60 * 60 * 1000) - day * 24);
+        min = ((diff / (60 * 1000)) - day * 24 * 60 - hour * 60);
+        sec = (diff / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+        if (day != 0) return day + "天"+hour + "小时"+min + "分钟" + sec + "秒";
+        if (hour != 0) return hour + "小时"+ min + "分钟" + sec + "秒";
+        if (min != 0) return min + "分钟" + sec + "秒";
+        if (sec != 0) return sec + "秒" ;
+        return "0秒";
+    }
+
+    //返回用户搜索信息
     @PostMapping("/getTrips")
-    public List<TripEntity> getTrips(@RequestParam(value = "start",required = false)String start,
+    public Map<String,Object> getTrips(@RequestParam(value = "start",required = false)String start,
                                      @RequestParam(value = "end",required = false)String end,
                                      @RequestParam(value = "time",required = false)String time){
             System.out.println(time);
@@ -55,21 +79,35 @@ public class IndexRestController {
                     System.out.println(tripService.findTripEntityById(tripId));
                 }
             }
+            List<SearchTrip> searchTrips = new ArrayList<>();
             for(TripEntity tripEntity: routeTrips){
                 //当前车次
+                SearchTrip searchTrip = new SearchTrip();
+                searchTrip.setStartStation(start);
+                searchTrip.setEndStation(end);
                 int tripId = tripEntity.getId();
                 System.out.println("查到的车次");
                 System.out.println(tripId);
+                searchTrip.setTripId(tripId);
+                searchTrip.setTripNumber(tripService.findTripEntityById(tripId).getTrainNumber());
                 //时间表找出发时间
                 System.out.println("出发时间");
-                System.out.println(stationsService.getStationTimeByTripIdAndStation(start,tripId));
+                Timestamp startTime =stationsService.getStationTimeByTripIdAndStation(start,tripId);
+                System.out.println(startTime);
+                searchTrip.setStartTime(String.valueOf(startTime));
                 //时间表找到达时间
-                System.out.println("到达时间");
-                System.out.println(stationsService.getStationTimeByTripIdAndStation(end,tripId));
+                System.out.println("到达时间"   );
+                Timestamp endTime = stationsService.getStationTimeByTripIdAndStation(end,tripId);
+                System.out.println(endTime);
+                searchTrip.setEndTime(String.valueOf(endTime));
+                String distanceTime = getDistanceTime(startTime.getTime(),endTime.getTime());
+                searchTrip.setSpendTime(distanceTime);
                 //费用表找到费用
                 System.out.println("费用");
                 System.out.println(fareService.getFareByStationsAndTripId(start,end,"1",tripId));
+                searchTrip.setFareFirst(String.valueOf(fareService.getFareByStationsAndTripId(start,end,"1",tripId)));
                 System.out.println(fareService.getFareByStationsAndTripId(start,end,"2",tripId));
+                searchTrip.setFareSecond(String.valueOf(fareService.getFareByStationsAndTripId(start,end,"2",tripId)));
                 //获取总路线
                 //获取用户经过路线
                 System.out.println("总路线");
@@ -90,12 +128,19 @@ public class IndexRestController {
                 }
                 System.out.println("用户路线");
                 System.out.println(myRout);
+                searchTrip.setRouteLine(myRout);
                 //根据用户经过路线找座位
                 String[] MyRoute = myRout.split("-");
                 //初始化座位序列
                 String numberOfSeat = tripService.findTripEntityById(tripId).getRemainseatInfo();
                 String[] NumberOfSeat = numberOfSeat.split("-");
-                int seatNumber = Integer.parseInt(NumberOfSeat[0])+Integer.parseInt(NumberOfSeat[1]);
+                int seatFirst = Integer.parseInt(NumberOfSeat[0]);
+                int seatSecond = Integer.parseInt(NumberOfSeat[1]);
+                int seatNumber = seatFirst + seatSecond;
+                searchTrip.setSeatFirstRemain(seatFirst);
+                searchTrip.setSeatSecondRemain(seatSecond);
+                searchTrips.add(searchTrip);
+                /*
                 String seatNum = "";
                 for(int m=0;m<seatNumber;++m){
                     seatNum = seatNum.concat("1");
@@ -132,8 +177,12 @@ public class IndexRestController {
                         System.out.println("no seat now");
                         break;
                     }
-                }
+                }*/
             }
-            return routeTrips;
+            Map<String,Object> map=new HashMap<>();
+            map.put("searchTrips",searchTrips);
+            map.put("sum",searchTrips.size());
+            return map;
     }
+
 }

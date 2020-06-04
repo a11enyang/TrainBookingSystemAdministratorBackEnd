@@ -7,10 +7,21 @@ import java.util.Objects;
 @Table(name = "administrator", schema = "booking", catalog = "")
 public class AdministratorEntity {
     private int id;
-    private String name;
-    private String password;
-    private String staffId;
-    private String userType;
+    private String name; //管理员名字
+    private String password; //密码
+    private String staffId; //工号
+    private String userType; //用户类型
+    @Column(name = "token")
+    private String token;//token
+
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     @Id
     @Column(name = "id")

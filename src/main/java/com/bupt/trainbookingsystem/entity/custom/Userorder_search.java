@@ -8,29 +8,29 @@ public class Userorder_search {
     private  int id;
     private  String trainnum;
     private  String namelist;
-    private  String seat;
+    private  String seatlist;
 
     private  BigDecimal price;
     private  String startstation;
     private  String endstation;
-    private  Timestamp depaturetime;
+    private  Timestamp starttime;
+    private  Timestamp endtime;
     private  String pricelist;
 
     public Userorder_search(){
         super();
     }
 
-
-    public Userorder_search(int id, String trainnum, String namelist, String seat, BigDecimal price, String startstation, String endstation, Timestamp depaturetime, String pricelist) {
+    public Userorder_search(int id, String trainnum, String namelist, String seatlist, BigDecimal price, String startstation, String endstation, Timestamp starttime, Timestamp endtime) {
         this.id = id;
         this.trainnum = trainnum;
         this.namelist = namelist;
-        this.seat = seat;
+        this.seatlist = seatlist;
         this.price = price;
         this.startstation = startstation;
         this.endstation = endstation;
-        this.depaturetime = depaturetime;
-        this.pricelist = pricelist;
+        this.starttime = starttime;
+        this.endtime = endtime;
     }
 
     public int getId() {
@@ -53,12 +53,12 @@ public class Userorder_search {
 
     public void setNamelist(String namelist) { this.namelist = namelist; }
 
-    public String getSeat() {
-        return seat;
+    public String getSeatlist() {
+        return seatlist;
     }
 
-    public void setSeat(String seat) {
-        this.seat = seat;
+    public void setSeatlist(String seat) {
+        this.seatlist = seat;
     }
 
     public BigDecimal getPrice() {
@@ -85,13 +85,7 @@ public class Userorder_search {
         this.endstation = endstation;
     }
 
-    public Timestamp getDepaturetime() {
-        return depaturetime;
-    }
 
-    public void setDepaturetime(Timestamp depaturetime) {
-        this.depaturetime = depaturetime;
-    }
 
 
     public String getPricelist() {
@@ -100,5 +94,21 @@ public class Userorder_search {
 
     public void setPricelist(String pricelist) {
         this.pricelist = pricelist;
+    }
+
+    public Timestamp getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(Timestamp starttime) {
+        this.starttime = starttime;
+    }
+
+    public Timestamp getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(Timestamp endtime) {
+        this.endtime = endtime;
     }
 }

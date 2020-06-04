@@ -211,36 +211,31 @@
                 <thead>
                 <tr>
                     <th><span style="margin-left: 20px">车次</span></th>
-                    <th>出发站<br>到达站</th>
-                    <th>出发时间<br>到达时间</th>
+                    <th>出发站</th>
+                    <th>到达站</th>
+                    <th>出发时间</th>
+                    <th>到达时间</th>
                     <th>历时</th>
-                    <th>特等座</th>
                     <th>一等座</th>
                     <th>二等座</th>
-                    <th>软卧</th>
-                    <th>软座</th>
-                    <th>硬卧</th>
-                    <th>硬座</th>
-                    <th>其他</th>
-                    <th>备注</th>
+                    <th>一等座票价</th>
+                    <th>二等座票价</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="trip in gettrips">
-                    <td><span style="margin-left: 20px">{{trip.trainNumber}}</span></td>
-                    <td>{{start_station}}<br>{{end_station}}</td>
-                    <td>21:24<br>9:22</td>
-                    <td>11:58<br>次日到达</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>有</td>
+                    <td><span style="margin-left: 20px">{{trip.tripNumber}}</span></td>
+                    <td>{{trip.startStation}}</td>
+                    <td>{{trip.endStation}}</td>
+                    <td>{{trip.startTime}}</td>
+                    <td>{{trip.endTime}}</td>
+                    <td>{{trip.spendTime}}</td>
+                    <td>{{trip.seatFirstRemain}}</td>
+                    <td>{{trip.seatSecondRemain}}</td>
+                    <td>{{trip.fareFirst}}</td>
+                    <td>{{trip.fareSecond}}</td>
                     <td>
-                        <button type="button" class="btn btn-primary" @click="buytheTicket(trip.trainNumber)">预定</button>
+                        <button type="button" class="btn btn-primary" @click="buytheTicket(trip.tripNumber)">预定</button>
                     </td>
                 </tr>
                 </tbody>
@@ -301,7 +296,8 @@
                 param.append("time",this.start_time);
                 axios.post("http://localhost:8080/api/index/getTrips", param)
                     .then(response => {
-                        this.gettrips= response.data;
+                        this.gettrips= response.data["searchTrips"];
+                        this.size = response.data["sum"];
                         console.log("data",this.gettrips);
                     })
             },

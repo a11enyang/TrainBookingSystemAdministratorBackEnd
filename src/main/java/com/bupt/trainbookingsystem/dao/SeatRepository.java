@@ -17,5 +17,5 @@ public interface SeatRepository extends JpaRepository<SeatEntity,Integer> {
     void deleteSeatEntitiesByTripId(int id);
     @Transactional
     @Query(value = "select seat_info from seat where first_station = ?1 and next_station =?2 and trip_id=?3",nativeQuery=true)
-    byte[] getSeatByStartEndTripId(String first,String next,int trip_id);
+    String getSeatByStartEndTripId(String first,String next,int trip_id);
 }

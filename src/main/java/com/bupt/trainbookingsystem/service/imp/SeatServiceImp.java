@@ -21,7 +21,7 @@ public class SeatServiceImp implements SeatService {
     }
 
     @Override
-    public byte[] getSeatByStartEndTripId(String first, String next, int trip_id) {
+    public String getSeatByStartEndTripId(String first, String next, int trip_id) {
         return seatRepository.getSeatByStartEndTripId(first, next, trip_id);
     }
 }

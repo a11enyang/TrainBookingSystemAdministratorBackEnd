@@ -18,7 +18,7 @@ import java.util.Map;
  * 内容：重写系统管理员controller
  */
 @Controller
-public class ManageCenterController {
+public class    ManageCenterController {
     public AdministratorEntity Administrator = new AdministratorEntity();
     @Autowired
     private AdministratorService administratorService;
@@ -33,7 +33,7 @@ public class ManageCenterController {
                                @RequestParam("pw") String pw,
                                Map<String,Object> map,
                                HttpSession session){
-        Administrator = administratorService.findAdministratorEntityByNameAndPassword(name,pw);
+        Administrator = administratorService.findAdtorByNameAndPwd(name,pw);
         if(Administrator!=null ) {
             System.out.println("用户"+name+"登录");
             session.setAttribute("Administrator",Administrator);

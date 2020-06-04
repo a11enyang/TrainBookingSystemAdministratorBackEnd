@@ -6,6 +6,10 @@ package com.bupt.trainbookingsystem.service.imp;
 import com.bupt.trainbookingsystem.dao.TicketManagerRepository;
 import com.bupt.trainbookingsystem.entity.TicketManagerEntity;
 import com.bupt.trainbookingsystem.service.TicketManagerService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -72,4 +76,11 @@ public class TicketManagerServiceImp implements TicketManagerService {
     }
 
 
+    @Override
+    public Page<TicketManagerEntity> findTicketManagers(int page, int pageSize) {
+        page--;
+        page = page < 0 ? 0 :page;
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.ASC, "id"));
+        return tmr.findAll(pageable);
+    }
 }

@@ -62,6 +62,6 @@ public interface UserOrderRepository extends JpaRepository<UserOrderEntity,Integ
             "UserOrderEntity a,TripEntity b where a.tripId=b.id and a.id=?1")
     List<Object[]> findorderbyid(int id);
 
-
-
+    @Query("select o from UserOrderEntity o where o.ordineryUserId=?1 and  o.userOrderCondition=?2")
+    List<UserOrderEntity>  orderstate_get(int id,String state);
 }

@@ -38,4 +38,6 @@ public interface UserOrderService {
     //根据id查找订单及列车信息
     List<Userorder_search> orderinfo(int id);
 
+    //根据状态和id查找订单
+    List<UserOrderEntity>  orderstate_get(int id,String state);
 }

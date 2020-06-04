@@ -10,7 +10,7 @@ public class SeatEntity {
     private int id;
     private String firstStation;
     private String nextStation;
-    private byte[] seatInfo;
+    private String seatInfo;
     private Integer tripId;
     private TripEntity tripByTripId;
 
@@ -47,11 +47,11 @@ public class SeatEntity {
 
     @Basic
     @Column(name = "seat_info")
-    public byte[] getSeatInfo() {
+    public String getSeatInfo() {
         return seatInfo;
     }
 
-    public void setSeatInfo(byte[] seatInfo) {
+    public void setSeatInfo(String seatInfo) {
         this.seatInfo = seatInfo;
     }
 
@@ -73,14 +73,14 @@ public class SeatEntity {
         return id == that.id &&
                 Objects.equals(firstStation, that.firstStation) &&
                 Objects.equals(nextStation, that.nextStation) &&
-                Arrays.equals(seatInfo, that.seatInfo) &&
+                Objects.equals(seatInfo,that.seatInfo) &&
                 Objects.equals(tripId, that.tripId);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(id, firstStation, nextStation, tripId);
-        result = 31 * result + Arrays.hashCode(seatInfo);
+        result = 31 * result + Arrays.hashCode(new String[]{seatInfo});
         return result;
     }
 
