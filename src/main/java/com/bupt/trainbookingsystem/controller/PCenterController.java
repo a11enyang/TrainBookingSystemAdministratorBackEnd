@@ -14,6 +14,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -260,16 +261,31 @@ public class PCenterController {
 
     @PostMapping("buyticket/getchooseperson")
     @ResponseBody
-    public List<Selectcontactor> getchooseperson(@RequestBody List<String> checknames, HttpSession session){
+    public List<Selectcontactor> getchooseperson(@RequestParam MultiValueMap params, HttpSession session){
         OrdinaryUserEntity user=(OrdinaryUserEntity)session.getAttribute("user");
         List<Selectcontactor> selectcontactors=new ArrayList<>();
-       if(user!=null){
+
+      if(user!=null){
+          List<String> checknames=new ArrayList<>();
+          String start=(String)params.getFirst("start");
+          String end=(String)params.getFirst("end");
+          String trainnum=(String)params.getFirst("trainnum");
+          List<String> checkname=(LinkedList)params.get("checknames");
+          String[] list=checkname.get(0).split(",");
+          for(int k=0;k<list.length;k++){
+              checknames.add(list[k]);
+          }
+          TripEntity tripEntity=tripService.findTripEntityByTrainNumber(trainnum);
+          BigDecimal fare=fareService.getFareByStationsAndTripId(start,end,"1",tripEntity.getId());
          for(int i=0;i<checknames.size();i++){
                if(checknames.get(i).equals(user.getRealname())){
                    Selectcontactor selectuser=new Selectcontactor();
                    selectuser.setName(user.getRealname());
                    selectuser.setPersonid(user.getPersonId());
                    selectuser.setPhonenum(user.getPhonenum());
+                   selectuser.setPrice(fare);
+                   selectuser.setTripid(tripEntity.getId());
+                   selectuser.setType("1");
                    selectcontactors.add(selectuser);
                }
                else {
@@ -278,11 +294,29 @@ public class PCenterController {
                    selectuser.setName(contactor.getName());
                    selectuser.setPersonid(contactor.getPersonId());
                    selectuser.setPhonenum(contactor.getPhonenum());
+                   selectuser.setPrice(fare);
+                   selectuser.setTripid(tripEntity.getId());
+                   selectuser.setType("1");
                    selectcontactors.add(selectuser);
                }
           }
        }
        return selectcontactors;
+    }
+
+    @PostMapping("buyticket/selecttickettype")
+    @ResponseBody
+    public List<Selectcontactor> selecttickettype(@RequestBody Map<String,Object> data){
+        String tickettype=(String) data.get("index1");
+        int indexofselect=(int)data.get("index2");
+        String start=(String)data.get("start");
+        String end=(String)data.get("end");
+        String str=(String)data.get("selectcontactors");
+        List<Selectcontactor> selectcontactor= JSONObject.parseArray(str,Selectcontactor.class);
+        BigDecimal price=fareService.getFareByStationsAndTripId(start,end,tickettype,selectcontactor.get(0).getTripid());
+        selectcontactor.get(indexofselect).setPrice(price);
+        selectcontactor.get(indexofselect).setType(tickettype);
+        return selectcontactor;
     }
 
     //生成订单
@@ -291,6 +325,9 @@ public class PCenterController {
 
     @Autowired
     RoutelineService routelineService;
+
+    @Autowired
+    FareService fareService;
 
     @PostMapping("buyticket/createorder")
     @ResponseBody
@@ -305,7 +342,8 @@ public class PCenterController {
 
         OrdinaryUserEntity user=(OrdinaryUserEntity)session.getAttribute("user");
         TripEntity tripEntity=tripService.findTripEntityByTrainNumber(trainnum);
-        String namelist="",seatlist="",myroute="";
+        String namelist="",seatlist="",myroute="",pricelist="",typelist="";
+        BigDecimal price=new BigDecimal(0);
         RoutelineEntity routelineEntity=routelineService.findRoutelineEntityByTripId(tripEntity.getId());
         if(user!=null) {
             UserOrderEntity userOrderEntity = new UserOrderEntity();
@@ -325,21 +363,29 @@ public class PCenterController {
             for (int i = 0; i < selectcontactor.size(); i++) {
                 if (i == 0) {
                     namelist = selectcontactor.get(i).getName();
+                    pricelist=""+selectcontactor.get(i).getPrice();
+                    price=selectcontactor.get(i).getPrice();
+                    typelist=selectcontactor.get(i).getType();
                     seatlist="1-11";
                 } else {
                     namelist = namelist + "," + selectcontactor.get(i).getName();
+                    pricelist=""+pricelist+","+selectcontactor.get(i).getPrice();
+                    price =price.add(selectcontactor.get(i).getPrice());
+                    typelist=typelist+","+selectcontactor.get(i).getType();
                     seatlist += ","+"1-11";
                 }
             }
             userOrderEntity.setUserOrderCondition("0");
             userOrderEntity.setTripId(tripEntity.getId());
-            userOrderEntity.setPrice(new BigDecimal(100));
+            userOrderEntity.setPrice(price);
             userOrderEntity.setOrdineryUserId(user.getId());
             userOrderEntity.setNameList(namelist);
             userOrderEntity.setSeatList(seatlist);
             userOrderEntity.setTripTime(time);
             userOrderEntity.setRoutLine(myroute);
             userOrderEntity.setTripNumber(trainnum);
+            userOrderEntity.setPricelist(pricelist);
+            userOrderEntity.setTypelist(typelist);
             userOrderService.save(userOrderEntity);
         }
     }
@@ -352,6 +398,9 @@ public class PCenterController {
         }
         return -1;
     }
+
+
+
 
     @GetMapping("/api/gettrip")
     @ResponseBody

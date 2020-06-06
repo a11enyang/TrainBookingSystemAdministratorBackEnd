@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
-@Configuration
+/*@Configuration
 public class Intersepterconfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -23,4 +23,4 @@ public class Intersepterconfig implements WebMvcConfigurer {
                 .excludePathPatterns("/api/**")
                 .excludePathPatterns("/static/**");
     }
-}
+}*/

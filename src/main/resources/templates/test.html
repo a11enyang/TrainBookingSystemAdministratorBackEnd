@@ -28,23 +28,13 @@
 </head>
 <body>
 <div id="app">
-
-<div v-if="isShowConfirm" class="my-confirm" @click.stop="clickFun('clickCancel')">
-    <div class="confirm-content-wrap" @click.stop>
-        <h3 class="my-confirm-title">{{ titleText }}</h3>
-        <p class="my-confirm-content">{{ content }}</p>
-        <div class="my-operation">
-            <div v-if="type==='confirm'" class="my-cancel-btn" @click="clickFun('clickCancel')">
-                <p class="my-btn-text my-border-right">{{ cancelText }}</p>
-            </div>
-            <div class="confirm-btn" @click="clickFun('clickConfirm')">
-                <p class="my-btn-text">{{ confirmText }}</p>
-            </div>
-        </div>
-    </div>
+    <select v-model="selectItem" @change="selectFn($event)">
+        <!--选择项的value值默认选择项文本 可动态绑定选择项的value值 更改v-model指令绑定数据-->
+        <option v-for="item in items" :value="item.id">{{item.name}}</option>
+    </select>
+    <div>{{selectItem}}</div>    <!--选择项的value值-->
 </div>
 
-</div>
 
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
@@ -54,49 +44,26 @@
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
 <script>
-new Vue({
-    el:'#app',
-    data () {
-        return {
-            isShowConfirm: true, // 用于控制整个窗口的显示/隐藏
-            titleText: '操作提示', // 提示框标题
-            content: 'Say Something ...', // 提示框的内容
-            cancelText: '取消', // 取消按钮的文字
-            confirmText: '确认', // 确认按钮的文字
-            type: 'confirm', // 表明弹框的类型：confirm - 确认弹窗（有取消按钮）；alert - 通知弹框（没有取消按钮）
-            outerData: null // 用于记录外部传进来的数据，也可以给外部监听userBehavior，事件的函数提供判断到底是哪个事件触发的
-        }
-    },
-    methods: {
-        show (content, config) {
-            this.content = content || 'Say Something ...'
-
-            if (Object.prototype.toString.call(config) === '[object Object]') {
-                // 确保用户传递的是一个对象
-                this.titleText = config.titleText || '操作提示'
-                this.cancelText = config.cancelText || '取消'
-                this.confirmText = config.confirmText || '确认'
-                this.type = config.type || 'confirm'
-                this.outerData = config.data || null
+    new Vue({
+        el: '#app',
+        data: {
+            selectItem: '分类1',
+            items: [
+                {id:11, name: '分类1'},
+                {id:22, name: '分类2'},
+                {id:33, name: '分类3'}
+            ]
+        },
+        methods: {
+            selectFn(e) {
+                console.log(e)
+                console.log(e.target.selectedIndex) // 选择项的index索引
+                console.log(e.target.value) // 选择项的value
             }
-
-            this.isShowConfirm = true
-        },
-        hidden () {
-            this.isShowConfirm = false
-            this.titleText = '操作提示'
-            this.cancelText = '取消'
-            this.confirmText = '确认'
-            this.type = 'confirm'
-            this.outerData = null
-        },
-        clickFun (type) {
-            this.$emit('userBehavior', type, this.outerData)
-            this.hidden()
         }
-    }
-})
+    })
 </script>
+
 <script>
     function submit_sure() {
         var flag = confirm("您确定要提交吗？");

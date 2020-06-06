@@ -21,6 +21,7 @@ public class UserOrderEntity {
     private OrdinaryUserEntity ordinaryUserByOrdineryUserId;
     private TripEntity tripByTripId;
     private String pricelist;
+    private String typelist;
 
     @Id
     @Column(name = "id")
@@ -83,6 +84,12 @@ public class UserOrderEntity {
     public void setSeatList(String seatList) {
         this.seatList = seatList;
     }
+
+    @Basic
+    @Column(name = "typelist")
+    public String getTypelist() { return typelist; }
+
+    public void setTypelist(String typelist) { this.typelist = typelist; }
 
     @Basic
     @Column(name = "price")
@@ -171,6 +178,7 @@ public class UserOrderEntity {
     public void setTripByTripId(TripEntity tripByTripId) {
         this.tripByTripId = tripByTripId;
     }
+
 
 
 }
