@@ -9,6 +9,7 @@ public class Selectcontactor {
     private String phonenum;
     private BigDecimal price;
     private int tripid;
+    private String type;
 
 
     public String getName() {
@@ -59,5 +60,13 @@ public class Selectcontactor {
 
     public void setTripid(int tripid) {
         this.tripid = tripid;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

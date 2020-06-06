@@ -285,6 +285,7 @@ public class PCenterController {
                    selectuser.setPhonenum(user.getPhonenum());
                    selectuser.setPrice(fare);
                    selectuser.setTripid(tripEntity.getId());
+                   selectuser.setType("1");
                    selectcontactors.add(selectuser);
                }
                else {
@@ -295,6 +296,7 @@ public class PCenterController {
                    selectuser.setPhonenum(contactor.getPhonenum());
                    selectuser.setPrice(fare);
                    selectuser.setTripid(tripEntity.getId());
+                   selectuser.setType("1");
                    selectcontactors.add(selectuser);
                }
           }
@@ -313,6 +315,7 @@ public class PCenterController {
         List<Selectcontactor> selectcontactor= JSONObject.parseArray(str,Selectcontactor.class);
         BigDecimal price=fareService.getFareByStationsAndTripId(start,end,tickettype,selectcontactor.get(0).getTripid());
         selectcontactor.get(indexofselect).setPrice(price);
+        selectcontactor.get(indexofselect).setType(tickettype);
         return selectcontactor;
     }
 
@@ -339,7 +342,7 @@ public class PCenterController {
 
         OrdinaryUserEntity user=(OrdinaryUserEntity)session.getAttribute("user");
         TripEntity tripEntity=tripService.findTripEntityByTrainNumber(trainnum);
-        String namelist="",seatlist="",myroute="",pricelist="";
+        String namelist="",seatlist="",myroute="",pricelist="",typelist="";
         BigDecimal price=new BigDecimal(0);
         RoutelineEntity routelineEntity=routelineService.findRoutelineEntityByTripId(tripEntity.getId());
         if(user!=null) {
@@ -362,11 +365,13 @@ public class PCenterController {
                     namelist = selectcontactor.get(i).getName();
                     pricelist=""+selectcontactor.get(i).getPrice();
                     price=selectcontactor.get(i).getPrice();
+                    typelist=selectcontactor.get(i).getType();
                     seatlist="1-11";
                 } else {
                     namelist = namelist + "," + selectcontactor.get(i).getName();
                     pricelist=""+pricelist+","+selectcontactor.get(i).getPrice();
                     price =price.add(selectcontactor.get(i).getPrice());
+                    typelist=typelist+","+selectcontactor.get(i).getType();
                     seatlist += ","+"1-11";
                 }
             }
@@ -380,6 +385,7 @@ public class PCenterController {
             userOrderEntity.setRoutLine(myroute);
             userOrderEntity.setTripNumber(trainnum);
             userOrderEntity.setPricelist(pricelist);
+            userOrderEntity.setTypelist(typelist);
             userOrderService.save(userOrderEntity);
         }
     }
