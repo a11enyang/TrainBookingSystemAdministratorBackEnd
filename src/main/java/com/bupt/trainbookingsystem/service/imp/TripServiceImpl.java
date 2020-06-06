@@ -76,4 +76,9 @@ public class TripServiceImpl implements TripService {
     public void updateTripEntityById(String train_number, Timestamp departureTime, Byte status, int id) {
         tpr.updateTripEntityById(train_number, departureTime, status, id);
     }
+
+    @Override
+    public void updateRemainSeatByTripId(String afterRemain, int tripId) {
+        tpr.updateRemainSeatByTripId(afterRemain, tripId);
+    }
 }

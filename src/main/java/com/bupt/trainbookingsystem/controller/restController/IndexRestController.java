@@ -21,6 +21,7 @@ public class IndexRestController {
     public final TripService tripService;
     public final FareService fareService;
     public final SeatService seatService;
+
     public IndexRestController(StationsService stationsService, RoutelineService routelineService,
                                TicketManagerService ticketManagerService, UserOrderService userOrderService,
                                TrainService trainService, TripService tripService, FareService fareService,
@@ -136,53 +137,135 @@ public class IndexRestController {
                 String[] NumberOfSeat = numberOfSeat.split("-");
                 int seatFirst = Integer.parseInt(NumberOfSeat[0]);
                 int seatSecond = Integer.parseInt(NumberOfSeat[1]);
-                int seatNumber = seatFirst + seatSecond;
                 searchTrip.setSeatFirstRemain(seatFirst);
                 searchTrip.setSeatSecondRemain(seatSecond);
                 searchTrips.add(searchTrip);
-                /*
-                String seatNum = "";
-                for(int m=0;m<seatNumber;++m){
-                    seatNum = seatNum.concat("1");
-                }
-                //初始化结果数组
-                byte[] startByte = seatNum.getBytes();
-                String last = "";
-                for(int j =0 ;j<MyRoute.length-1;++j){
-                    String startFirst = MyRoute[j];
-                    String endNext = MyRoute[j+1];
-                    //查找每个二维组的座位并并起来
-                    byte[] seatByte = seatService.getSeatByStartEndTripId(MyRoute[j],MyRoute[j+1],tripId);
-                    for(int n=0;n<seatByte.length;++n){
-                        startByte[n] = (byte) ((Integer.valueOf(startByte[n])-48) & (Integer.valueOf(seatByte[n])-48));
-                        last = last.concat(String.valueOf(startByte[n]));
-                    }
-                }
-                //显示余座
-                System.out.println("座位信息");
-                System.out.println(last);
-                int buyNum = 1;
-                int p = 0;
-                while(buyNum!=0){
-                    if (last.charAt(p)=='0'){
-                        //当前余座
-                        System.out.println("当前余座");
-                        System.out.println(seatNumber-p);
-                        System.out.println("当前座位");
-                        System.out.println(p);
-                        buyNum = buyNum -1;
-                    }
-                    p = p + 1;
-                    if(p==last.length()-1){
-                        System.out.println("no seat now");
-                        break;
-                    }
-                }*/
             }
             Map<String,Object> map=new HashMap<>();
             map.put("searchTrips",searchTrips);
             map.put("sum",searchTrips.size());
             return map;
+    }
+    public  String[][] getSeatsInfo(int tripId,String[][] userSelect,String myRoute){
+        //获取座位数
+        String result[][] = new String[userSelect.length][2];
+        String numberOfSeat = trainService.findTrainEntityById(tripService.findTripEntityById(tripId).getTrainId()).getSeatInfo();
+        String[] NumberOfSeat = numberOfSeat.split("-");
+        //一等座座位数
+        int seatFirst = Integer.parseInt(NumberOfSeat[0]);
+        //二等座座位数
+        int seatSecond = Integer.parseInt(NumberOfSeat[1]);
+        //总座位数
+        int seatNumber = seatFirst + seatSecond;
+        //初始化座位
+        String seatInitial = "";
+        for(int m=0;m<seatNumber;++m){
+            seatInitial =seatInitial.concat("1");
+        }
+        //获取区间之间的座位状况
+        String[] MyRoute = myRoute.split("-");
+        for(int j =0 ;j<MyRoute.length-1;++j){
+            String  last = "";
+            String startFirst = MyRoute[j];
+            String endNext = MyRoute[j+1];
+            //查找每个二维组的座位并并起来
+            String seatInfo = seatService.getSeatByStartEndTripId(startFirst,endNext,tripId);
+            for(int n=0;n<seatInfo.length();++n){
+                int x = (Integer.valueOf(seatInitial.charAt(n)-48)&Integer.valueOf(seatInfo.charAt(n)-48));
+                last.concat(String.valueOf(x));
+            }
+            seatInitial = last;
+        }
+        //获取当前座位
+        int peopleNum = userSelect.length;
+        int q = 0;
+        while (peopleNum!=0){
+            String name = userSelect[q][0];
+            String type = userSelect[q][1];
+            String seatInfoFirst = seatInitial.substring(0,seatFirst);
+            String seatInfoSecond = seatInitial.substring(seatFirst,seatFirst+seatSecond);
+            int p = 0;
+            int check = 1;
+            if (type == "1"){
+                while (check!=0){
+                if (seatInfoFirst.charAt(p)=='0'){
+                    //当前余座
+                    System.out.println("当前座位");
+                    System.out.println(p);
+                    check = 0;
+                    result[q][0] = name;
+                    int x  = (p+1)/40;
+                    int y  = ((p+1)%40)/5;
+                    int z  = ((p+1)%40)%5;
+                    String s = "".concat(String.valueOf(x)).concat("车").concat(String.valueOf(y))
+                            .concat("排").concat(String.valueOf(z)).concat("座");
+                    result[q][1] = s;
+                }
+                p = p + 1;
+                if(p==seatInfoFirst.length()){
+                    System.out.println("no seat now");
+                    result[q][0] = name;
+                    result[q][1] = "无座";
+                    break;
+                }
+                }
+            }
+            else {
+                while (check!=0){
+                    if (seatInfoSecond.charAt(p)=='0'){
+                        //当前余座
+                        System.out.println("当前座位");
+                        System.out.println(p+seatFirst);
+                        check = 0;
+                        p =  p+seatFirst;
+                        result[q][0] = name;
+                        int x  = (p+1)/40;
+                        int y  = ((p+1)%40)/5;
+                        int z  = ((p+1)%40)%5;
+                        String s = "".concat(String.valueOf(x)).concat("车").concat(String.valueOf(y))
+                                .concat("排").concat(String.valueOf(z)).concat("座");
+                        result[q][1] = s;
+                    }
+                    p = p + 1;
+                    if(p==seatInfoSecond.length()){
+                        System.out.println("no seat now");
+                        result[q][0] = name;
+                        result[q][1] = "无座";
+                        break;
+                    }
+                }
+            }
+            //更新余座
+
+            String nowTripSeat = tripService.findTripEntityById(tripId).getRemainseatInfo();
+            String beforeRemain[] = nowTripSeat.split("-");
+            if(result[q][1]  != "无座"){
+            if(p>=seatFirst){
+                int afterRemainSecond = Integer.valueOf(beforeRemain[1])-1;
+                String afterRemain = beforeRemain[0].concat("-").concat(String.valueOf(afterRemainSecond));
+                tripService.updateRemainSeatByTripId(afterRemain,tripId);
+            }
+            else {
+                int afterRemainFirst = Integer.valueOf(beforeRemain[0])-1;
+                String afterRemain = String.valueOf(afterRemainFirst).concat("-").concat(beforeRemain[1]);
+                tripService.updateRemainSeatByTripId(afterRemain,tripId);
+            }
+                //更新座位表
+                for(int w =0 ;w<MyRoute.length-1;++w){
+                    String startFirst = MyRoute[w];
+                    String endNext = MyRoute[w+1];
+                    //查找每个二维组的座位并并起来
+                    String seatInfo = seatService.getSeatByStartEndTripId(startFirst,endNext,tripId);
+                    StringBuilder strBuilder = new StringBuilder(seatInfo);
+                    strBuilder.setCharAt(p,'1');
+                    seatService.updateSeatInfoByTripId(strBuilder.toString(),startFirst,endNext,tripId);
+                }
+            }
+            q = q + 1;
+            peopleNum = peopleNum -1;
+            }
+
+        return result;
     }
 
 }

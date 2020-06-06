@@ -24,4 +24,9 @@ public class SeatServiceImp implements SeatService {
     public String getSeatByStartEndTripId(String first, String next, int trip_id) {
         return seatRepository.getSeatByStartEndTripId(first, next, trip_id);
     }
+
+    @Override
+    public void updateSeatInfoByTripId(String s, String startFirst, String endNext, int tripId) {
+        seatRepository.updateSeatInfoByTripId(s, startFirst, endNext, tripId);
+    }
 }

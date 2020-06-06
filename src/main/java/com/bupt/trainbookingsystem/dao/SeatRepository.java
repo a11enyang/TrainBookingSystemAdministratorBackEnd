@@ -18,4 +18,7 @@ public interface SeatRepository extends JpaRepository<SeatEntity,Integer> {
     @Transactional
     @Query(value = "select seat_info from seat where first_station = ?1 and next_station =?2 and trip_id=?3",nativeQuery=true)
     String getSeatByStartEndTripId(String first,String next,int trip_id);
+    @Transactional
+    @Query(value = "update seat_info set seat_info = ?1  where first_station = ?2 and next_station =?3 and trip_id=?4",nativeQuery=true)
+    void updateSeatInfoByTripId(String s, String  startFirst,String endNext,int tripId);
 }
