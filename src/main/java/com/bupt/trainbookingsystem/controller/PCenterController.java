@@ -489,8 +489,8 @@ public class PCenterController {
                         int x  = (p+1)/40;
                         int y  = ((p+1)%40)/5;
                         int z  = ((p+1)%40)%5;
-                        String s = "".concat(String.valueOf(x)).concat("车").concat(String.valueOf(y))
-                                .concat("排").concat(String.valueOf(z)).concat("座");
+                        String s = "".concat(String.valueOf(x+1)).concat("-").concat(String.valueOf(y))
+                                .concat("-").concat(String.valueOf(z));
                         result[q][1] = s;
                         break;
                     }
@@ -516,8 +516,8 @@ public class PCenterController {
                         int x  = (p+1)/40;
                         int y  = ((p+1)%40)/5;
                         int z  = ((p+1)%40)%5;
-                        String s = "".concat(String.valueOf(x)).concat("车").concat(String.valueOf(y))
-                                .concat("排").concat(String.valueOf(z)).concat("座");
+                        String s = "".concat(String.valueOf(x+1)).concat("-").concat(String.valueOf(y))
+                                .concat("-").concat(String.valueOf(z));
                         result[q][1] = s;
                     }
                     else{
