@@ -44,6 +44,22 @@ public class PCenterController {
     @Autowired
     StationsService stationsService;
 
+    @Autowired
+     SeatService seatService;
+
+    @Autowired
+     TrainService trainService;
+
+    //生成订单
+    @Autowired
+      TripService  tripService;
+
+    @Autowired
+      RoutelineService routelineService;
+
+    @Autowired
+     FareService fareService;
+
     @RequestMapping("/pcenter")
     public String showpagestu(HttpSession session, Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                               @RequestParam(value = "page1", defaultValue = "0")int page1,
@@ -270,11 +286,13 @@ public class PCenterController {
           String start=(String)params.getFirst("start");
           String end=(String)params.getFirst("end");
           String trainnum=(String)params.getFirst("trainnum");
+          System.out.println();
           List<String> checkname=(LinkedList)params.get("checknames");
           String[] list=checkname.get(0).split(",");
           for(int k=0;k<list.length;k++){
               checknames.add(list[k]);
           }
+
           TripEntity tripEntity=tripService.findTripEntityByTrainNumber(trainnum);
           BigDecimal fare=fareService.getFareByStationsAndTripId(start,end,"1",tripEntity.getId());
          for(int i=0;i<checknames.size();i++){
@@ -319,15 +337,7 @@ public class PCenterController {
         return selectcontactor;
     }
 
-    //生成订单
-    @Autowired
-    TripService tripService;
 
-    @Autowired
-    RoutelineService routelineService;
-
-    @Autowired
-    FareService fareService;
 
     @PostMapping("buyticket/createorder")
     @ResponseBody
@@ -342,7 +352,7 @@ public class PCenterController {
 
         OrdinaryUserEntity user=(OrdinaryUserEntity)session.getAttribute("user");
         TripEntity tripEntity=tripService.findTripEntityByTrainNumber(trainnum);
-        String namelist="",seatlist="",myroute="",pricelist="",typelist="";
+        String namelist="",seatlist="",myroute="",pricelist="",typelist="",seatNumList="";
         BigDecimal price=new BigDecimal(0);
         RoutelineEntity routelineEntity=routelineService.findRoutelineEntityByTripId(tripEntity.getId());
         if(user!=null) {
@@ -360,19 +370,32 @@ public class PCenterController {
                 }
             }
             Timestamp time=new Timestamp(new Date().getTime());
+            String [][]userSelect = new String[selectcontactor.size()][3];
             for (int i = 0; i < selectcontactor.size(); i++) {
+                userSelect[i][0] = selectcontactor.get(i).getName();
+
+                userSelect[i][1]=selectcontactor.get(i).getType();
+
+            }
+            String[][] result = getSeatsInfo(tripEntity.getId(),userSelect,myroute);
+            for (int i = 0; i < selectcontactor.size(); i++) {
+
                 if (i == 0) {
                     namelist = selectcontactor.get(i).getName();
                     pricelist=""+selectcontactor.get(i).getPrice();
                     price=selectcontactor.get(i).getPrice();
                     typelist=selectcontactor.get(i).getType();
-                    seatlist="1-11";
+                    seatlist =result[i][1];
+                    seatNumList = result[i][2];
+                    //seatlist="1-11";
                 } else {
                     namelist = namelist + "," + selectcontactor.get(i).getName();
                     pricelist=""+pricelist+","+selectcontactor.get(i).getPrice();
                     price =price.add(selectcontactor.get(i).getPrice());
                     typelist=typelist+","+selectcontactor.get(i).getType();
-                    seatlist += ","+"1-11";
+                    //seatlist += ","+"1-11";
+                    seatlist+=","+result[i][1];
+                    seatNumList += "-"+result[i][2];
                 }
             }
             userOrderEntity.setUserOrderCondition("0");
@@ -386,6 +409,7 @@ public class PCenterController {
             userOrderEntity.setTripNumber(trainnum);
             userOrderEntity.setPricelist(pricelist);
             userOrderEntity.setTypelist(typelist);
+            userOrderEntity.setSeatNumberList(seatNumList);
             userOrderService.save(userOrderEntity);
         }
     }
@@ -406,6 +430,128 @@ public class PCenterController {
     @ResponseBody
     public String gettrp(){
         return "success";
+    }
+    public   String[][] getSeatsInfo(int tripId,String[][] userSelect,String myRoute){
+        //获取座位数
+        String result[][] = new String[userSelect.length][3];
+        String numberOfSeat = trainService.findTrainEntityById(tripService.findTripEntityById(tripId).getTrainId()).getSeatInfo();
+        String[] NumberOfSeat = numberOfSeat.split("-");
+        //一等座座位数
+        int seatFirst = Integer.parseInt(NumberOfSeat[0]);
+        //二等座座位数
+        int seatSecond = Integer.parseInt(NumberOfSeat[1]);
+        //总座位数
+        int seatNumber = seatFirst + seatSecond;
+        //初始化座位
+
+        //获取区间之间的座位状况
+        String[] MyRoute = myRoute.split("-");
+
+        //获取当前座位
+        int peopleNum = userSelect.length;
+        int q = 0;
+        while (peopleNum!=0){
+            String name = userSelect[q][0];
+            String type = userSelect[q][1];
+            String seatInitial = "";
+            for(int m=0;m<seatNumber;++m){
+                seatInitial =seatInitial.concat("1");
+            }
+            System.out.println(seatInitial);
+            for(int j =0 ;j<MyRoute.length-1;++j){
+                String  last = "";
+                String startFirst = MyRoute[j];
+                String endNext = MyRoute[j+1];
+                //查找每个二维组的座位并并起来
+
+                String seatInfo = seatService.getSeatByStartEndTripId(startFirst,endNext,tripId);
+                System.out.println(seatInfo);
+                for(int n=0;n<seatInfo.length();++n){
+                    int x = (Integer.valueOf(seatInitial.charAt(n)-48)&Integer.valueOf(seatInfo.charAt(n)-48));
+                    last = last.concat(String.valueOf(x));
+                    System.out.println(last);
+                }
+                seatInitial = last;
+                System.out.println(seatInitial);
+            }
+            String seatInfoFirst = seatInitial.substring(0,seatFirst);
+            String seatInfoSecond = seatInitial.substring(seatFirst,seatFirst+seatSecond);
+            int p = 0;
+            int check = 1;
+            if (type.equals("1")){
+                while (check!=0){
+                    if (seatInfoFirst.charAt(p)=='0'){
+                        //当前余座
+                        System.out.println("当前座位");
+                        System.out.println(p);
+                        check = 0;
+                        result[q][0] = name;
+                        int x  = (p+1)/40;
+                        int y  = ((p+1)%40)/5;
+                        int z  = ((p+1)%40)%5;
+                        String s = "".concat(String.valueOf(x)).concat("车").concat(String.valueOf(y))
+                                .concat("排").concat(String.valueOf(z)).concat("座");
+                        result[q][1] = s;
+                        break;
+                    }
+                    p = p + 1;
+                    if(p==seatInfoFirst.length()){
+                        System.out.println("no seat now");
+                        result[q][0] = name;
+                        result[q][1] = "无座";
+
+                    }
+                }
+            }
+            else {
+                while (check!=0){
+                    if (seatInfoSecond.charAt(p)=='0'){
+                        //当前余座
+                        System.out.println("当前座位");
+                        p =  p+seatFirst;
+                        System.out.println(p);
+                        check = 0;
+
+                        result[q][0] = name;
+                        int x  = (p+1)/40;
+                        int y  = ((p+1)%40)/5;
+                        int z  = ((p+1)%40)%5;
+                        String s = "".concat(String.valueOf(x)).concat("车").concat(String.valueOf(y))
+                                .concat("排").concat(String.valueOf(z)).concat("座");
+                        result[q][1] = s;
+                    }
+                    else{
+                    p = p + 1;
+                    if(p==seatInfoSecond.length()){
+                        System.out.println("no seat now");
+                        result[q][0] = name;
+                        result[q][1] = "无座";
+                        break;
+                    }
+                    }
+                }
+            }
+            //更新余座
+            System.out.println("p");
+            System.out.println(p);
+            result[q][2] = String.valueOf(p);
+            if(result[q][1]  != "无座"){
+                //更新座位表
+                for(int w =0 ;w<MyRoute.length-1;++w){
+                    String startFirst = MyRoute[w];
+                    String endNext = MyRoute[w+1];
+                    //查找每个二维组的座位并并起来
+                    String seatInfo = seatService.getSeatByStartEndTripId(startFirst,endNext,tripId);
+                    StringBuilder strBuilder = new StringBuilder(seatInfo);
+                    strBuilder.setCharAt(p,'1');
+                    seatService.updateSeatInfoByTripId(strBuilder.toString(),startFirst,endNext,tripId);
+                }
+            }
+            q = q + 1;
+            peopleNum = peopleNum -1;
+        }
+
+        return result;
     }
 
 }

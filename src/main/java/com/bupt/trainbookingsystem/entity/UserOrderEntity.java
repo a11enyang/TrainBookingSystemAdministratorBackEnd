@@ -22,7 +22,7 @@ public class UserOrderEntity {
     private TripEntity tripByTripId;
     private String pricelist;
     private String typelist;
-
+    private String seatNumberList;
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // 自增
@@ -34,6 +34,15 @@ public class UserOrderEntity {
         this.id = id;
     }
 
+    @Basic
+    @Column(name="seatNumList")
+    public String getSeatNumberList() {
+        return seatNumberList;
+    }
+
+    public void setSeatNumberList(String seatNumberList) {
+        this.seatNumberList = seatNumberList;
+    }
 
     @Basic
     @Column(name = "trip_number")

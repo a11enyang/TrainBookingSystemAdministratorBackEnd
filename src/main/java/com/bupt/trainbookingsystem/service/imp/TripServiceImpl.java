@@ -81,4 +81,9 @@ public class TripServiceImpl implements TripService {
     public void updateRemainSeatByTripId(String afterRemain, int tripId) {
         tpr.updateRemainSeatByTripId(afterRemain, tripId);
     }
+
+    @Override
+    public String findRemainById(int id) {
+        return tpr.findRemainById(id);
+    }
 }
