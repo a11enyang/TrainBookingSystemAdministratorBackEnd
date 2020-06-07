@@ -205,18 +205,27 @@ public class PCenterController {
             String[] seatlist=payorder.getSeatList().split(",");
             String[] pricelist=payorder.getPricelist().split(",");
             String[] routelist=payorder.getRoutLine().split("-");
+            String[] typelist=payorder.getTypelist().split(",");
             String start=routelist[0];
             String end=routelist[routelist.length-1];
             Timestamp starttime=stationsService.getStationTimeByTripIdAndStation(start,payorder.getTripId());
             Timestamp endtime=stationsService.getStationTimeByTripIdAndStation(end,payorder.getTripId());
             for(int i=0;i<namelist.length;i++){
+
                 Pay_userinfo payUserinfo=new Pay_userinfo();
+                if(typelist[i].equals("1")){
+                    payUserinfo.setSeatkind("一等座");
+                }
+                else if(typelist[i].equals("2")) {
+                    payUserinfo.setSeatkind("二等座");
+                }
                 String[] carriage=seatlist[i].split("-");
                 payUserinfo.setName(namelist[i]);
                 //payUserinfo.setSeat(seatlist[i]);
                 payUserinfo.setPricelist(pricelist[i]);
                 payUserinfo.setCarriage(carriage[0]);
-                payUserinfo.setSeat(carriage[1]);
+                payUserinfo.setSeat(carriage[1]+"排"+carriage[2]+"座");
+
                 if(namelist[i].equals(user.getRealname())){
                     payUserinfo.setPersonid(user.getPersonId());
                 }
@@ -554,4 +563,8 @@ public class PCenterController {
         return result;
     }
 
+    @GetMapping("/pcenter/{id}/changeticket")
+    public String changeticket(@PathVariable int id){
+        return "search_new";
+    }
 }
