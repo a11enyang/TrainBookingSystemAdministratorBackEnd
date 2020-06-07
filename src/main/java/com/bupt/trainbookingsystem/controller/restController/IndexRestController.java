@@ -133,7 +133,9 @@ public class IndexRestController {
                 //根据用户经过路线找座位
                 String[] MyRoute = myRout.split("-");
                 //初始化座位序列
-                String numberOfSeat = trainService.findTrainEntityById(tripEntity.getTrainId()).getSeatInfo();
+                int trainId = tripEntity.getTrainId();
+                System.out.println(trainId);
+                String numberOfSeat = trainService.findSeatInfoById(trainId);
                 String[] NumberOfSeat = numberOfSeat.split("-");
                 //一等座座位数
                 int seatFirst = Integer.parseInt(NumberOfSeat[0]);
@@ -151,7 +153,6 @@ public class IndexRestController {
                     String startFirst = MyRoute[j];
                     String endNext = MyRoute[j+1];
                     //查找每个二维组的座位并并起来
-
                     String seatInfo = seatService.getSeatByStartEndTripId(startFirst,endNext,tripId);
                     System.out.println(seatInfo);
                     for(int n=0;n<seatInfo.length();++n){
@@ -178,16 +179,6 @@ public class IndexRestController {
                 }
                 searchTrip.setSeatFirstRemain(seatFirstRemain);
                 searchTrip.setSeatSecondRemain(seatSecondRemain);
-                //String numberOfSeat = tripService.findTripEntityById(tripId).getRemainseatInfo();
-                /*
-                String[] NumberOfSeat = numberOfSeat.split("-");
-                int seatFirst = Integer.parseInt(NumberOfSeat[0]);
-                int seatSecond = Integer.parseInt(NumberOfSeat[1]);
-                searchTrip.setSeatFirstRemain(seatFirst);
-                searchTrip.setSeatSecondRemain(seatSecond);
-                *?
-                 */
-
                 searchTrips.add(searchTrip);
             }
             Map<String,Object> map=new HashMap<>();

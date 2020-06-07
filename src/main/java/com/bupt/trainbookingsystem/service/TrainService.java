@@ -21,4 +21,5 @@ public interface TrainService {
     void deleteTrainEntityById(int id);
     //更新列车信息
     void updateTrainEntityById(String train_type,String seat_info, int id);
+    String findSeatInfoById(int id);
 }

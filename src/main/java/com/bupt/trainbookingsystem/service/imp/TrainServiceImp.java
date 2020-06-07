@@ -47,4 +47,9 @@ public class TrainServiceImp implements TrainService {
     public void updateTrainEntityById(String train_type, String seat_info, int id) {
         tr.updateTrainEntityById(train_type, seat_info, id);
     }
+
+    @Override
+    public String findSeatInfoById(int id) {
+        return tr.findSeatInfoById(id);
+    }
 }
