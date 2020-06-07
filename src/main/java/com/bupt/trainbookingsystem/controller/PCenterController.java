@@ -144,11 +144,7 @@ public class PCenterController {
         return "redirect:/pcenter";
     }
 
-    @GetMapping("/pcenter/{id}/returnticket")
-    public String returnticket(@PathVariable int id){
-        userOrderService.updateUserOrderEntityById("3",id);
-        return "redirect:/pcenter";
-    }
+
 
     @PostMapping("/pcenter/editinfo")
     @ResponseBody
@@ -566,5 +562,33 @@ public class PCenterController {
     @GetMapping("/pcenter/{id}/changeticket")
     public String changeticket(@PathVariable int id){
         return "search_new";
+    }
+
+    @GetMapping("/pcenter/{id}/returnticket")
+    public String returnticket(@PathVariable int id){
+        UserOrderEntity userOrderEntity=userOrderService.findUserOrderEntityById(id);
+        int tripid=userOrderEntity.getTripId();
+        String numberOfSeat = trainService.findTrainEntityById(tripService.findTripEntityById(tripid).getTrainId()).getSeatInfo();
+        String[] seatlist=userOrderEntity.getSeatList().split(",");
+        String[] routelist=userOrderEntity.getRoutLine().split("-");
+        String seatFirst=numberOfSeat.split("-")[0];
+        String seatEnd=numberOfSeat.split("-")[1];
+
+        for(int i=0;i<seatlist.length;i++){
+            String[] seat=seatlist[i].split("-" );
+            int startseat=(Integer.parseInt(seat[0])-1)*40;
+            int startseat1=startseat+Integer.parseInt(seat[1])*5;
+            int startseat2=startseat1+Integer.parseInt(seat[2])-1;
+            for(int j=0;j<routelist.length-1;j++){
+                String startstation=routelist[j];
+                String endnextstation=routelist[j+1];
+                String seatInfo = seatService.getSeatByStartEndTripId(startstation,endnextstation,tripid);
+                StringBuilder strBuilder = new StringBuilder(seatInfo);
+                strBuilder.setCharAt(startseat2,'0');
+                seatService.updateSeatInfoByTripId(strBuilder.toString(),startstation,endnextstation,tripid);
+            }
+        }
+        userOrderService.updateUserOrderEntityById("3",id);
+        return "redirect:/pcenter";
     }
 }
