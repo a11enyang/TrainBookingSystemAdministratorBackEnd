@@ -34,8 +34,10 @@ import java.util.*;
  * 个人中心
  * 编辑：严智琪
  */
+
 @Controller
 public class PCenterController {
+    public Map map;
     @Autowired
     ContactService contactorsmethods;
 
@@ -150,7 +152,8 @@ public class PCenterController {
 
     @GetMapping("/pcenter/{id}/returnticket")
     public String returnticket(@PathVariable int id){
-        userOrderService.updateUserOrderEntityById("3",id);
+        String result =  returnTicket(id);
+        System.out.println(result);
         return "redirect:/pcenter";
     }
 
@@ -455,16 +458,26 @@ public class PCenterController {
             return false;
         }
     }
-
+    @GetMapping("/pcenter/{id}/changeticket")
+    public String changeticket(@PathVariable int id){
+        System.out.println("退票结果");
+        //退票
+        String result =  returnTicket(id);
+        System.out.println(result);
+        //通过原来的订单显示新的车次
+        map = getReBookTrips(id);
+        return "search_new";
+    }
     //退票
     public String returnTicket(int id) {
+        System.out.println(id);
         UserOrderEntity userOrderEntity = userOrderService.findUserOrderEntityById(id);
         TripEntity tripEntity = tripService.findTripEntityById(userOrderEntity.getTripId());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String nowTime = df.format(new Date());
         String tripTime = String.valueOf(tripEntity.getDepartureTime());
         boolean flag = isDateBefore(tripTime, nowTime);
-        if (flag == false) {
+        if (flag == true) {
             return "票已过期";
         } else {
             userOrderService.updateUserOrderEntityById("3", id);
@@ -477,10 +490,15 @@ public class PCenterController {
                 String startFirst = MyRoute[w];
                 String endNext = MyRoute[w + 1];
                 //查找每个二维组的座位并修改
-                String seatInfo = seatService.getSeatByStartEndTripId(startFirst, endNext, id);
+
+                for(int q=0;q<SeatList.length;++q){
+                    String seatInfo = seatService.getSeatByStartEndTripId(startFirst, endNext, tripEntity.getId());
                 StringBuilder strBuilder = new StringBuilder(seatInfo);
-                strBuilder.setCharAt((Integer.parseInt(SeatList[w]) - 48), '0');
-                seatService.updateSeatInfoByTripId(strBuilder.toString(), startFirst, endNext, id);
+                System.out.println("修改座位");
+                System.out.println((Integer.parseInt(SeatList[q]) ));
+                strBuilder.setCharAt((Integer.parseInt(SeatList[q])), '0');
+                seatService.updateSeatInfoByTripId(strBuilder.toString(), startFirst, endNext, tripEntity.getId());
+                }
             }
             return "退票成功";
         }
@@ -567,7 +585,6 @@ public class PCenterController {
             String[] MyRoute = myRout.split("-");
             //初始化座位序列
             int trainId = tripEntity.getTrainId();
-            System.out.println(trainId);
             String numberOfSeat = trainService.findSeatInfoById(trainId);
             String[] NumberOfSeat = numberOfSeat.split("-");
             //一等座座位数
@@ -742,7 +759,7 @@ public class PCenterController {
 
         return result;
     }
-
+    //获取时间差
     public static String getDistanceTime(long time1, long time2) {
         long day = 0;
         long hour = 0;
@@ -766,10 +783,14 @@ public class PCenterController {
         return "0秒";
     }
 
-
-    @GetMapping("/pcenter/{id}/changeticket")
-    public String changeticket(@PathVariable int id){
-        return "search_new";
-
+    @RestController
+    @RequestMapping("/api/personCenter")
+    class  getNewTrips{
+        @GetMapping("/getRebookTrips")
+        public Map<String,Object> getReBookTrips1(){
+            System.out.println("找到");
+            return map;
+        }
     }
+
 }
