@@ -13,6 +13,7 @@ public class Pay_userinfo {
     private BigDecimal price;
     private String pricelist;
 
+
     public Pay_userinfo() {
     }
 

@@ -101,7 +101,7 @@
                                         <td ><b th:text="${type2.starttime}"></b>
                                             <br><b th:text="${type2.endtime}"></b></td>
                                         <td>
-                                            <a th:href="@{/pcenter/{id}/returnticket(id=${type2.id})}"> <button type="button" class="btn btn-danger">退票</button></a>
+                                            <a th:href="@{/pcenter/{id}/returnticket(id=${type2.id})}"> <button type="button" class="btn btn-danger">取消订单</button></a>
                                             <a th:href="@{/pay/{id}(id=${type2.id})}"> <button type="button" class="btn btn-warning">支付</button></a>
                                         </td>
                                     </tr>
@@ -144,7 +144,9 @@
                                             <br><b th:text="${type1.endtime}"></b></td>
                                         <td>
                                             <a th:href="@{/pcenter/{id}/returnticket(id=${type1.id})}"><button type="button" class="btn btn-danger">退票</button></a>
-                                            <a th:href="@{/pcenter/{id}/rebook(id=${type1.id})}"><button type="button" class="btn btn-warning">改签</button></a>
+
+                                            <a th:href="@{/pcenter/{id}/changeticket(id=${type1.id})}"><<button type="button" class="btn btn-warning">改签</button></a>
+
                                         </td>
                                     </tr>
                                     </tbody>
