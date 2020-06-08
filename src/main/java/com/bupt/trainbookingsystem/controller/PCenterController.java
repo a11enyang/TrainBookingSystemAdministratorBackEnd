@@ -798,7 +798,7 @@ public class PCenterController {
     }
 
 
-    @GetMapping("/pcenter/{id}/returnticket")
+    @GetMapping("/pcenter/{id}/returnticket1")
     public String returnticket1(@PathVariable int id,Model model){
         UserOrderEntity userOrderEntity=userOrderService.findUserOrderEntityById(id);
         int tripid=userOrderEntity.getTripId();
