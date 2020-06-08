@@ -145,7 +145,12 @@
                                         <td>
                                             <a th:href="@{/pcenter/{id}/returnticket(id=${type1.id})}"><button type="button" class="btn btn-danger">退票</button></a>
 
-                                            <a th:href="@{/pcenter/{id}/changeticket(id=${type1.id})}"><button type="button" class="btn btn-warning">改签</button></a>
+
+<!--                                            <a th:href="@{/pcenter/{id}/changeticket(id=${type1.id})}"><button type="button" class="btn btn-warning">改签</button></a>-->
+
+
+<!--                                            <a th:href="@{/pcenter/{id}/changeticket(id=${type1.id})}"><<button type="button" class="btn btn-warning">改签</button></a>-->
+                                            <button type="button" class="btn btn-warning" th:onclick="returnticket([[${type1.id}]],[[${type1.starttime}]])">改签</button>
 
                                         </td>
                                     </tr>
@@ -560,6 +565,13 @@
         var info3=$("#selectphonenum").val();
         var info4=$('#selectnum').text();
         console.log(info1+" "+info2+" "+info3+" "+info4);
+    }
+    function returnticket(orderid,time) {
+        console.log(orderid);
+        var createNewTab = window.open('about:blank', '_blank');
+        setTimeout(function() {
+            createNewTab.location.href = "/search_new?changeticket="+orderid+"&time="+time;
+        }, 100);
     }
 </script>
 

@@ -11,6 +11,7 @@
 </head>
 
 <body>
+<div id="app">
     <div class="page-header" >
         <div class="row">
             <div class="col-md-3">
@@ -46,6 +47,49 @@
                     <li role="presentation" onclick="logout()"><a href="#" >注销</a></li>
                 </ul>
             </div>
+
+
+
+    <span style="font-size: 12px;margin-left: 250px">
+            共...个搜索结果
+    </span>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" id="search-result">
+            <table class="table table-striped">
+                <caption></caption>
+                <thead>
+                <tr>
+                    <th><span style="margin-left: 20px">车次</span></th>
+                    <th>出发站</th>
+                    <th>到达站</th>
+                    <th>出发时间</th>
+                    <th>到达时间</th>
+                    <th>历时</th>
+                    <th>一等座</th>
+                    <th>二等座</th>
+                    <th>一等座票价</th>
+                    <th>二等座票价</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="trip in gettrips">
+                    <td><span style="margin-left: 20px">{{trip.tripNumber}}</span></td>
+                    <td>{{trip.startStation}}</td>
+                    <td>{{trip.endStation}}</td>
+                    <td>{{trip.startTime}}</td>
+                    <td>{{trip.endTime}}</td>
+                    <td>{{trip.spendTime}}</td>
+                    <td>{{trip.seatFirstRemain}}</td>
+                    <td>{{trip.seatSecondRemain}}</td>
+                    <td>{{trip.fareFirst}}</td>
+                    <td>{{trip.fareSecond}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" @click="changetheTicket(trip.tripNumber)">改签</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
         </div>
     </div>
@@ -90,6 +134,8 @@
             </tbody>
         </table>
     </el-row>
+=======
+>>>>>>> Stashed changes
 </div>
     <style>
         #search-info1 {
@@ -112,6 +158,11 @@
             margin-left: 20px;
         }
     </style>
+            <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+            <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
+            <script src="/webjars/vue/2.6.11/vue.min.js"></script>
+
     <script>
         new Vue({
             el: '#Trips',
@@ -133,49 +184,90 @@
                 this.getTrips();
             },
             methods:{
-              /*  getparams: function (name) {
-                    var search = document.location.search;
-                    var pattern = new RegExp("[?&]"+name+"\=([^&]+)", "g");
-                    var matcher = pattern.exec(search);
-                    var items = null;
-                    if(null != matcher){
-                        try{
-                            items = decodeURIComponent(decodeURIComponent(matcher[1]));
-                        }catch(e){
-                            try{
-                                items = decodeURIComponent(matcher[1]);
-                            }catch(e){
-                                items = matcher[1];
-                            }
-                        }
-                    }
-                    return items;
-                },*/
                 getTrips:function () {
                     /*let param = new URLSearchParams();
                     param.append("start",this.start_station);
                     param.append("end",this.end_station);
                     param.append("time",this.start_time);*/
                     axios.get("/api/personCenter/getRebookTrips")
-                        .then(response => {
-                            this.gettrips= response.data["searchTrips"];
-                            this.size = response.data["sum"];
-                            console.log("data",this.gettrips);
-                        })
+
                 },
-               /* buytheTicket:function (trainnumber) {
-                    var createNewTab = window.open('about:blank', '_blank');
-                    var train=trainnumber;
-                    var time=this.start_time;
-                    var start=this.start_station;
-                    var end=this.end_station;
-                    setTimeout(function() {
-                        createNewTab.location.href = "/buyTicket?trainnum="+train+"&starttime="+time+"&start="+start+"&end="+end;
-                    }, 100);
-                },*/
+                /* buytheTicket:function (trainnumber) {
+
+                               changetheTicket:function (trainnumber) {
+
+                                   var createNewTab = window.open('about:blank', '_blank');
+                                   var train=trainnumber;
+                                   var time=this.start_time;
+                                   var start=this.start_station;
+                                   var end=this.end_station;
+                                   setTimeout(function() {
+                                       createNewTab.location.href = "/buyTicket?trainnum="+train+"&starttime="+time+"&start="+start+"&end="+end;
+                                   }, 100);
+
+                               },*/
             }
         })
-        </script>
+
+
+        new Vue({
+            el: '#app',
+            data(){
+                return{
+                    gettrips:{},
+                    orderid:"",
+                    time:"",
+                }
+            },
+            mounted(){
+                this.orderid=this.getparams("changeticket");
+                this.time=this.getparams("time");
+                this.getchangeTrips();
+            },
+            methods: {
+                getparams: function (name) {
+                    var search = document.location.search;
+                    var pattern = new RegExp("[?&]" + name + "\=([^&]+)", "g");
+                    var matcher = pattern.exec(search);
+                    var items = null;
+                    if (null != matcher) {
+                        try {
+                            items = decodeURIComponent(decodeURIComponent(matcher[1]));
+                        } catch (e) {
+                            try {
+                                items = decodeURIComponent(matcher[1]);
+                            } catch (e) {
+                                items = matcher[1];
+                            }
+                        }
+                    }
+                    return items;
+
+                },
+
+                getchangeTrips: function () {
+                    let param = new URLSearchParams();
+                    param.append("orderid", this.orderid);
+                    param.append("starttime", this.time);
+                    axios.post("http://localhost:8080/api/index/getchangeTrips", param)
+                        .then(response => {
+                            this.gettrips = response.data["searchTrips"];
+                            this.size = response.data["sum"];
+                            console.log("data", this.gettrips);
+                        })
+                },
+            }
+        })
+
+    </script>
+    <script type="text/javascript">
+        function logout() {
+            var url = "/admin/logout";
+            $.post(url, null, function () {
+                window.location = '/search_new';
+            });
+        }
+    </script>
 
 </body>
 
