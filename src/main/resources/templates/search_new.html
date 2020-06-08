@@ -86,7 +86,7 @@
                 <td>{{trip.fareFirst}}</td>
                 <td>{{trip.fareSecond}}</td>
                 <td>
-                    <button type="button" class="btn btn-primary" @click="buytheTicket(trip.tripNumber)">预定</button>
+                    <button type="button" class="btn btn-primary" @click="changetheTicket()">改签</button>
                 </td>
             </tr>
             </tbody>
@@ -121,50 +121,6 @@
             <script src="/webjars/vue/2.6.11/vue.min.js"></script>
 
     <script>
-/*        new Vue({
-            el: '#Trips',
-            data(){
-                return{
-                    gettrips:{},
-                    start_station: "",
-                    end_station: "",
-                    start_time:"",
-                    size:"",
-                    trainnum:"",
-                }
-            },
-            mounted(){
-               /!* this.start_station=this.getparams("start");
-                this.end_station=this.getparams("end");
-                this.start_time=this.getparams("starttime");
-                console.log(this.start_station+" "+this.end_station+" "+this.start_time);*!/
-                this.getTrips();
-            },
-            methods:{
-                getTrips:function () {
-                    /!*let param = new URLSearchParams();
-                    param.append("start",this.start_station);
-                    param.append("end",this.end_station);
-                    param.append("time",this.start_time);*!/
-                    axios.get("/api/personCenter/getRebookTrips")
-
-                },
-                /!* buytheTicket:function (trainnumber) {
-
-                               changetheTicket:function (trainnumber) {
-
-                                   var createNewTab = window.open('about:blank', '_blank');
-                                   var train=trainnumber;
-                                   var time=this.start_time;
-                                   var start=this.start_station;
-                                   var end=this.end_station;
-                                   setTimeout(function() {
-                                       createNewTab.location.href = "/buyTicket?trainnum="+train+"&starttime="+time+"&start="+start+"&end="+end;
-                                   }, 100);
-
-                               },*!/
-            }
-        })*/
 
 
         new Vue({
@@ -214,6 +170,13 @@
                             console.log("data", this.gettrips);
                         })
                 },
+                changetheTicket:function () {
+                      axios.post("/api/index/change",this.orderid)
+                          .then(response =>{
+
+                          })
+                    }
+                }
             }
         })
 
