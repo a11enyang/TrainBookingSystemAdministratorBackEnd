@@ -151,12 +151,12 @@ public class PCenterController {
     }
 
 
-    /*@GetMapping("/pcenter/{id}/returnticket")
+    @GetMapping("/pcenter/{id}/returnticket")
     public String returnticket(@PathVariable int id){
         String result =  returnTicket(id);
         System.out.println(result);
         return "redirect:/pcenter";
-    }*/
+    }
 
 
     @PostMapping("/pcenter/editinfo")
@@ -473,21 +473,23 @@ public class PCenterController {
     //退票
     public String returnTicket(int id) {
         System.out.println(id);
+
         UserOrderEntity userOrderEntity = userOrderService.findUserOrderEntityById(id);
         TripEntity tripEntity = tripService.findTripEntityById(userOrderEntity.getTripId());
+        //更改座位信息
+        String myRoute = userOrderEntity.getRoutLine();
+        String seatList = userOrderEntity.getSeatNumberList();
+        String[] SeatList = seatList.split("-");
+        String[] MyRoute = myRoute.split("-");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String tripTime = String.valueOf(stationsService.getStationTimeByTripIdAndStation(MyRoute[0],tripEntity.getId()));
         String nowTime = df.format(new Date());
-        String tripTime = String.valueOf(tripEntity.getDepartureTime());
         boolean flag = isDateBefore(tripTime, nowTime);
         if (flag == true) {
             return "票已过期";
         } else {
             userOrderService.updateUserOrderEntityById("3", id);
-            //更改座位信息
-            String myRoute = userOrderEntity.getRoutLine();
-            String seatList = userOrderEntity.getSeatNumberList();
-            String[] SeatList = seatList.split("-");
-            String[] MyRoute = myRoute.split("-");
+
             for (int w = 0; w < MyRoute.length - 1; ++w) {
                 String startFirst = MyRoute[w];
                 String endNext = MyRoute[w + 1];
@@ -796,7 +798,7 @@ public class PCenterController {
     }
 
 
-    @GetMapping("/pcenter/{id}/returnticket")
+   /* @GetMapping("/pcenter/{id}/returnticket")
     public String returnticket(@PathVariable int id){
         UserOrderEntity userOrderEntity=userOrderService.findUserOrderEntityById(id);
         int tripid=userOrderEntity.getTripId();
@@ -822,6 +824,6 @@ public class PCenterController {
         }
         userOrderService.updateUserOrderEntityById("3",id);
         return "redirect:/pcenter";
-    }
+    }*/
 
 }
