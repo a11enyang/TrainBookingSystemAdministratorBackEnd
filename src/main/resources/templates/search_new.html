@@ -86,7 +86,7 @@
                 <td>{{trip.fareFirst}}</td>
                 <td>{{trip.fareSecond}}</td>
                 <td>
-                    <button type="button" class="btn btn-primary" @click="changetheTicket(trip.tripNumber)">改签</button>
+                    <button type="button" class="btn btn-primary" @click="changetheTicket(trip.tripId)">改签</button>
                 </td>
             </tr>
             </tbody>
@@ -170,12 +170,12 @@
                             console.log("data", this.gettrips);
                         })
                 },
-                changetheTicket:function (trip) {
+                changetheTicket:function (tripid) {
 
                     var createNewTab = window.open('about:blank', '_blank');
                     var orid = this.orderid;
                     setTimeout(function () {
-                        createNewTab.location.href = "/changeticket/pay?num=" + orid + "&trip=" + trip;
+                        createNewTab.location.href = "/changeticket/pay?num=" + orid + "&tripid=" + tripid;
                     }, 100);
 
                 },

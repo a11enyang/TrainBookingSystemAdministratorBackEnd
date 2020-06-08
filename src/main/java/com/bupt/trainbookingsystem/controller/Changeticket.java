@@ -13,10 +13,10 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static com.bupt.trainbookingsystem.controller.PCenterController.isDateBefore;
 
 @Controller
 public class Changeticket {
@@ -38,12 +38,13 @@ public class Changeticket {
     @PostMapping ("/changeticket/orderlist")
     @ResponseBody
     public Map<String,Object> changeorderlist(@RequestParam("orderid") String orderid,
-                               @RequestParam("trainnum") String trainnum,HttpSession session){
+                               @RequestParam("tripid") int tripid,HttpSession session){
         OrdinaryUserEntity user=(OrdinaryUserEntity) session.getAttribute("user");
+        //int tripid=Integer.parseInt(tripid1);
         Map<String,Object> map=new HashMap<>();
         UserOrderEntity userOrderEntity=userOrderService.findUserOrderEntityById(Integer.parseInt(orderid));
-        TripEntity tripEntity=tripService.findTripEntityByTrainNumber(trainnum);
-        int tripid=tripEntity.getId();
+/*        TripEntity tripEntity=tripService.findTripEntityByTrainNumber(trainnum);
+        int tripid=tripEntity.getId();*/
         String[] route=userOrderEntity.getRoutLine().split("-");
         Timestamp statrtime=stationsService.getStationTimeByTripIdAndStation(route[0],tripid);
         Timestamp endtime=stationsService.getStationTimeByTripIdAndStation(route[route.length-1],tripid);
@@ -97,4 +98,7 @@ public class Changeticket {
         map.put("person",selectcontactor);
         return map;
     }
+
+
+
 }

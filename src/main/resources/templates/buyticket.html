@@ -178,7 +178,7 @@
                 start_station: "",
                 end_station: "",
                 start_time:"",
-                trainnum:"",
+                tripid:"",
                 items: [
                     {id:1, name: '一等座'},
                     {id:2, name: '二等座'},
@@ -189,7 +189,7 @@
             this.start_station=this.getparams("start");
             this.end_station=this.getparams("end");
             this.start_time=this.getparams("starttime");
-            this.trainnum=this.getparams("trainnum");
+            this.tripid=this.getparams("tripid");
             this.getallcontactors();
         },
         methods:{
@@ -212,7 +212,7 @@
                 formdata1.append("start",this.start_station);
                 formdata1.append("end",this.end_station);
                 formdata1.append("checknames",m);
-                formdata1.append("trainnum",this.trainnum)
+                formdata1.append("tripid",this.tripid);
                     axios
                         .post("buyticket/getchooseperson",formdata1)
                         .then(response =>{
@@ -247,7 +247,7 @@
                 var dataform={
                     "start":this.start_station,
                     "end":this.end_station,
-                    "trainnum":this.trainnum,
+                    "tripid":this.tripid,
                     "selectcontactors":JSON.stringify(m),
                 }
                 axios

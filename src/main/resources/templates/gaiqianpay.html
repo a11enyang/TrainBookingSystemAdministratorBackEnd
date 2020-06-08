@@ -168,7 +168,7 @@
             <br>
             <br>
 
-            <a th:href="@{/pcenter/{id}/paytheorder(id=${orderid})}"><button type="button" class="btn btn-success" style="width: 300px">前往支付</button></a>
+            <button type="button" class="btn btn-success" style="width: 300px" @click="">前往支付</button>
         </div>
     </div>
 </div>
@@ -188,7 +188,7 @@
         el: '#app',
         data(){
             return{
-                trainnum:"",
+                tripid:"",
                 orderid:"",
                 starttime:"",
                 endtime:"",
@@ -204,7 +204,7 @@
         },
         mounted(){
             this.orderid=this.getparams("num");
-            this.trainnum=this.getparams("trip");
+            this.tripid=this.getparams("tripid");
             this.getpayorders();
         },
         methods: {
@@ -230,7 +230,7 @@
             getpayorders: function () {
                 let param = new URLSearchParams();
                 param.append("orderid", this.orderid);
-                param.append("trainnum", this.trainnum);
+                param.append("tripid", this.tripid);
                 axios.post("/changeticket/orderlist", param)
                     .then(response => {
                        this.starttime = response.data["starttime"];
