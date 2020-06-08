@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>index</title>
@@ -36,11 +36,20 @@
                     </div><!-- /input-group -->
                 </div>
             </div>
-            <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px">
+            <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px" th:unless="${names}">
                 <ul class="nav nav-pills">
-                    <li role="presentation" class="active"><a href="#">个人中心</a></li>
-                    <li role="presentation"><a href="#">登录</a></li>
-                    <li role="presentation"><a href="#">注册</a></li>
+                    <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
+                    <li role="presentation"><a href="#" th:href="@{/login}">登录</a></li>
+                    <li role="presentation"><a href="#" th:href="@{/register}">注册</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px"  th:if="${names}">
+                <ul class="nav nav-pills">
+                    <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
+                    <img th:src="@{/static/picture/userimg.jpg}"  style="float: left;width: 50px;height: 50px;margin-left: 20px;margin-top: -5px">
+                    <li role="presentation" ><a href="#" th:text="${names}"></a></li>
+                    <li role="presentation" onclick="logout()"><a href="#" >注销</a></li>
                 </ul>
             </div>
         </div>
