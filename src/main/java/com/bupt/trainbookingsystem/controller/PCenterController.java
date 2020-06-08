@@ -151,12 +151,12 @@ public class PCenterController {
     }
 
 
-    @GetMapping("/pcenter/{id}/returnticket")
+   /* @GetMapping("/pcenter/{id}/returnticket")
     public String returnticket(@PathVariable int id){
         String result =  returnTicket(id);
         System.out.println(result);
         return "redirect:/pcenter";
-    }
+    }*/
 
 
     @PostMapping("/pcenter/editinfo")
@@ -633,7 +633,8 @@ public class PCenterController {
             }
             searchTrip.setSeatFirstRemain(seatFirstRemain);
             searchTrip.setSeatSecondRemain(seatSecondRemain);
-            searchTrips.add(searchTrip);
+            if(searchTrip.getTripId()!=tripEntity1.getId()){
+            searchTrips.add(searchTrip);}
         }
         Map<String,Object> map=new HashMap<>();
         map.put("searchTrips",searchTrips);

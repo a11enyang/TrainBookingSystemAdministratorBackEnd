@@ -1,14 +1,15 @@
 package com.bupt.trainbookingsystem.controller.restController;
+import com.bupt.trainbookingsystem.entity.UserOrderEntity;
 import com.bupt.trainbookingsystem.entity.searchResult.SearchTrip;
 import com.bupt.trainbookingsystem.entity.RoutelineEntity;
 import com.bupt.trainbookingsystem.entity.TripEntity;
 import com.bupt.trainbookingsystem.service.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 @RestController
 @RequestMapping("/api/index")
@@ -186,6 +187,5 @@ public class IndexRestController {
             map.put("sum",searchTrips.size());
             return map;
     }
-
 
 }
