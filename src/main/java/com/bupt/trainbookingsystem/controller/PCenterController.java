@@ -151,7 +151,11 @@ public class PCenterController {
     }
 
 
+
    /* @GetMapping("/pcenter/{id}/returnticket")
+=======
+/*    @GetMapping("/pcenter/{id}/returnticket")
+>>>>>>> Stashed changes
     public String returnticket(@PathVariable int id){
         String result =  returnTicket(id);
         System.out.println(result);
@@ -460,7 +464,7 @@ public class PCenterController {
             return false;
         }
     }
-    @GetMapping("/pcenter/{id}/changeticket")
+/*    @GetMapping("/pcenter/{id}/changeticket")
     public String changeticket(@PathVariable int id){
         System.out.println("退票结果");
         //退票
@@ -469,44 +473,9 @@ public class PCenterController {
         //通过原来的订单显示新的车次
         map = getReBookTrips(id);
         return "search_new";
-    }
+    }*/
     //退票
-    public String returnTicket(int id) {
-        System.out.println(id);
 
-        UserOrderEntity userOrderEntity = userOrderService.findUserOrderEntityById(id);
-        TripEntity tripEntity = tripService.findTripEntityById(userOrderEntity.getTripId());
-        //更改座位信息
-        String myRoute = userOrderEntity.getRoutLine();
-        String seatList = userOrderEntity.getSeatNumberList();
-        String[] SeatList = seatList.split("-");
-        String[] MyRoute = myRoute.split("-");
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String tripTime = String.valueOf(stationsService.getStationTimeByTripIdAndStation(MyRoute[0],tripEntity.getId()));
-        String nowTime = df.format(new Date());
-        boolean flag = isDateBefore(tripTime, nowTime);
-        if (flag == true) {
-            return "票已过期";
-        } else {
-            userOrderService.updateUserOrderEntityById("3", id);
-
-            for (int w = 0; w < MyRoute.length - 1; ++w) {
-                String startFirst = MyRoute[w];
-                String endNext = MyRoute[w + 1];
-                //查找每个二维组的座位并修改
-
-                for(int q=0;q<SeatList.length;++q){
-                    String seatInfo = seatService.getSeatByStartEndTripId(startFirst, endNext, tripEntity.getId());
-                StringBuilder strBuilder = new StringBuilder(seatInfo);
-                System.out.println("修改座位");
-                System.out.println((Integer.parseInt(SeatList[q]) ));
-                strBuilder.setCharAt((Integer.parseInt(SeatList[q])), '0');
-                seatService.updateSeatInfoByTripId(strBuilder.toString(), startFirst, endNext, tripEntity.getId());
-                }
-            }
-            return "退票成功";
-        }
-    }
     //改签 获取当天的车次
     public Map<String,Object> getReBookTrips(int id){
         UserOrderEntity userOrderEntity = userOrderService.findUserOrderEntityById(id);
