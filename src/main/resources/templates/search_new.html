@@ -11,7 +11,7 @@
 </head>
 
 <body>
-<div id="app">
+
     <div class="page-header" >
         <div class="row">
             <div class="col-md-3">
@@ -50,49 +50,7 @@
 
 
 
-    <span style="font-size: 12px;margin-left: 250px">
-            共...个搜索结果
-    </span>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8" id="search-result">
-            <table class="table table-striped">
-                <caption></caption>
-                <thead>
-                <tr>
-                    <th><span style="margin-left: 20px">车次</span></th>
-                    <th>出发站</th>
-                    <th>到达站</th>
-                    <th>出发时间</th>
-                    <th>到达时间</th>
-                    <th>历时</th>
-                    <th>一等座</th>
-                    <th>二等座</th>
-                    <th>一等座票价</th>
-                    <th>二等座票价</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="trip in gettrips">
-                    <td><span style="margin-left: 20px">{{trip.tripNumber}}</span></td>
-                    <td>{{trip.startStation}}</td>
-                    <td>{{trip.endStation}}</td>
-                    <td>{{trip.startTime}}</td>
-                    <td>{{trip.endTime}}</td>
-                    <td>{{trip.spendTime}}</td>
-                    <td>{{trip.seatFirstRemain}}</td>
-                    <td>{{trip.seatSecondRemain}}</td>
-                    <td>{{trip.fareFirst}}</td>
-                    <td>{{trip.fareSecond}}</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" @click="changetheTicket(trip.tripNumber)">改签</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
 
-        </div>
-    </div>
 
 <div id="Trips">
     <span style="font-size: 12px;margin-left: 100px">
@@ -134,8 +92,7 @@
             </tbody>
         </table>
     </el-row>
-=======
->>>>>>> Stashed changes
+
 </div>
     <style>
         #search-info1 {
@@ -164,7 +121,7 @@
             <script src="/webjars/vue/2.6.11/vue.min.js"></script>
 
     <script>
-        new Vue({
+/*        new Vue({
             el: '#Trips',
             data(){
                 return{
@@ -177,22 +134,22 @@
                 }
             },
             mounted(){
-               /* this.start_station=this.getparams("start");
+               /!* this.start_station=this.getparams("start");
                 this.end_station=this.getparams("end");
                 this.start_time=this.getparams("starttime");
-                console.log(this.start_station+" "+this.end_station+" "+this.start_time);*/
+                console.log(this.start_station+" "+this.end_station+" "+this.start_time);*!/
                 this.getTrips();
             },
             methods:{
                 getTrips:function () {
-                    /*let param = new URLSearchParams();
+                    /!*let param = new URLSearchParams();
                     param.append("start",this.start_station);
                     param.append("end",this.end_station);
-                    param.append("time",this.start_time);*/
+                    param.append("time",this.start_time);*!/
                     axios.get("/api/personCenter/getRebookTrips")
 
                 },
-                /* buytheTicket:function (trainnumber) {
+                /!* buytheTicket:function (trainnumber) {
 
                                changetheTicket:function (trainnumber) {
 
@@ -205,18 +162,19 @@
                                        createNewTab.location.href = "/buyTicket?trainnum="+train+"&starttime="+time+"&start="+start+"&end="+end;
                                    }, 100);
 
-                               },*/
+                               },*!/
             }
-        })
+        })*/
 
 
         new Vue({
-            el: '#app',
+            el: '#Trips',
             data(){
                 return{
                     gettrips:{},
                     orderid:"",
                     time:"",
+                    size:"",
                 }
             },
             mounted(){
