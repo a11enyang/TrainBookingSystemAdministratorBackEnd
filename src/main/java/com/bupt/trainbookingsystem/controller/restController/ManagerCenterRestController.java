@@ -16,6 +16,7 @@ import com.bupt.trainbookingsystem.vo.Accept;
 import com.bupt.trainbookingsystem.vo.Meta;
 import com.bupt.trainbookingsystem.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,10 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/managercenter")
@@ -66,6 +64,21 @@ public class ManagerCenterRestController {
 
 
     SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/");
+
+    //获得相关的售票管理员之后然后进行分页
+    @PostMapping("/ticketmanager/page/{page}")
+    public Map<String, Object> findPeoplesWithPage(@PathVariable int page){
+        int pageSize = 10;
+        page = page == 0 ? 1 : page;
+        Page<TicketManagerEntity> pageInfo = ticketManagerService.findTicketManagers(page, pageSize);
+        Map<String, Object>  mapper= new HashMap<>();
+        mapper.put("totalElements", pageInfo.getTotalElements());
+        mapper.put("onePageContent", pageInfo.getContent());
+        return mapper;
+    }
+
+
+
     //获取所有售票管理员
     @GetMapping("/ticketmanager")
     public List<TicketManagerEntity> getAllTicketManager(){
@@ -88,6 +101,7 @@ public class ManagerCenterRestController {
         System.out.println(name+"name");
         return ticketManagerService.updateTicketManagerById1(name, password, staffId, id);
     }
+
     //查找售票管理员
     @PostMapping("/findticketmanager")
     public List<TicketManagerEntity> findticketmanager(@RequestParam(value="name",required = false) String name){
