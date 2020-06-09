@@ -1,13 +1,14 @@
 package com.bupt.trainbookingsystem.vo;
 
 public class Meta {
-    private int status;
+    private boolean status;
     private String msg;
-    public int getStatus() {
+
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

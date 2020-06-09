@@ -22,13 +22,13 @@ public class AdministratorLogin {
         Result result = new Result();
         Meta meta = new Meta();
         if (token.isEmpty()){
-            meta.setStatus(100);
+            meta.setStatus(true);
             meta.setMsg("用户名或者密码错误");
             result.setMeta(meta);
             return result;
         }
         meta.setMsg("登录成功");
-        meta.setStatus(200);
+        meta.setStatus(false);
         result.setToken(token);
         result.setName(accept.getUsername());
         result.setMeta(meta);
