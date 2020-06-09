@@ -1,7 +1,9 @@
 package com.bupt.trainbookingsystem.service.systemCenter;
 
+import com.bupt.trainbookingsystem.dao.AdvertisementRespository;
 import com.bupt.trainbookingsystem.dao.OrdinaryUserRepository;
 import com.bupt.trainbookingsystem.dao.TicketManagerRepository;
+import com.bupt.trainbookingsystem.entity.AdvertisementEntity;
 import com.bupt.trainbookingsystem.entity.OrdinaryUserEntity;
 import com.bupt.trainbookingsystem.entity.TicketManagerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,10 @@ public class AdministratorService {
 
     @Autowired
     public TicketManagerRepository ticketManagerRepository;
+
+
+    @Autowired
+    public AdvertisementRespository advertisementRespository;
 
     /**
      * 1. 保存一个普通用户
@@ -116,4 +122,58 @@ public class AdministratorService {
     /**
      * 4. 多条件查询售票管理员
      */
+    public List<TicketManagerEntity> findTicketUsersWithSpecification(TicketManagerEntity ticketManagerEntity){
+        Specification<TicketManagerEntity> specifications = new Specification<TicketManagerEntity>() {
+            @Override
+            public Predicate toPredicate(Root<TicketManagerEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                //所有的断言及条件
+                List<Predicate> predicates = new ArrayList<>();
+
+                //匹配名字
+                if (ticketManagerEntity.getName() != null){
+                    predicates.add(criteriaBuilder.like(root.get("name"), "%" + ticketManagerEntity.getName() + "%"));
+                }
+
+                //匹配staffId
+                if (ticketManagerEntity.getStaffId() != null){
+                    predicates.add(criteriaBuilder.like(root.get("staffId"), ticketManagerEntity.getStaffId()));
+                }
+
+                //匹配身usertype
+                if (ticketManagerEntity.getUserType() != null){
+                    predicates.add(criteriaBuilder.like(root.get("userType"), ticketManagerEntity.getUserType()));
+                }
+
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+
+            }
+        };
+        List<TicketManagerEntity> ticketManagerEntities = ticketManagerRepository.findAll(specifications);
+        return ticketManagerEntities;
+    }
+
+
+    /**
+     * 1. 保存广告
+     */
+    public void saveAd(AdvertisementEntity advertisementEntity){
+        advertisementRespository.save(advertisementEntity);
+    }
+
+    /**
+     * 2. 删除广告
+     */
+    public void deleteAd(int id){
+        advertisementRespository.deleteById(id);
+    }
+
+    /**
+     * 3. 广告列表
+     */
+    public Page<AdvertisementEntity> findAdInPage(int page, int pageSize){
+        page--;
+        page = page < 0 ? 0 : page;
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.ASC, "id"));
+        return advertisementRespository.findAll(pageable);
+    }
 }

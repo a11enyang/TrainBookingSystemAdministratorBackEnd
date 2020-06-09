@@ -1,6 +1,7 @@
 package com.bupt.trainbookingsystem.controller.systemCenter.administrator;
 
 import com.bupt.trainbookingsystem.entity.AdministratorEntity;
+import com.bupt.trainbookingsystem.security.systemCenter.Aes;
 import com.bupt.trainbookingsystem.service.AdministratorService;
 import com.bupt.trainbookingsystem.vo.Accept;
 import com.bupt.trainbookingsystem.vo.Meta;
@@ -17,8 +18,9 @@ public class AdministratorLogin {
     public AdministratorService administratorService;
 
     @PostMapping("/login")
-    public Result login(@RequestBody Accept accept){
-        String token = administratorService.login(accept.getUsername(), accept.getPassword());
+    public Result login(@RequestBody Accept accept) throws Exception {
+        System.out.println(Aes.Decrypt(accept.getPassword()));
+        String token = administratorService.login(accept.getUsername(), Aes.Decrypt(accept.getPassword()));
         Result result = new Result();
         Meta meta = new Meta();
         if (token.isEmpty()){
@@ -45,7 +47,4 @@ public class AdministratorLogin {
         ticketUserOutput.setAdministratorpwd(administratorEntity.getPassword());
         return ticketUserOutput;
     }
-
-
-
 }

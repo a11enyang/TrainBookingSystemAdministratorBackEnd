@@ -5,8 +5,14 @@ import com.bupt.trainbookingsystem.dao.TicketManagerRepository;
 import com.bupt.trainbookingsystem.entity.TicketManagerEntity;
 import com.bupt.trainbookingsystem.service.systemCenter.AdministratorService;
 import com.bupt.trainbookingsystem.vo.Meta;
+import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/administratorapi/ticketuser")
 @RestController
@@ -52,6 +58,27 @@ public class TicketUserRest {
         return meta;
     }
 
+    /**
+     * 3. 分页显示
+     */
+    @PostMapping("/page/{page}")
+    public Map<String, Object> findTicketUsersPage(@PathVariable int page){
+        int pageSize = 10;
+        page = page ==0 ? 1 : page;
+        Page<TicketManagerEntity> pageInfo = administratorService.findTicketUsersInPage(page, pageSize);
+        Map<String, Object> mapper = new HashMap<>();
+        mapper.put("totalElements", pageInfo.getTotalElements());
+        mapper.put("onePageContent", pageInfo.getContent());
+        return mapper;
+    }
 
+    /**
+     * 4. 多条件查询
+     */
+    @PostMapping("/search")
+    public List<TicketManagerEntity> search(@RequestBody TicketManagerEntity ticketManagerEntity){
+        System.out.println(ticketManagerEntity.getName());
+        return administratorService.findTicketUsersWithSpecification(ticketManagerEntity);
+    }
 
 }
