@@ -1,10 +1,11 @@
-package com.bupt.trainbookingsystem.controller.administrator;
+package com.bupt.trainbookingsystem.controller.systemCenter.administrator;
 
 import com.bupt.trainbookingsystem.entity.AdministratorEntity;
 import com.bupt.trainbookingsystem.service.AdministratorService;
 import com.bupt.trainbookingsystem.vo.Accept;
 import com.bupt.trainbookingsystem.vo.Meta;
 import com.bupt.trainbookingsystem.vo.Result;
+import com.bupt.trainbookingsystem.vo.AdministratorOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +37,15 @@ public class AdministratorLogin {
 
 
     @PostMapping("/administratorpersonal/{token}")
-    public AdministratorEntity findAdtor(@PathVariable String token){
-        return administratorService.findByToken(token);
+    public AdministratorOutput findAdtor(@PathVariable String token){
+        AdministratorEntity administratorEntity = administratorService.findAdministratorByToken(token);
+        AdministratorOutput ticketUserOutput = new AdministratorOutput();
+        ticketUserOutput.setAdministratorid(String.valueOf(administratorEntity.getId()));
+        ticketUserOutput.setAdministratorname(administratorEntity.getName());
+        ticketUserOutput.setAdministratorpwd(administratorEntity.getPassword());
+        return ticketUserOutput;
     }
+
+
+
 }
