@@ -168,7 +168,7 @@
             <br>
             <br>
 
-            <button type="button" class="btn btn-success" style="width: 300px" @click="">前往支付</button>
+            <button type="button" class="btn btn-success" style="width: 300px" @click="changeticketpay()">前往支付</button>
         </div>
     </div>
 </div>
@@ -200,11 +200,13 @@
                 person:{},
                 start:"",
                 end:"",
+                trainnum:"",
             }
         },
         mounted(){
             this.orderid=this.getparams("num");
             this.tripid=this.getparams("tripid");
+            this.trainnum=this.getparams("trainnum");
             this.getpayorders();
         },
         methods: {
@@ -261,6 +263,23 @@
                         this.price=response.data["total"];
                     })
             },
+            changeticketpay:function () {
+                var m=this.person;
+                console.log(m);
+                console.log(JSON.stringify(m));
+                var dataform={
+                    "start":this.start,
+                    "end":this.end,
+                    "tripid":this.tripid,
+                    "peoplelist":JSON.stringify(m),
+                    "orderid":this.orderid,
+                }
+                axios
+                    .post("/changeticket/createchangeorder",dataform,{headers: {'Content-Type':'application/json;charset=UTF-8'}})
+                    .then(reponse =>{
+                        console.log(reponse.data);
+                    })
+            }
         }
     })
 
