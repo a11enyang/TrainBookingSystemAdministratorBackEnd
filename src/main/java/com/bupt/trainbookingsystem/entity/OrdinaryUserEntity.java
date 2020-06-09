@@ -1,6 +1,7 @@
 package com.bupt.trainbookingsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

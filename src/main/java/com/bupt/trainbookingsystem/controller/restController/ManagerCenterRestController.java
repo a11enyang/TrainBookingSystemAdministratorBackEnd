@@ -142,6 +142,14 @@ public class ManagerCenterRestController {
     public List<AdvertisementEntity> getAllAdvertisement(){
         return advertisementService.findAll();
     }
+    //显示所有广告信息
+    @GetMapping("/showads")
+    public List<AdvertisementEntity> showAdvertisement(){
+        List<AdvertisementEntity> advertisementEntityLists = advertisementService.findAll();
+        List<AdvertisementEntity> showAds = advertisementEntityLists.subList(0,4);
+        System.out.println("找到");
+        return  showAds;
+    }
     //删除广告
     @DeleteMapping("/deleteAd/{id}")
     public void deleteAdById(@PathVariable int id) {

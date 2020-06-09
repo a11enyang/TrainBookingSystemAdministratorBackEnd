@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
 
@@ -40,12 +41,16 @@ public class TicketCenterController {
     //检查管理员登录
     @RequestMapping("ticketManager/login")
     public String checkManager(@RequestParam("name") String name,
-                               @RequestParam("pw") String pw, Map<String,Object> map, Model model) throws Exception {
+                               @RequestParam("pw") String pw,
+                               Map<String,Object> map,
+                               Model model,
+                               HttpSession session) throws Exception {
         ticketManagerEntity = ticketManagerService.findTicketManagerEntityByNameAndPassword(name, pw);
         if(ticketManagerEntity!=null ) {
             System.out.println("用户"+name+"登录");
             //doPost("127.0.0.1:8080", String.valueOf(ticketManagerEntity.getId()));
             model.addAttribute("ticketManager",ticketManagerEntity);
+            session.setAttribute("ticketManager",ticketManagerEntity);
             return "ticketCenter";
 
         }

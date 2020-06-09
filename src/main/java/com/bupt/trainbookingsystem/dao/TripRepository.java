@@ -36,6 +36,11 @@ public interface TripRepository extends JpaRepository<TripEntity,Integer> {
     @Modifying
     @Query(value="update trip set train_number = ?1, departure_time=?2, trip_status=?3 where id =?4",nativeQuery=true)
     void updateTripEntityById(String train_number,Timestamp departureTime, Byte status, int id);
-
+    @Transactional
+    @Modifying
+    @Query(value="update trip set remainseat_info = ?1 where id =?2",nativeQuery=true)
+    void updateRemainSeatByTripId(String afterRemain,int tripId);
+    @Query(value="select  remainseat_info from trip  where id =?1",nativeQuery=true)
+    String findRemainById(int id);
 
 }

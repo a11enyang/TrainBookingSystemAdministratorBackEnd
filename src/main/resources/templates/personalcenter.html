@@ -101,7 +101,7 @@
                                         <td ><b th:text="${type2.starttime}"></b>
                                             <br><b th:text="${type2.endtime}"></b></td>
                                         <td>
-                                            <a th:href="@{/pcenter/{id}/returnticket(id=${type2.id})}"> <button type="button" class="btn btn-danger">退票</button></a>
+                                            <a th:href="@{/pcenter/{id}/returnticket1(id=${type2.id})}"> <button type="button" class="btn btn-danger">取消订单</button></a>
                                             <a th:href="@{/pay/{id}(id=${type2.id})}"> <button type="button" class="btn btn-warning">支付</button></a>
                                         </td>
                                     </tr>
@@ -143,8 +143,15 @@
                                         <td ><b th:text="${type1.starttime}"></b>
                                             <br><b th:text="${type1.endtime}"></b></td>
                                         <td>
-                                            <a th:href="@{/pcenter/{id}/returnticket(id=${type1.id})}"><button type="button" class="btn btn-danger">退票</button></a>
-                                            <button type="button" class="btn btn-warning">改签</button>
+                                            <a th:href="@{/pcenter/{id}/returnticket1(id=${type1.id})}"><button type="button" class="btn btn-danger">退票</button></a>
+
+
+<!--                                            <a th:href="@{/pcenter/{id}/changeticket(id=${type1.id})}"><button type="button" class="btn btn-warning">改签</button></a>-->
+
+
+<!--                                            <a th:href="@{/pcenter/{id}/changeticket(id=${type1.id})}"><<button type="button" class="btn btn-warning">改签</button></a>-->
+                                            <button type="button" class="btn btn-warning" th:onclick="returnticket([[${type1.id}]],[[${type1.starttime}]])">改签</button>
+
                                         </td>
                                     </tr>
                                     </tbody>
@@ -397,7 +404,7 @@
 <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
 <!--<script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
 <script src="/webjars/vue/2.6.11/vue.min.js"></script>-->
-<script>
+<script th:inline="javascript">
     new Vue({
         el:'#moreinfo',
         data(){
@@ -558,6 +565,13 @@
         var info3=$("#selectphonenum").val();
         var info4=$('#selectnum').text();
         console.log(info1+" "+info2+" "+info3+" "+info4);
+    }
+    function returnticket(orderid,time) {
+        console.log(orderid);
+        var createNewTab = window.open('about:blank', '_blank');
+        setTimeout(function() {
+            createNewTab.location.href = "/search_new?changeticket="+orderid+"&time="+time;
+        }, 100);
     }
 </script>
 

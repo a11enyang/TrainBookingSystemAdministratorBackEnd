@@ -33,7 +33,10 @@ public class MainController{
      * @return
      */
     @RequestMapping("/index")
-    public String getIndex(){
+    public String getIndex(HttpSession session, Model model){
+        OrdinaryUserEntity user=(OrdinaryUserEntity) session.getAttribute("user");
+        if(user!=null)
+            model.addAttribute("names",user.getName());
         return "index";
     }
 
@@ -63,6 +66,14 @@ public class MainController{
         return "search";
     }
 
+    @GetMapping("/changeticket/pay")
+    public String paychangeticket(Model model,HttpSession session){
+        OrdinaryUserEntity user=(OrdinaryUserEntity) session.getAttribute("user");
+        if(user!=null){
+            model.addAttribute("names",user.getName());
+        }
+        return "gaiqianpay";
+    }
 
 
     /**

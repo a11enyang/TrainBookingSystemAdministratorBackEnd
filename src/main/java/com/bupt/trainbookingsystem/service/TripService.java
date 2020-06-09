@@ -30,4 +30,6 @@ public interface TripService {
     void deleteTripEntityById(int id);
     //更改车次信息
     void updateTripEntityById(String train_number,Timestamp departureTime, Byte status, int id);
+    void updateRemainSeatByTripId(String afterRemain,int tripId);
+    String findRemainById(int id);
 }

@@ -105,7 +105,6 @@
          <tr>
               <th>序号</th>
               <th>票种</th>
-              <th>席别</th>
                <th>姓名</th>
               <th>证件类型</th>
                <th>证件号码</th>
@@ -116,23 +115,14 @@
        <tbody>
         <tr  v-for="(selectcontactor,index) in  selectcontactors">
         <td>{{index+1}}</td>
-        <td><select class="form-control" >
-			<option>成人票</option>
-			<option>儿童票</option>
-			<option>学生票</option>
-        </select></td>
-
-            <td><select class="form-control" >
-			<option>软卧</option>
-			<option>硬卧</option>
-			<option>站票</option>
-                <option>座票</option>
+            <td><select class="form-control" @change="changetickettype($event,selectcontactor.name,index)">
+                <option v-for="item in items" :value="item.id">{{item.name}}</option>
         </select></td>
         <td>{{selectcontactor.name}}</td>
             <td>中国居民身份证</td>
         <td>{{selectcontactor.personid}}</td>
         <td>{{selectcontactor.phonenum}}</td>
-            <td></td>
+            <td>{{selectcontactor.price}}</td>
         </tr>
         </tbody>
        </table>
@@ -188,14 +178,18 @@
                 start_station: "",
                 end_station: "",
                 start_time:"",
-                trainnum:"",
+                tripid:"",
+                items: [
+                    {id:1, name: '一等座'},
+                    {id:2, name: '二等座'},
+                ]
             }
         },
         mounted(){
             this.start_station=this.getparams("start");
             this.end_station=this.getparams("end");
             this.start_time=this.getparams("starttime");
-            this.trainnum=this.getparams("trainnum");
+            this.tripid=this.getparams("tripid");
             this.getallcontactors();
         },
         methods:{
@@ -210,35 +204,56 @@
             },
 
             chooseperson:function (e) {
-                var val;
-                    val=this.checknames;
+
+                var m=this.checknames;
+                console.log(m);
+                //var m=["李四","江琴"];
+                let formdata1=new URLSearchParams();
+                formdata1.append("start",this.start_station);
+                formdata1.append("end",this.end_station);
+                formdata1.append("checknames",m);
+                formdata1.append("tripid",this.tripid);
                     axios
-                        .post("buyticket/getchooseperson",val)
+                        .post("buyticket/getchooseperson",formdata1)
                         .then(response =>{
                             this.selectcontactors=response.data;
                             console.log(this.selectcontactors);
                         })
             },
-            
+            changetickettype:function(e,person,index){
+                console.log(e.target.value) // 选择项的value
+                console.log(person+" "+index);
+                var indexofinput=e.target.value;
+                var indexinselectors=index;
+                var m=this.selectcontactors;
+                var dataform={
+                    "selectcontactors":JSON.stringify(m),
+                    "index1":indexofinput,
+                    "index2":indexinselectors,
+                    "start":this.start_station,
+                    "end":this.end_station,
+                }
+                axios
+                    .post("buyticket/selecttickettype",dataform,{headers: {'Content-Type':'application/json;charset=UTF-8'}})
+                    .then(response=>{
+                        this.selectcontactors=response.data;
+                        console.log(this.selectcontactors);
+                    })
+            },
             createorder:function () {
                 var m=this.selectcontactors;
-                var formdata=new FormData();
-/*                formdata.append("start",this.start_station);
-                formdata.append("end",this.end_station);
-                formdata.append("trainnum",this.trainnum);
-                formdata.append("selectcontactors",JSON.stringify(m));*/
                 console.log(m);
                 console.log(JSON.stringify(m));
                 var dataform={
                     "start":this.start_station,
                     "end":this.end_station,
-                    "trainnum":this.trainnum,
+                    "tripid":this.tripid,
                     "selectcontactors":JSON.stringify(m),
                 }
                 axios
                     .post("buyticket/createorder",dataform,{headers: {'Content-Type':'application/json;charset=UTF-8'}})       /*{headers: {'Content-Type': "multipart/form-data" }}*/
                     .then(response =>{
-
+                           alert("生成订单成功");
                     })
             },
 

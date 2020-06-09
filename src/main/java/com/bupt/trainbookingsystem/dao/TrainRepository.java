@@ -27,5 +27,6 @@ public interface TrainRepository extends JpaRepository<TrainEntity,Integer> {
     @Modifying
     @Query(value="update train set train_type = ?1, seat_info=?2 where id =?3",nativeQuery=true)
     void updateTrainEntityById(String train_type,String seat_info, int id);
-
+    @Query(value="select seat_info from train where id =?1",nativeQuery=true)
+    String findSeatInfoById(int id);
 }

@@ -21,7 +21,8 @@ public class UserOrderEntity {
     private OrdinaryUserEntity ordinaryUserByOrdineryUserId;
     private TripEntity tripByTripId;
     private String pricelist;
-
+    private String typelist;
+    private String seatNumberList;
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // 自增
@@ -33,6 +34,15 @@ public class UserOrderEntity {
         this.id = id;
     }
 
+    @Basic
+    @Column(name="seatNumList")
+    public String getSeatNumberList() {
+        return seatNumberList;
+    }
+
+    public void setSeatNumberList(String seatNumberList) {
+        this.seatNumberList = seatNumberList;
+    }
 
     @Basic
     @Column(name = "trip_number")
@@ -83,6 +93,12 @@ public class UserOrderEntity {
     public void setSeatList(String seatList) {
         this.seatList = seatList;
     }
+
+    @Basic
+    @Column(name = "typelist")
+    public String getTypelist() { return typelist; }
+
+    public void setTypelist(String typelist) { this.typelist = typelist; }
 
     @Basic
     @Column(name = "price")
@@ -171,6 +187,7 @@ public class UserOrderEntity {
     public void setTripByTripId(TripEntity tripByTripId) {
         this.tripByTripId = tripByTripId;
     }
+
 
 
 }

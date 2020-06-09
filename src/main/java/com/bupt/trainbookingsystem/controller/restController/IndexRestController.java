@@ -1,14 +1,15 @@
 package com.bupt.trainbookingsystem.controller.restController;
+import com.bupt.trainbookingsystem.entity.UserOrderEntity;
 import com.bupt.trainbookingsystem.entity.searchResult.SearchTrip;
 import com.bupt.trainbookingsystem.entity.RoutelineEntity;
 import com.bupt.trainbookingsystem.entity.TripEntity;
 import com.bupt.trainbookingsystem.service.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 @RestController
 @RequestMapping("/api/index")
@@ -21,6 +22,7 @@ public class IndexRestController {
     public final TripService tripService;
     public final FareService fareService;
     public final SeatService seatService;
+
     public IndexRestController(StationsService stationsService, RoutelineService routelineService,
                                TicketManagerService ticketManagerService, UserOrderService userOrderService,
                                TrainService trainService, TripService tripService, FareService fareService,
@@ -132,52 +134,53 @@ public class IndexRestController {
                 //根据用户经过路线找座位
                 String[] MyRoute = myRout.split("-");
                 //初始化座位序列
-                String numberOfSeat = tripService.findTripEntityById(tripId).getRemainseatInfo();
+                int trainId = tripEntity.getTrainId();
+                System.out.println(trainId);
+                String numberOfSeat = trainService.findSeatInfoById(trainId);
                 String[] NumberOfSeat = numberOfSeat.split("-");
+                //一等座座位数
                 int seatFirst = Integer.parseInt(NumberOfSeat[0]);
+                //二等座座位数
                 int seatSecond = Integer.parseInt(NumberOfSeat[1]);
+                //总座位数
                 int seatNumber = seatFirst + seatSecond;
-                searchTrip.setSeatFirstRemain(seatFirst);
-                searchTrip.setSeatSecondRemain(seatSecond);
-                searchTrips.add(searchTrip);
-                /*
-                String seatNum = "";
+                String seatInitial = "";
                 for(int m=0;m<seatNumber;++m){
-                    seatNum = seatNum.concat("1");
+                    seatInitial =seatInitial.concat("1");
                 }
-                //初始化结果数组
-                byte[] startByte = seatNum.getBytes();
-                String last = "";
+                System.out.println(seatInitial);
                 for(int j =0 ;j<MyRoute.length-1;++j){
+                    String  last = "";
                     String startFirst = MyRoute[j];
                     String endNext = MyRoute[j+1];
                     //查找每个二维组的座位并并起来
-                    byte[] seatByte = seatService.getSeatByStartEndTripId(MyRoute[j],MyRoute[j+1],tripId);
-                    for(int n=0;n<seatByte.length;++n){
-                        startByte[n] = (byte) ((Integer.valueOf(startByte[n])-48) & (Integer.valueOf(seatByte[n])-48));
-                        last = last.concat(String.valueOf(startByte[n]));
+                    String seatInfo = seatService.getSeatByStartEndTripId(startFirst,endNext,tripId);
+                    System.out.println(seatInfo);
+                    for(int n=0;n<seatInfo.length();++n){
+                        int x = (Integer.valueOf(seatInitial.charAt(n)-48)&Integer.valueOf(seatInfo.charAt(n)-48));
+                        last = last.concat(String.valueOf(x));
+                        System.out.println(last);
+                    }
+                    seatInitial = last;
+                    System.out.println(seatInitial);
+                }
+                String seatInfoFirst = seatInitial.substring(0,seatFirst);
+                String seatInfoSecond = seatInitial.substring(seatFirst,seatFirst+seatSecond);
+                int seatFirstRemain  = 0;
+                int seatSecondRemain  = 0;
+                for(int i = 0;i<seatFirst;++i){
+                    if((seatInfoFirst.charAt(i)) == '0'){
+                        seatFirstRemain += 1;
                     }
                 }
-                //显示余座
-                System.out.println("座位信息");
-                System.out.println(last);
-                int buyNum = 1;
-                int p = 0;
-                while(buyNum!=0){
-                    if (last.charAt(p)=='0'){
-                        //当前余座
-                        System.out.println("当前余座");
-                        System.out.println(seatNumber-p);
-                        System.out.println("当前座位");
-                        System.out.println(p);
-                        buyNum = buyNum -1;
+                for(int j = 0;j<seatSecond;++j){
+                    if((seatInfoSecond.charAt(j)) == '0'){
+                        seatSecondRemain += 1;
                     }
-                    p = p + 1;
-                    if(p==last.length()-1){
-                        System.out.println("no seat now");
-                        break;
-                    }
-                }*/
+                }
+                searchTrip.setSeatFirstRemain(seatFirstRemain);
+                searchTrip.setSeatSecondRemain(seatSecondRemain);
+                searchTrips.add(searchTrip);
             }
             Map<String,Object> map=new HashMap<>();
             map.put("searchTrips",searchTrips);

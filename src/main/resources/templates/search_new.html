@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>search</title>
     <link href='/webjars/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet'>
+    <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
+    <script src="/webjars/vue/2.6.11/vue.min.js"></script>
 </head>
 
 <body>
+
     <div class="page-header" >
         <div class="row">
             <div class="col-md-3">
@@ -33,182 +38,62 @@
                     <li role="presentation"><a href="#" th:href="@{/register}">注册</a></li>
                 </ul>
             </div>
-    
+
             <div class="col-md-3" style="margin-top: 15px ; padding-left: 50px"  th:if="${names}">
                 <ul class="nav nav-pills">
                     <li role="presentation" class="active"><a href="#" th:href="@{/pcenter}">个人中心</a></li>
-                    <img th:src="@{/picture/userimg.jpg}"  style="float: left;width: 50px;height: 50px;margin-left: 20px;margin-top: -5px">
+                    <img th:src="@{/static/picture/userimg.jpg}"  style="float: left;width: 50px;height: 50px;margin-left: 20px;margin-top: -5px">
                     <li role="presentation" ><a href="#" th:text="${names}"></a></li>
                     <li role="presentation" onclick="logout()"><a href="#" >注销</a></li>
                 </ul>
             </div>
-    
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8" id="search-info1">
-            <form class="form-inline">
-                <div class="form-group" style="margin-left: 50px">
-                    <label for="InputStartPoint">出发地</label>
-                    <input type="text" class="form-control" id="InputStartPoint" placeholder="上海">
-                </div>
-                <div class="form-group">
-                    <label for="InputDestination">目的地</label>
-                    <input type="text" class="form-control" id="InputDestination" placeholder="北京">
-                </div>
-                <div class="form-group">
-                    <label for="InputDate">日期</label>
-                    <input type="date" class="form-control" id="InputDate" placeholder="北京">
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="optionsRadios" value="student" checked>
-                        学生
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="optionsRadios" value="adult">
-                        成人
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-warning" style="margin-left: 10px">查询</button>
-            </form>
-        </div>
-        <div class="col-md-2"></div>
-    </div>
-    <br/>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8" id="search-info2">
-            <div class="row">
-                <div class="col-md-2">
-                    <span>车次类型</span>
-                </div>
-                <div class="col-md-10">
-                    <label class="checkbox-inline">
-                        <input type="checkbox" id="trainTypeCheckbox1" value="G"> G-高铁
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox" id="trainTypeCheckbox2" value="D"> D-动车
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox" id="trainTypeCheckbox3" value="T"> T-特快
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox" id="trainTypeCheckbox4" value="Z"> Z-直达
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox" id="trainTypeCheckbox5" value="O"> O-其他
-                    </label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <span>出发车站</span>
-                </div>
-                <div class="col-md-10">
-                    <label class="checkbox-inline">
-                        <input type="checkbox" id="stationCheckbox1" value="earth"> 东站
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox" id="stationCheckbox2" value="west"> 西站
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox" id="stationCheckbox3" value="south"> 南站
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox" id="stationCheckbox4" value="north"> 北站
-                    </label>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2"></div>
-    </div>
 
-    <span style="font-size: 12px;margin-left: 250px">
-            共...个搜索结果
-    </span>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8" id="search-result">
-            <table class="table table-striped">
-                <caption></caption>
-                <thead>
-                <tr>
-                    <th><span style="margin-left: 20px">车次</span></th>
-                    <th>出发站<br>到达站</th>
-                    <th>出发时间<br>到达时间</th>
-                    <th>历时</th>
-                    <th>特等座</th>
-                    <th>一等座</th>
-                    <th>二等座</th>
-                    <th>软卧</th>
-                    <th>软座</th>
-                    <th>硬卧</th>
-                    <th>硬座</th>
-                    <th>其他</th>
-                    <th>备注</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>D710</td>
-                    <td>上海<br>北京南</td>
-                    <td>21:24<br>9:22</td>
-                    <td>11:58<br>次日到达</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>有</td>
-                    <td>
-                        <button type="button" class="btn btn-primary">预定</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>D710</td>
-                    <td>上海<br>北京南</td>
-                    <td>21:24<br>9:22</td>
-                    <td>11:58<br>次日到达</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>有</td>
-                    <td>
-                        <button type="button" class="btn btn-primary">预定</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>D710</td>
-                    <td>上海<br>北京南</td>
-                    <td>21:24<br>9:22</td>
-                    <td>11:58<br>次日到达</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>--</td>
-                    <td>有</td>
-                    <td>有</td>
-                    <td>
-                        <button type="button" class="btn btn-primary">预定</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-2"></div>
-    </div>
+
+
+
+
+<div id="Trips">
+    <span style="font-size: 12px;margin-left: 100px">
+            共{{size}}个搜索结果
+        </span>
+    <el-row class="row-1">
+        <table class="table table-striped">
+            <caption></caption>
+            <thead>
+            <tr>
+                <th><span style="margin-left: 20px">车次</span></th>
+                <th>出发站</th>
+                <th>到达站</th>
+                <th>出发时间</th>
+                <th>到达时间</th>
+                <th>历时</th>
+                <th>一等座</th>
+                <th>二等座</th>
+                <th>一等座票价</th>
+                <th>二等座票价</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="trip in gettrips">
+                <td><span style="margin-left: 20px">{{trip.tripNumber}}</span></td>
+                <td>{{trip.startStation}}</td>
+                <td>{{trip.endStation}}</td>
+                <td>{{trip.startTime}}</td>
+                <td>{{trip.endTime}}</td>
+                <td>{{trip.spendTime}}</td>
+                <td>{{trip.seatFirstRemain}}</td>
+                <td>{{trip.seatSecondRemain}}</td>
+                <td>{{trip.fareFirst}}</td>
+                <td>{{trip.fareSecond}}</td>
+                <td>
+                    <button type="button" class="btn btn-primary" @click="changetheTicket(trip.tripId)">改签</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </el-row>
+
+</div>
     <style>
         #search-info1 {
             border: 1px solid blueviolet;
@@ -230,10 +115,83 @@
             margin-left: 20px;
         }
     </style>
-    <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
-    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
-    <script src="/webjars/vue/2.6.11/vue.min.js"></script>
+            <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+            <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <script src="/webjars/axios/0.19.0/dist/axios.min.js"></script>
+            <script src="/webjars/vue/2.6.11/vue.min.js"></script>
+
+    <script>
+
+
+        new Vue({
+            el: '#Trips',
+            data(){
+                return{
+                    gettrips:{},
+                    orderid:"",
+                    time:"",
+                    size:"",
+                }
+            },
+            mounted(){
+                this.orderid=this.getparams("changeticket");
+                this.time=this.getparams("time");
+                this.getchangeTrips();
+            },
+            methods: {
+                getparams: function (name) {
+                    var search = document.location.search;
+                    var pattern = new RegExp("[?&]" + name + "\=([^&]+)", "g");
+                    var matcher = pattern.exec(search);
+                    var items = null;
+                    if (null != matcher) {
+                        try {
+                            items = decodeURIComponent(decodeURIComponent(matcher[1]));
+                        } catch (e) {
+                            try {
+                                items = decodeURIComponent(matcher[1]);
+                            } catch (e) {
+                                items = matcher[1];
+                            }
+                        }
+                    }
+                    return items;
+
+                },
+
+                getchangeTrips: function () {
+                    let param = new URLSearchParams();
+                    param.append("orderid", this.orderid);
+                    param.append("starttime", this.time);
+                    axios.post("http://localhost:8080/api/index/getchangeTrips", param)
+                        .then(response => {
+                            this.gettrips = response.data["searchTrips"];
+                            this.size = response.data["sum"];
+                            console.log("data", this.gettrips);
+                        })
+                },
+                changetheTicket:function (tripid) {
+
+                    var createNewTab = window.open('about:blank', '_blank');
+                    var orid = this.orderid;
+                    setTimeout(function () {
+                        createNewTab.location.href = "/changeticket/pay?num=" + orid + "&tripid=" + tripid;
+                    }, 100);
+
+                },
+            }
+        })
+
+    </script>
+    <script type="text/javascript">
+        function logout() {
+            var url = "/admin/logout";
+            $.post(url, null, function () {
+                window.location = '/search_new';
+            });
+        }
+    </script>
+
 </body>
 
 </html>
