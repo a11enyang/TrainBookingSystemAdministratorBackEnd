@@ -79,7 +79,7 @@ public class TicketManagerServiceImp implements TicketManagerService {
     @Override
     public Page<TicketManagerEntity> findTicketManagers(int page, int pageSize) {
         page--;
-        page = page < 0 ? 0 :page;
+        page = page < 0 ? 0 : page;
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.ASC, "id"));
         return tmr.findAll(pageable);
     }

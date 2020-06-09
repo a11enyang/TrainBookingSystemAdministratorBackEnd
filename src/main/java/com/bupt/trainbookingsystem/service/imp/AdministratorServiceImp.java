@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -27,6 +29,7 @@ public class AdministratorServiceImp implements AdministratorService {
     }
 
 
+    //安全机制begin
     //登录并且设置token
     @Override
     public String login(String name, String password){
@@ -41,8 +44,21 @@ public class AdministratorServiceImp implements AdministratorService {
         return StringUtils.EMPTY;
     }
 
+    //token的机制验证
+    public Optional<User> findByToken(String token) {
+        Optional<AdministratorEntity> administratorEntity= administratorRespository.findAdministratorEntityByToken(token);
+        if(administratorEntity.isPresent()){
+            AdministratorEntity administratorEntity1 = administratorEntity.get();
+            User user= new User(administratorEntity1.getName(), administratorEntity1.getPassword(), true, true, true, true,
+                    AuthorityUtils.createAuthorityList("USER"));
+            return Optional.of(user);
+        }
+        return  Optional.empty();
+    }
+
+    //根据token找到相关的系统管理员
     @Override
-    public AdministratorEntity findByToken(String token) {
+    public AdministratorEntity findAdministratorByToken(String token) {
         return administratorRespository.findAdministratorEntityByToken(token).get();
     }
 
@@ -51,6 +67,7 @@ public class AdministratorServiceImp implements AdministratorService {
     public void saveAdministrator(AdministratorEntity administratorEntity) {
         administratorRespository.save(administratorEntity);
     }
+    //安全机制end
 
     //分页显示
     public Page<AdministratorEntity> findAdministratorPage(int page, int pageSize){

@@ -48,7 +48,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>3.3.7</version> 
+            <version>3.3.7</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
@@ -117,6 +117,27 @@
             <scope>compile</scope>
         </dependency>
         <!--        热部署 end-->
+
+        <!--        安全模块begin-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <!--        安全模板end-->
+
+        <!--        token验证 begin-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.14</version>
+        </dependency>
+        <!--        token 验证-->
+
 
         <!--        end-->
     </dependencies>
