@@ -670,6 +670,12 @@ public class PCenterController {
             int check = 1;
             if (type.equals("1")){
                 while (check!=0){
+                    if(p==seatInfoFirst.length()){
+                        System.out.println("no seat now");
+                        result[q][0] = name;
+                        result[q][1] = "无座";
+                        break;
+                    }
                     if (seatInfoFirst.charAt(p)=='0'){
                         //当前余座
                         System.out.println("当前座位");
@@ -685,16 +691,17 @@ public class PCenterController {
                         break;
                     }
                     p = p + 1;
-                    if(p==seatInfoFirst.length()){
-                        System.out.println("no seat now");
-                        result[q][0] = name;
-                        result[q][1] = "无座";
 
-                    }
                 }
             }
             else {
                 while (check!=0){
+                    if(p==seatInfoSecond.length()){
+                        System.out.println("no seat now");
+                        result[q][0] = name;
+                        result[q][1] = "无座";
+                        break;
+                    }
                     if (seatInfoSecond.charAt(p)=='0'){
                         //当前余座
                         System.out.println("当前座位");
@@ -710,15 +717,7 @@ public class PCenterController {
                                 .concat("-").concat(String.valueOf(z));
                         result[q][1] = s;
                     }
-                    else{
                     p = p + 1;
-                    if(p==seatInfoSecond.length()){
-                        System.out.println("no seat now");
-                        result[q][0] = name;
-                        result[q][1] = "无座";
-                        break;
-                    }
-                    }
                 }
             }
             //更新余座
