@@ -25,7 +25,13 @@ public class AdministratorServiceImp implements AdministratorService {
     //根据账号找到管理员对象
     @Override
     public AdministratorEntity findAdtorByNameAndPwd(String name, String pwd){
-        return administratorRespository.findAdministratorEntityByNameAndPassword(name, pwd).get();
+        Optional<AdministratorEntity> administratorEntity = administratorRespository.findAdministratorEntityByNameAndPassword(name,pwd);
+        if(administratorEntity!=null&&administratorEntity.isPresent()){
+            return  administratorEntity.get();
+        }
+        else {
+            return  null;
+        }
     }
 
 
