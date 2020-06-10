@@ -12,6 +12,15 @@ public class StationsEntity {
     private Timestamp arriveTime;
     private Integer tripId;
     private TripEntity tripByTripId;
+    private String showTime;
+
+    public String getShowTime() {
+        return showTime;
+    }
+
+    public void setShowTime(String showTime) {
+        this.showTime = String.valueOf(this.arriveTime);
+    }
 
     @Id
     @Column(name = "id")

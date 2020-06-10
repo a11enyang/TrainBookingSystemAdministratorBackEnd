@@ -540,6 +540,7 @@
                             this.photo= '';
                             this.id='';
                         });
+                        $("#newad").modal('hide');
                         this.get();
                     },
                     //删除广告
@@ -579,6 +580,7 @@
                                 this.get();
                             }
                              });
+                        $("#updatead").modal('hide');
 
                     },
 
@@ -641,6 +643,7 @@
                                 this.password = '';
                                 this.staffId='';
                             })
+                        $("#newbusiness").modal('hide');
                         this.get();
                     },
                     //删除票务管理员
@@ -674,6 +677,7 @@
                                     this.get();
                                 }
                         })
+                        $("#updatebusiness").modal('hide');
                     },
                     }
             });
@@ -758,6 +762,7 @@
                                 else {
                                     this.get();
                                 }})
+                        $("#updateordinery").modal('hide');
                     },
                 }
             });
