@@ -278,6 +278,7 @@
                     .post("/changeticket/createchangeorder",dataform,{headers: {'Content-Type':'application/json;charset=UTF-8'}})
                     .then(reponse =>{
                         console.log(reponse.data);
+                        window.location="/pcenter";
                     })
             }
         }

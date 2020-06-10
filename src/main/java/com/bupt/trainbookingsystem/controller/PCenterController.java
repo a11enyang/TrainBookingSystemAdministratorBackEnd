@@ -197,7 +197,7 @@ public class PCenterController {
     @ResponseBody
     public String addcontactor(@RequestParam("name") String name,@RequestParam("personid") String personid,
                                @RequestParam("phonenum") String phonenum,HttpSession session){
-        UserOrderEntity user=(UserOrderEntity) session.getAttribute("user");
+        OrdinaryUserEntity user=(OrdinaryUserEntity) session.getAttribute("user");
         ContactEntity contactEntity=new ContactEntity();
         contactEntity.setName(name);
         contactEntity.setPersonId(personid);
