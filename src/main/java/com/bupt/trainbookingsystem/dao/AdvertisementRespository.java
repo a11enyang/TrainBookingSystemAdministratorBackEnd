@@ -2,6 +2,7 @@ package com.bupt.trainbookingsystem.dao;
 
 import com.bupt.trainbookingsystem.entity.AdvertisementEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,7 +16,7 @@ import javax.transaction.Transactional;
  * 内容：更新广告管理
  */
 @Repository
-public interface AdvertisementRespository extends JpaRepository<AdvertisementEntity, Integer> {
+public interface AdvertisementRespository extends JpaRepository<AdvertisementEntity, Integer>, JpaSpecificationExecutor<AdvertisementEntity> {
     //依靠链接检索
     List<AdvertisementEntity> findAdvertisementEntitiesByLinkContaining(String s);
     //依靠ID检索

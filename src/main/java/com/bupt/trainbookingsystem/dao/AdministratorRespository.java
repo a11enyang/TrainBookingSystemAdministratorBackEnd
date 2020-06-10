@@ -21,6 +21,7 @@ public interface AdministratorRespository extends JpaRepository<AdministratorEnt
     Optional<AdministratorEntity>
     findAdministratorEntityByNameAndPassword(String name,String password);
 
+
     //根据token查找相关管理员账户
     Optional<AdministratorEntity> findAdministratorEntityByToken(String token);
 }

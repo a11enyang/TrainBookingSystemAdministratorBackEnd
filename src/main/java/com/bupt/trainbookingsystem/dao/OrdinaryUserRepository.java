@@ -2,6 +2,7 @@ package com.bupt.trainbookingsystem.dao;
 
 import com.bupt.trainbookingsystem.entity.OrdinaryUserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 
 @Repository
-public interface OrdinaryUserRepository extends JpaRepository<OrdinaryUserEntity,Integer> {
+public interface OrdinaryUserRepository extends JpaRepository<OrdinaryUserEntity,Integer>, JpaSpecificationExecutor<OrdinaryUserEntity> {
 
     @Query("select t from OrdinaryUserEntity t where t.name=?1 and t.password=?2")
     public OrdinaryUserEntity TrygetUser(String name,String password);
