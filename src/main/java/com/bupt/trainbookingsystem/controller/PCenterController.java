@@ -733,10 +733,11 @@ public class PCenterController {
                                 .concat("-").concat(String.valueOf(z));
                         result[q][1] = s;
                     }
-                    else{
                     p = p + 1;
+
                     }
-                }
+
+                
             }
             //更新余座
             System.out.println("p");
