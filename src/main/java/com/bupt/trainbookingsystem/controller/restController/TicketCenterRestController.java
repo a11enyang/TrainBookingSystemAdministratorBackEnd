@@ -38,9 +38,11 @@ public class TicketCenterRestController {
 
     //更新票务管理员
     @PostMapping("/ticketManagerUpdate")
-    public TicketManagerEntity ticketManagerUpdate(@RequestParam(value = "name",required = false)String name, @RequestParam(value = "password",required = false)
-            String password, @RequestParam(value = "id",required = false) String id){
+    public TicketManagerEntity ticketManagerUpdate (@RequestParam(value = "name",required = false)String name, @RequestParam(value = "password",required = false)
+
+            String password, @RequestParam(value = "id",required = false) String id) {
         return ticketManagerService.updateTicketManagerById2(name, password, Integer.parseInt(id));
+
     }
 
 
@@ -115,7 +117,9 @@ public class TicketCenterRestController {
         tripEntity.setDepartureTime(Timestamp.valueOf(de_time));
         tripEntity.setRemainseatInfo(trainService.findTrainEntityById(train_id).getSeatInfo());
         tripService.save(tripEntity);
+
         return tripEntity;
+
     }
 
     //查看车次
