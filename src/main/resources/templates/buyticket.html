@@ -253,7 +253,12 @@
                 axios
                     .post("buyticket/createorder",dataform,{headers: {'Content-Type':'application/json;charset=UTF-8'}})       /*{headers: {'Content-Type': "multipart/form-data" }}*/
                     .then(response =>{
-                           alert("生成订单成功");
+                        console.log("data",response.data);
+                        if(response.data["status"]===1){
+                           alert("生成订单成功");}
+                        else{
+                            alert("剩余座位不足");
+                        }
                     })
             },
 

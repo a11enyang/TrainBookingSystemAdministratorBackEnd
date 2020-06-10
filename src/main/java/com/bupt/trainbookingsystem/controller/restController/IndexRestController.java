@@ -22,6 +22,7 @@ public class IndexRestController {
     public final TripService tripService;
     public final FareService fareService;
     public final SeatService seatService;
+    //获取时间差
 
     public IndexRestController(StationsService stationsService, RoutelineService routelineService,
                                TicketManagerService ticketManagerService, UserOrderService userOrderService,
@@ -180,12 +181,26 @@ public class IndexRestController {
                 }
                 searchTrip.setSeatFirstRemain(seatFirstRemain);
                 searchTrip.setSeatSecondRemain(seatSecondRemain);
-                searchTrips.add(searchTrip);
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+                String tripTime = String.valueOf(stationsService.getStationTimeByTripIdAndStation(start,tripId));
+                String nowTime = df.format(new Date());
+                boolean flag = isDateBefore(tripTime, nowTime);
+                if (flag == false) {
+                    searchTrips.add(searchTrip);
+                }
             }
             Map<String,Object> map=new HashMap<>();
             map.put("searchTrips",searchTrips);
             map.put("sum",searchTrips.size());
             return map;
     }
-
+    public static boolean isDateBefore(String date1,String date2){
+        try{
+            DateFormat df = DateFormat.getDateTimeInstance();
+            return df.parse(date1).before(df.parse(date2));
+        }catch(ParseException e){
+            System.out.print("[SYS] " + e.getMessage());
+            return false;
+        }
+    }
 }

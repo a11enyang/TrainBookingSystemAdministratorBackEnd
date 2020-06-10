@@ -37,7 +37,7 @@ import java.util.*;
 
 @Controller
 public class PCenterController {
-    public Map map;
+
     @Autowired
     ContactService contactorsmethods;
 
@@ -373,14 +373,14 @@ public class PCenterController {
 
     @PostMapping("buyticket/createorder")
     @ResponseBody
-    public void createorder(@RequestBody Map<String,Object> data, HttpSession session){
+    public Map<String,Object>  createorder(@RequestBody Map<String,Object> data, HttpSession session){
         String tripid=(String)data.get("tripid");
         String start=(String)data.get("start");
         String end=(String)data.get("end");
         String str=(String)data.get("selectcontactors");
         List<Selectcontactor> selectcontactor= JSONObject.parseArray(str,Selectcontactor.class);
        // JSONArray jsonArray=new JSONArray();
-
+        Map<String,Object> map=new HashMap<>();
 
         OrdinaryUserEntity user=(OrdinaryUserEntity)session.getAttribute("user");
         TripEntity tripEntity=tripService.findTripEntityById(Integer.parseInt(tripid));
@@ -430,20 +430,38 @@ public class PCenterController {
                     seatNumList += "-"+result[i][2];
                 }
             }
-            userOrderEntity.setUserOrderCondition("0");
-            userOrderEntity.setTripId(tripEntity.getId());
-            userOrderEntity.setPrice(price);
-            userOrderEntity.setOrdineryUserId(user.getId());
-            userOrderEntity.setNameList(namelist);
-            userOrderEntity.setSeatList(seatlist);
-            userOrderEntity.setTripTime(time);
-            userOrderEntity.setRoutLine(myroute);
-            userOrderEntity.setTripNumber(tripEntity.getTrainNumber());
-            userOrderEntity.setPricelist(pricelist);
-            userOrderEntity.setTypelist(typelist);
-            userOrderEntity.setSeatNumberList(seatNumList);
-            userOrderService.save(userOrderEntity);
+
+            boolean isOk = true;
+            System.out.println("长度");
+            for(int i=0;i<result.length;++i){
+                System.out.println(result[i][1]);
+                if(result[i][1].equals("无座")){
+                    System.out.println("座位信息");
+                    isOk = false;
+                }
+            }
+            System.out.println(isOk);
+            if (isOk == true){
+                userOrderEntity.setUserOrderCondition("0");
+                userOrderEntity.setTripId(tripEntity.getId());
+                userOrderEntity.setPrice(price);
+                userOrderEntity.setOrdineryUserId(user.getId());
+                userOrderEntity.setNameList(namelist);
+                userOrderEntity.setSeatList(seatlist);
+                userOrderEntity.setTripTime(time);
+                userOrderEntity.setRoutLine(myroute);
+                userOrderEntity.setTripNumber(tripEntity.getTrainNumber());
+                userOrderEntity.setPricelist(pricelist);
+                userOrderEntity.setTypelist(typelist);
+                userOrderEntity.setSeatNumberList(seatNumList);
+                userOrderService.save(userOrderEntity);
+                map.put("status",1);
+            }
+            else{
+                map.put("status",0);
+            }
         }
+        return  map;
     }
 
 
@@ -653,7 +671,6 @@ public class PCenterController {
                 String startFirst = MyRoute[j];
                 String endNext = MyRoute[j+1];
                 //查找每个二维组的座位并并起来
-
                 String seatInfo = seatService.getSeatByStartEndTripId(startFirst,endNext,tripId);
                 System.out.println(seatInfo);
                 for(int n=0;n<seatInfo.length();++n){
@@ -670,6 +687,12 @@ public class PCenterController {
             int check = 1;
             if (type.equals("1")){
                 while (check!=0){
+                    if(p==seatInfoFirst.length()){
+                        System.out.println("no seat now");
+                        result[q][0] = name;
+                        result[q][1] = "无座";
+                        break;
+                    }
                     if (seatInfoFirst.charAt(p)=='0'){
                         //当前余座
                         System.out.println("当前座位");
@@ -685,23 +708,23 @@ public class PCenterController {
                         break;
                     }
                     p = p + 1;
-                    if(p==seatInfoFirst.length()){
-                        System.out.println("no seat now");
-                        result[q][0] = name;
-                        result[q][1] = "无座";
 
-                    }
                 }
             }
             else {
                 while (check!=0){
+                    if(p==seatInfoSecond.length()){
+                        System.out.println("no seat now");
+                        result[q][0] = name;
+                        result[q][1] = "无座";
+                        break;
+                    }
                     if (seatInfoSecond.charAt(p)=='0'){
                         //当前余座
                         System.out.println("当前座位");
                         p =  p+seatFirst;
                         System.out.println(p);
                         check = 0;
-
                         result[q][0] = name;
                         int x  = (p+1)/40;
                         int y  = ((p+1)%40)/5;
@@ -712,12 +735,6 @@ public class PCenterController {
                     }
                     else{
                     p = p + 1;
-                    if(p==seatInfoSecond.length()){
-                        System.out.println("no seat now");
-                        result[q][0] = name;
-                        result[q][1] = "无座";
-                        break;
-                    }
                     }
                 }
             }
@@ -766,17 +783,6 @@ public class PCenterController {
         if (sec != 0) return sec + "秒" ;
         return "0秒";
     }
-
-    @RestController
-    @RequestMapping("/api/personCenter")
-    class  getNewTrips{
-        @GetMapping("/getRebookTrips")
-        public Map<String,Object> getReBookTrips1(){
-            System.out.println("找到");
-            return map;
-        }
-    }
-
 
 
     @GetMapping("/pcenter/{id}/returnticket1")
