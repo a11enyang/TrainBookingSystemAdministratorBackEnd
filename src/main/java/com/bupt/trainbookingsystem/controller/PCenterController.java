@@ -196,12 +196,13 @@ public class PCenterController {
     @PostMapping("/pcenter/addcontactor")
     @ResponseBody
     public String addcontactor(@RequestParam("name") String name,@RequestParam("personid") String personid,
-                               @RequestParam("phonenum") String phonenum){
+                               @RequestParam("phonenum") String phonenum,HttpSession session){
+        UserOrderEntity user=(UserOrderEntity) session.getAttribute("user");
         ContactEntity contactEntity=new ContactEntity();
         contactEntity.setName(name);
         contactEntity.setPersonId(personid);
         contactEntity.setPhonenum(phonenum);
-        contactEntity.setOrdineryUserId(1);
+        contactEntity.setOrdineryUserId(user.getId());
         contactorsmethods.addcontatcor(contactEntity);
         return "success";
     }

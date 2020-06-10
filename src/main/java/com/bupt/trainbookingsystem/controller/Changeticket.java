@@ -354,4 +354,77 @@ public class Changeticket {
             return "退票成功";
         }
     }
+
+    @PostMapping("butticket/getremainseat")
+    @ResponseBody
+    public Map<String,Object> getremainseat(@RequestParam("tripid") int tripid,
+                              @RequestParam("start") String start,
+                              @RequestParam("end") String end){
+        Map<String,Object> map=new HashMap<>();
+        TripEntity tripEntity=tripService.findTripEntityById(tripid);
+        String rout = routelineService.findRoutelineEntityByTripId(tripid).getRouteLine();
+        String[] TripRoute = rout.split("-");
+        String myRout = "";
+        for(int i = 0;i<TripRoute.length;++i){
+            if(start.equals(TripRoute[i])){
+                myRout = myRout.concat(start).concat("-");
+                i = i+1;
+                while (!end.equals(TripRoute[i])){
+                    myRout = myRout.concat(TripRoute[i]).concat("-");
+                    i = i+1;
+                }
+                myRout = myRout.concat(end);
+            }
+        }
+        String[] MyRoute = myRout.split("-");
+        int trainId = tripEntity.getTrainId();
+        System.out.println(trainId);
+        String numberOfSeat = trainService.findSeatInfoById(trainId);
+        String[] NumberOfSeat = numberOfSeat.split("-");
+        //一等座座位数
+        int seatFirst = Integer.parseInt(NumberOfSeat[0]);
+        //二等座座位数
+        int seatSecond = Integer.parseInt(NumberOfSeat[1]);
+        //总座位数
+        int seatNumber = seatFirst + seatSecond;
+        String seatInitial = "";
+        for(int m=0;m<seatNumber;++m){
+            seatInitial =seatInitial.concat("1");
+        }
+        System.out.println(seatInitial);
+        for(int j =0 ;j<MyRoute.length-1;++j){
+            String  last = "";
+            String startFirst = MyRoute[j];
+            String endNext = MyRoute[j+1];
+            //查找每个二维组的座位并并起来
+            String seatInfo = seatService.getSeatByStartEndTripId(startFirst,endNext,tripid);
+            System.out.println(seatInfo);
+            for(int n=0;n<seatInfo.length();++n){
+                int x = (Integer.valueOf(seatInitial.charAt(n)-48)&Integer.valueOf(seatInfo.charAt(n)-48));
+                last = last.concat(String.valueOf(x));
+                System.out.println(last);
+            }
+            seatInitial = last;
+            System.out.println(seatInitial);
+        }
+        String seatInfoFirst = seatInitial.substring(0,seatFirst);
+        String seatInfoSecond = seatInitial.substring(seatFirst,seatFirst+seatSecond);
+        int seatFirstRemain  = 0;
+        int seatSecondRemain  = 0;
+        for(int i = 0;i<seatFirst;++i){
+            if((seatInfoFirst.charAt(i)) == '0'){
+                seatFirstRemain += 1;
+            }
+        }
+        for(int j = 0;j<seatSecond;++j){
+            if((seatInfoSecond.charAt(j)) == '0'){
+                seatSecondRemain += 1;
+            }
+        }
+        map.put("trainnum",tripEntity.getTrainNumber());
+        map.put("seatremain1",seatFirstRemain);
+        map.put("seatremain2",seatSecondRemain);
+        return map;
+    }
+
 }
