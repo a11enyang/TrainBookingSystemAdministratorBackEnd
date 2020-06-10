@@ -75,7 +75,7 @@
     <div>
         <span >
           <p style="margin-top: -15px;margin-left: 20px">
-              软卧(￥400) 有票 &nbsp; &nbsp; &nbsp;硬卧(￥300) 无票 &nbsp; &nbsp; &nbsp;硬座(￥175) 有票 &nbsp; &nbsp; &nbsp;无座(￥111) 有票</p>
+              一等座(余票)：{{seatremain1}}&nbsp;&nbsp;&nbsp;二等座(余票)：{{seatremain2}}</p>
         </span>
     </div>
 </div>
@@ -182,7 +182,10 @@
                 items: [
                     {id:1, name: '一等座'},
                     {id:2, name: '二等座'},
-                ]
+                ],
+                trainnum:"",
+                seatremain1:"",
+                seatremain2:"",
             }
         },
         mounted(){
@@ -190,6 +193,7 @@
             this.end_station=this.getparams("end");
             this.start_time=this.getparams("starttime");
             this.tripid=this.getparams("tripid");
+            this.getremainseat();
             this.getallcontactors();
         },
         methods:{
@@ -202,7 +206,19 @@
                         this.contators=response.data["mycontactors"];
                     })
             },
-
+            getremainseat:function(){
+                var formdata=new FormData();
+                formdata.append("tripid",this.tripid);
+                formdata.append("start",this.start_station);
+                formdata.append("end",this.end_station);
+                axios
+                    .post("butticket/getremainseat",formdata)
+                    .then(response =>{
+                        this.trainnum=response.data["trainnum"];
+                        this.seatremain1=response.data["seatremain1"];
+                        this.seatremain2=response.data["seatremain2"];
+                    })
+            },
             chooseperson:function (e) {
 
                 var m=this.checknames;
@@ -253,7 +269,12 @@
                 axios
                     .post("buyticket/createorder",dataform,{headers: {'Content-Type':'application/json;charset=UTF-8'}})       /*{headers: {'Content-Type': "multipart/form-data" }}*/
                     .then(response =>{
-                           alert("生成订单成功");
+                        console.log("data",response.data);
+                        if(response.data["status"]===1){
+                           alert("生成订单成功");}
+                        else{
+                            alert("剩余座位不足");
+                        }
                     })
             },
 
