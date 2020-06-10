@@ -24,6 +24,15 @@ public class TripEntity {
     private Collection<StationsEntity> stationsById;
     private TrainEntity trainByTrainId;
     private Collection<UserOrderEntity> userOrdersById;
+    private String showTime;
+
+    public String getShowTime() {
+        return showTime;
+    }
+
+    public void setShowTime(String showTime) {
+        this.showTime = String.valueOf(this.departureTime);
+    }
 
     @Id
     @Column(name = "id")

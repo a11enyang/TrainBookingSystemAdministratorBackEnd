@@ -300,7 +300,7 @@
                                                             <tr v-for="station in stations">
                                                                 <td>{{station.id}}</td>
                                                                 <td>{{station.stationName}}</td>
-                                                                <td>{{station.arriveTime}}</td>
+                                                                <td>{{station.showTime}}</td>
                                                                 <td><input :id="station.id" ></td>
                                                                 <td>
                                                                     <button type="submit" class="btn btn-warning" @click="editStation(station)"
@@ -471,7 +471,7 @@
                                                         <td>{{trip.tripStatus}}</td>
                                                         <td>{{trip.startStation}}</td>
                                                         <td>{{trip.endStation}}</td>
-                                                        <td>{{trip.departureTime}}</td>
+                                                        <td>{{trip.showTime}}</td>
                                                         <td style="width: 200px;">
                                                             <button type="button" class="btn btn-warning"
                                                                     data-toggle="modal"
@@ -515,7 +515,7 @@
                                                         <td>{{trip.tripStatus}}</td>
                                                         <td>{{trip.startStation}}</td>
                                                         <td>{{trip.endStation}}</td>
-                                                        <td>{{trip.departureTime.toString()}}</td>
+                                                        <td>{{trip.showTime}}</td>
                                                         <td style="width: 200px;">
                                                             <button type="button" class="btn btn-warning"
                                                                     data-toggle="modal"
@@ -773,6 +773,7 @@
                             else {
                                 this.getOrders();
                             }})
+                    $("#updateOrder").modal('hide');
                 },
                 //删除列表的订单
                 deletetUserOrder1: async function(order) {
@@ -827,6 +828,7 @@
                         this.new_seatInformation= '';
                     });
                     this.get();
+                    $("#moretrain").modal('hide');
                 },
                 seeTrain:function(train){
                     this.edit_seatInformation = train.seatInfo;
@@ -842,6 +844,7 @@
                         .then(savedTrain => {
                             this.get();
                         });
+                    $("#edittrain").modal('hide');
                 },
                 //删除列车
                 deleteTrain: async function(train) {
@@ -865,6 +868,7 @@
                         .then(savedTrip => {
                         });
                     this.get();
+                    $("#moretrip").modal('hide');
                 },
             }
         });
@@ -908,7 +912,7 @@
                 //编辑车次
                 seeTrip:function (trip) {
                     this.edit_number = trip.trainNumber;
-                    this.edit_time = trip.departureTime;
+                    this.edit_time = trip.showTime;
                     this.edit_status = trip.tripStatus;
                     this.edit_id = trip.id;
                 },
@@ -922,6 +926,7 @@
                         .then(savedTrip => {
                             this.get();
                         });
+                    $("#editTrip").modal('hide');
                 },
                 //搜索车次
                 searchTrips:function(event){
@@ -933,6 +938,7 @@
                                 response => {
                                     this.search_trips = response.data;
                                 })
+
                     }
                     else{
                     param.append("status",this.search_value);
@@ -962,6 +968,7 @@
                     param.append("route",this.edit_route);
                     axios.post("http://localhost:8080/api/ticketCenter/editRoute",param)
                     .then(response => (this.edit_route = response.data))
+                    $("#RoutefixModel").modal('hide');
                 },
                 seeStations:async function (trip) {
                     this.edit_stations_id = trip.id;

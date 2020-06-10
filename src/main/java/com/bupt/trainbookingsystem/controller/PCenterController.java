@@ -72,6 +72,7 @@ public class PCenterController {
                               @RequestParam(value = "page3", defaultValue = "0")int page2,
                               @RequestParam(value = "page4",defaultValue = "0")int page4){
         OrdinaryUserEntity user=(OrdinaryUserEntity) session.getAttribute("user");
+        Timestamp nowtime=new Timestamp(System.currentTimeMillis());
         if(user!=null){
             Sort sort = Sort.by(Sort.Direction.DESC,"id");
             Pageable pageable= PageRequest.of(page,3,sort);
@@ -88,10 +89,15 @@ public class PCenterController {
                 String start=route[0];
                 String end=route[route.length-1];
                 Timestamp starttime=stationsService.getStationTimeByTripIdAndStation(start,pay0.getTripId());
-                Timestamp endtime=stationsService.getStationTimeByTripIdAndStation(end,pay0.getTripId());
-                Userorder_search pay_0=new Userorder_search(pay0.getId(),pay0.getTripNumber(),pay0.getNameList(),pay0.getSeatList()
-                ,pay0.getPrice(),start,end,starttime,endtime);
-                not_payorder.add(pay_0);
+                if(starttime.before(nowtime)){
+                    userOrderService.updateUserOrderEntityById("2",pay0.getId());
+                }
+                else {
+                    Timestamp endtime = stationsService.getStationTimeByTripIdAndStation(end, pay0.getTripId());
+                    Userorder_search pay_0 = new Userorder_search(pay0.getId(), pay0.getTripNumber(), pay0.getNameList(), pay0.getSeatList()
+                            , pay0.getPrice(), start, end, starttime, endtime);
+                    not_payorder.add(pay_0);
+                }
             }
             Page<Userorder_search> notpayorders=listConvertToPage(not_payorder,pageable3);
 
@@ -103,10 +109,15 @@ public class PCenterController {
                 String start=route[0];
                 String end=route[route.length-1];
                 Timestamp starttime=stationsService.getStationTimeByTripIdAndStation(start,pay1.getTripId());
-                Timestamp endtime=stationsService.getStationTimeByTripIdAndStation(end,pay1.getTripId());
-                Userorder_search pay_1=new Userorder_search(pay1.getId(),pay1.getTripNumber(),pay1.getNameList(),pay1.getSeatList()
-                        ,pay1.getPrice(),start,end,starttime,endtime);
-                not_goorder.add(pay_1);
+                if(starttime.before(nowtime)){
+                    userOrderService.updateUserOrderEntityById("2",pay1.getId());
+                }
+                else {
+                    Timestamp endtime = stationsService.getStationTimeByTripIdAndStation(end, pay1.getTripId());
+                    Userorder_search pay_1 = new Userorder_search(pay1.getId(), pay1.getTripNumber(), pay1.getNameList(), pay1.getSeatList()
+                            , pay1.getPrice(), start, end, starttime, endtime);
+                    not_goorder.add(pay_1);
+                }
             }
             Page<Userorder_search> notgoorders=listConvertToPage(not_goorder,pageable1);
 
@@ -659,6 +670,12 @@ public class PCenterController {
             int check = 1;
             if (type.equals("1")){
                 while (check!=0){
+                    if(p==seatInfoFirst.length()){
+                        System.out.println("no seat now");
+                        result[q][0] = name;
+                        result[q][1] = "无座";
+                        break;
+                    }
                     if (seatInfoFirst.charAt(p)=='0'){
                         //当前余座
                         System.out.println("当前座位");
@@ -674,16 +691,17 @@ public class PCenterController {
                         break;
                     }
                     p = p + 1;
-                    if(p==seatInfoFirst.length()){
-                        System.out.println("no seat now");
-                        result[q][0] = name;
-                        result[q][1] = "无座";
 
-                    }
                 }
             }
             else {
                 while (check!=0){
+                    if(p==seatInfoSecond.length()){
+                        System.out.println("no seat now");
+                        result[q][0] = name;
+                        result[q][1] = "无座";
+                        break;
+                    }
                     if (seatInfoSecond.charAt(p)=='0'){
                         //当前余座
                         System.out.println("当前座位");
@@ -699,15 +717,7 @@ public class PCenterController {
                                 .concat("-").concat(String.valueOf(z));
                         result[q][1] = s;
                     }
-                    else{
                     p = p + 1;
-                    if(p==seatInfoSecond.length()){
-                        System.out.println("no seat now");
-                        result[q][0] = name;
-                        result[q][1] = "无座";
-                        break;
-                    }
-                    }
                 }
             }
             //更新余座
