@@ -57,7 +57,9 @@ public class Changeticket {
         int tripid=tripEntity.getId();*/
         String[] route=userOrderEntity.getRoutLine().split("-");
         Timestamp statrtime=stationsService.getStationTimeByTripIdAndStation(route[0],tripid);
+        String startTime = String.valueOf(statrtime);
         Timestamp endtime=stationsService.getStationTimeByTripIdAndStation(route[route.length-1],tripid);
+        String endTime  = String.valueOf(endtime);
         String[] namelist=userOrderEntity.getNameList().split(",");
         BigDecimal fare=fareService.getFareByStationsAndTripId(route[0],route[route.length-1],"1",tripid);
         BigDecimal price=new BigDecimal(0);
@@ -78,8 +80,8 @@ public class Changeticket {
             selectcontactor.setPrice(fare);
             selectcontactors.add(selectcontactor);
         }
-        map.put("starttime",statrtime);
-        map.put("endtime",endtime);
+        map.put("starttime",startTime);
+        map.put("endtime",endTime);
         map.put("startstation",route[0]);
         map.put("endstation",route[route.length-1]);
         map.put("peoplelist",selectcontactors);

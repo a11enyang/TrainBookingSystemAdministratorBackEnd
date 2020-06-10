@@ -28,6 +28,16 @@ public class SearchTrip {
     public String fareFirst;
     //二等座票价
     public String fareSecond;
+    //车次状态
+    public String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getSpendTime() {
         return spendTime;
