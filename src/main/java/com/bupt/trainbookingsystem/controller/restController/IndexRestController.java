@@ -181,12 +181,15 @@ public class IndexRestController {
                 }
                 searchTrip.setSeatFirstRemain(seatFirstRemain);
                 searchTrip.setSeatSecondRemain(seatSecondRemain);
+                searchTrip.setStatus(String.valueOf(tripService.findStatusById(trainId)));
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
                 String tripTime = String.valueOf(stationsService.getStationTimeByTripIdAndStation(start,tripId));
                 String nowTime = df.format(new Date());
                 boolean flag = isDateBefore(tripTime, nowTime);
                 if (flag == false) {
-                    searchTrips.add(searchTrip);
+                    System.out.println(String.valueOf(tripService.findStatusById(tripId)));
+                    if(String.valueOf(tripService.findStatusById(tripId)).equals("1")){
+                    searchTrips.add(searchTrip);}
                 }
             }
             Map<String,Object> map=new HashMap<>();

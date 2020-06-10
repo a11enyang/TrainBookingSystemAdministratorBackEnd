@@ -86,4 +86,9 @@ public class TripServiceImpl implements TripService {
     public String findRemainById(int id) {
         return tpr.findRemainById(id);
     }
+
+    @Override
+    public Byte findStatusById(int id) {
+        return tpr.findStatusById(id);
+    }
 }

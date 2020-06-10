@@ -57,6 +57,7 @@ public class TicketCenterController {
         else{
             System.out.println("no user");
             map.put("msg1","用户名密码错误");
+            model.addAttribute("msg1","用户名密码错误");
             return "redirect:/ticketLogin";
         }
     }

@@ -738,7 +738,7 @@ public class PCenterController {
 
                     }
 
-                
+
             }
             //更新余座
             System.out.println("p");

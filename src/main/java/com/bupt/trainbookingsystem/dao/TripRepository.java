@@ -42,5 +42,7 @@ public interface TripRepository extends JpaRepository<TripEntity,Integer> {
     void updateRemainSeatByTripId(String afterRemain,int tripId);
     @Query(value="select  remainseat_info from trip  where id =?1",nativeQuery=true)
     String findRemainById(int id);
+    @Query(value="select  trip_status from trip  where id =?1",nativeQuery=true)
+    Byte findStatusById(int id);
 
 }
