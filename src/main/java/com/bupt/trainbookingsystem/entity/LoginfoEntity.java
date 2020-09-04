@@ -1,11 +1,14 @@
 package com.bupt.trainbookingsystem.entity;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Table(name = "loginfo", schema = "booking", catalog = "")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LoginfoEntity {
     private String id;
     private Timestamp createtime;

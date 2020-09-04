@@ -1,6 +1,7 @@
 package com.bupt.trainbookingsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "ordinary_user", schema = "booking", catalog = "")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class OrdinaryUserEntity implements Serializable {
     private int id;
     private String name;

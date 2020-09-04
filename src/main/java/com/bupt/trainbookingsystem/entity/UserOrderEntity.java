@@ -1,5 +1,7 @@
 package com.bupt.trainbookingsystem.entity;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -8,6 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user_order", schema = "booking", catalog = "")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UserOrderEntity implements Serializable {
     private int id;//订单id
     private String tripNumber;//车次的编号

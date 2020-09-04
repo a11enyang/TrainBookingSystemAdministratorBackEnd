@@ -1,11 +1,14 @@
 package com.bupt.trainbookingsystem.entity;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "ticket_manager", schema = "booking", catalog = "")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TicketManagerEntity implements Serializable {
     private int id;
     private String name;

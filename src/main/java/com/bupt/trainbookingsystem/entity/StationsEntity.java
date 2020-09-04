@@ -1,5 +1,7 @@
 package com.bupt.trainbookingsystem.entity;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -7,6 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "stations", schema = "booking", catalog = "")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class StationsEntity implements Serializable {
     private int id;
     private String stationName;

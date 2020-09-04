@@ -1,5 +1,7 @@
 package com.bupt.trainbookingsystem.entity;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -8,6 +10,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "contact", schema = "booking", catalog = "")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ContactEntity implements Serializable {
     private int id;
     private String name;
