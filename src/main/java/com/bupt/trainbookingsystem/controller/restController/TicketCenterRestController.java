@@ -46,10 +46,14 @@ public class TicketCenterRestController {
     }
 
 
-    //获取订单
+    //获取列车
     @GetMapping("/trains")
     public List<TrainEntity> trains() {
         return trainService.findAll();
+    }
+    @GetMapping("/newTrains")
+    public List<TrainEntity> newTrains() {
+        return trainService.findAllNew();
     }
 
     //获取订单
@@ -57,8 +61,12 @@ public class TicketCenterRestController {
     public List<UserOrderEntity> userOrders(){
         return  userOrderService.findAll();
     }
+    //非缓存写法
+    @GetMapping("/userOrdersNew")
+    public List<UserOrderEntity> userOrdersNew(){
+        return  userOrderService.findAllNew();
+    }
     //查找对应的订单
-
     @PostMapping("/findOrderByOrderId")
     public UserOrderEntity findOrderByOrderId(@RequestParam(value = "id",required = false) String id){
         UserOrderEntity u = userOrderService.findUserOrderEntityById(Integer.parseInt(id));
@@ -127,7 +135,10 @@ public class TicketCenterRestController {
     public List<TripEntity> seeTrips(){
         return  tripService.findAll();
     }
-
+    @GetMapping("/newTrips")
+    public List<TripEntity> seeNewTrips(){
+        return  tripService.findAllNew();
+    }
     //编辑车次
     @PostMapping("/editTrip")
     public TrainEntity editTrip(@RequestParam(value = "edit_number",required = false)String edit_number,
@@ -160,6 +171,11 @@ public class TicketCenterRestController {
     public List<StationsEntity> seeStations(@PathVariable int id) {
         return stationsService.findStationsEntitiesByTripId(id);
     }
+    @GetMapping("/seeNewStations/{id}")
+    @ResponseBody
+    public List<StationsEntity> seeNewStations(@PathVariable int id) {
+        return stationsService.newFindStationsEntitiesByTripId(id);
+    }
     @GetMapping("/seeFares/{id}")
     @ResponseBody
     public List<FareEntity> seeFares(@PathVariable int id) {
@@ -170,7 +186,7 @@ public class TicketCenterRestController {
     public  void editStation(@RequestParam(value = "time",required = false)String time,
                                        @RequestParam(value = "id",required = false)int id){
         System.out.println(time);
-                        stationsService.updateRoutelineEntityById(Timestamp.valueOf(time),id);
+                        stationsService.updateStationEntityById(Timestamp.valueOf(time),id);
                         System.out.println("ok");
     }
     @PostMapping("/editFare")
@@ -184,7 +200,8 @@ public class TicketCenterRestController {
     @PostMapping("/addStation")
     public void addStation(@RequestParam(value = "name",required = false)String name,
                               @RequestParam(value = "time",required = false)String time,
-                              @RequestParam(value = "id",required = false)int id){
+                              @RequestParam(value = "id")int id){
+        System.out.println("ss"+id);
         StationsEntity stationsEntity = new StationsEntity();
         stationsEntity.setStationName(name);
         stationsEntity.setArriveTime(Timestamp.valueOf(time));

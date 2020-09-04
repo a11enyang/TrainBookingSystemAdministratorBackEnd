@@ -8,6 +8,10 @@ import com.bupt.trainbookingsystem.dao.TripRepository;
 import com.bupt.trainbookingsystem.entity.TripEntity;
 import com.bupt.trainbookingsystem.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -28,44 +32,52 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
+    @Cacheable(value = "Trip" ,key = "")
     public List<TripEntity> findAll() {
         return tpr.findAll();
     }
 
     @Override
-    public TripEntity findTripEntityById(int id) {
-        return tpr.findTripEntityById(id);
+    public List<TripEntity> findAllNew() {
+        return tpr.findAll();
     }
+    @Override
+    @Cacheable(value = "Trip" ,key = "#number")
+    public List<TripEntity> findTripEntitiesByTrainNumberContaining(String number) {
+        return tpr.findTripEntitiesByTrainNumberContaining(number);
+    }
+    @Override
 
+    public void updateRemainSeatByTripId(String afterRemain, int tripId) {
+        tpr.updateRemainSeatByTripId(afterRemain, tripId);
+    }
     @Override
     public TripEntity findTripEntityByTrainNumber(String num) {
         return tpr.findTripEntityByTrainNumber(num);
     }
-
+    @Override
+    public TripEntity findTripEntityById(int id) {
+        return tpr.findTripEntityById(id);
+    }
     @Override
     public TripEntity findTripEntityByStartStation(String start) {
         return tpr.findTripEntityByStartStation(start);
     }
-
     @Override
     public TripEntity findTripEntityByEndStation(String end) {
         return tpr.findTripEntityByEndStation(end);
     }
-
     @Override
     public List<TripEntity> findTripEntitiesByDepartureTimeIsStartingWith(Timestamp departureTime) {
         return tpr.findTripEntitiesByDepartureTimeIsStartingWith(departureTime);
     }
-
     @Override
+    @Cacheable(value = "Trip" ,key = "#status")
     public List<TripEntity> findTripEntitiesByTripStatus(Byte status) {
         return tpr.findTripEntitiesByTripStatus(status);
     }
 
-    @Override
-    public List<TripEntity> findTripEntitiesByTrainNumberContaining(String number) {
-        return tpr.findTripEntitiesByTrainNumberContaining(number);
-    }
+
 
     @Override
     public void deleteTripEntityById(int id) {
@@ -77,10 +89,7 @@ public class TripServiceImpl implements TripService {
         tpr.updateTripEntityById(train_number, departureTime, status, id);
     }
 
-    @Override
-    public void updateRemainSeatByTripId(String afterRemain, int tripId) {
-        tpr.updateRemainSeatByTripId(afterRemain, tripId);
-    }
+
 
     @Override
     public String findRemainById(int id) {

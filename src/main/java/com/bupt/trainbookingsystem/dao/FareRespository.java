@@ -27,4 +27,5 @@ List<FareEntity>  findFareEntitiesByTripId(int id);
     @Transactional
     @Query(value="select price from fare where start_station = ?1 and end_station=?2 and seat_type=?3 and trip_id=?4 ",nativeQuery=true)
     BigDecimal getFareByStationsAndTripId(String start,String end,String type,int tripId);
+    FareEntity findFareEntityById(int id);
 }

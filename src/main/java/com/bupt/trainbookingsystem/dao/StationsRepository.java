@@ -27,7 +27,7 @@ public interface StationsRepository extends JpaRepository<StationsEntity,Integer
     @Transactional
     @Query(value="select arrive_time from stations where station_name=?1 and trip_id=?2",nativeQuery=true)
     Timestamp getStationTimeByTripIdAndStation(String start,int tripId);
-
+    StationsEntity findStationsEntityById(int id);
 
 
 }
