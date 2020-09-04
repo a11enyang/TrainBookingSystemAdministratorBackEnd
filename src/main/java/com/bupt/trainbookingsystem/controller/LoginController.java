@@ -18,7 +18,7 @@ public class LoginController {
     private OrdinaryUserService userLogin;
 
     @GetMapping("/login")
-    public String login(){
+    public String login(HttpSession session){
         return "login";
     }
     @GetMapping("/register")
@@ -55,7 +55,6 @@ public class LoginController {
     @PostMapping("/admin/login")
     public String logintry(@RequestParam("username")String username, @RequestParam("password")String password,
                            HttpSession session, RedirectAttributes attributes){
-
         OrdinaryUserEntity ordinaryuser=userLogin.checkuser(username,password);
         if(ordinaryuser!=null){
             ordinaryuser.setPassword(null);

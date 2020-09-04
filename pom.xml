@@ -138,6 +138,11 @@
         </dependency>
         <!--        token 验证-->
 
+        <!--        aop注入-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
 
         <!--        end-->
     </dependencies>

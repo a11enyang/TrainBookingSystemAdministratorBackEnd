@@ -1,7 +1,11 @@
 package com.bupt.trainbookingsystem.service.imp;
 
+import com.bupt.trainbookingsystem.annotation.Operation;
+import com.bupt.trainbookingsystem.annotation.OperationLogDetail;
 import com.bupt.trainbookingsystem.dao.OrdinaryUserRepository;
 import com.bupt.trainbookingsystem.entity.OrdinaryUserEntity;
+import com.bupt.trainbookingsystem.enums.OperationType;
+import com.bupt.trainbookingsystem.enums.OperationUnit;
 import com.bupt.trainbookingsystem.service.OrdinaryUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,8 @@ public class OrdinaryUserServiceImp implements OrdinaryUserService {
     @Autowired
     OrdinaryUserRepository ordinaryUserRepository;
 
+    @OperationLogDetail(Detail = "通过账号登录",level = 3,operationType = OperationType.SELETE,operationUnit = OperationUnit.USER)
+    //@Operation(value = "用户[{{name}}]登录")
     @Override
     public OrdinaryUserEntity checkuser(String name, String password) {
         OrdinaryUserEntity ordinaryuser=ordinaryUserRepository.TrygetUser(name,password);
