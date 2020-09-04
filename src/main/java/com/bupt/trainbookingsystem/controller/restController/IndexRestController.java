@@ -63,7 +63,7 @@ public class IndexRestController {
 
     //返回用户搜索信息
     @PostMapping("/getTrips")
-    @Cacheable(value = "Trip" ,key = "")
+    @Cacheable(value = "getTrips" ,key = "#start+'-'+#end+'-'+#time")
     public Map<String,Object> getTrips(@RequestParam(value = "start",required = false)String start,
                                      @RequestParam(value = "end",required = false)String end,
                                      @RequestParam(value = "time",required = false)String time){
@@ -76,12 +76,12 @@ public class IndexRestController {
                 //时间匹配
                 Timestamp timestamp = stationsService.getStationTimeByTripIdAndStation(start,tripId);
                 String timestampString = String.valueOf(timestamp);
-                System.out.println(timestampString);
-                System.out.println((timestampString.substring(0,10)));
+           //     System.out.println(timestampString);
+             //   System.out.println((timestampString.substring(0,10)));
                 if((timestampString.substring(0,10)).equals(time)){
                     routeTrips.add(tripService.findTripEntityById(tripId));
-                    System.out.println((timestampString.substring(0,10)));
-                    System.out.println(tripService.findTripEntityById(tripId));
+                  //  System.out.println((timestampString.substring(0,10)));
+                   // System.out.println(tripService.findTripEntityById(tripId));
                 }
             }
             List<SearchTrip> searchTrips = new ArrayList<>();
@@ -172,7 +172,7 @@ public class IndexRestController {
                 String nowTime = df.format(new Date());
                 boolean flag = isDateBefore(tripTime, nowTime);
                 if (flag == false) {
-                    System.out.println(String.valueOf(tripService.findStatusById(tripId)));
+                  //  System.out.println(String.valueOf(tripService.findStatusById(tripId)));
                     if(String.valueOf(tripService.findStatusById(tripId)).equals("1")){
                     searchTrips.add(searchTrip);}
                 }

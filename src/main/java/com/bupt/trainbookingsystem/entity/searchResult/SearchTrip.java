@@ -1,9 +1,10 @@
 package com.bupt.trainbookingsystem.entity.searchResult;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class SearchTrip {
+public class SearchTrip implements Serializable {
     //搜索的车次ID
     public int tripId;
     //搜索到的车次编号

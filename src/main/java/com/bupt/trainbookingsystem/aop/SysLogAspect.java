@@ -77,7 +77,7 @@ public class SysLogAspect {
         //获取用户ip地址
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getRequest();
-        sysLog.setIp(IpAddressUtil.getIpAdrress(request));
+      //  sysLog.setIp(IpAddressUtil.getIpAdrress(request));
 
         System.out.println("日志记录: "+sysLog.toString());
 
