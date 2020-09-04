@@ -1,12 +1,13 @@
 package com.bupt.trainbookingsystem.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
 @Table(name = "fare", schema = "booking", catalog = "")
-public class FareEntity {
+public class FareEntity implements Serializable {
     private int id;
     private String startStation;
     private String endStation;

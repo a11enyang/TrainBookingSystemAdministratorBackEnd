@@ -1,13 +1,14 @@
 package com.bupt.trainbookingsystem.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "contact", schema = "booking", catalog = "")
-public class ContactEntity {
+public class ContactEntity implements Serializable {
     private int id;
     private String name;
     private String personId;

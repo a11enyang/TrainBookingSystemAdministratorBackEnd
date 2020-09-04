@@ -45,12 +45,13 @@ public class TicketCenterRestController {
 
     }
 
-
     //获取列车
     @GetMapping("/trains")
     public List<TrainEntity> trains() {
         return trainService.findAll();
     }
+
+    //获取列车 非缓存
     @GetMapping("/newTrains")
     public List<TrainEntity> newTrains() {
         return trainService.findAllNew();
@@ -61,7 +62,8 @@ public class TicketCenterRestController {
     public List<UserOrderEntity> userOrders(){
         return  userOrderService.findAll();
     }
-    //非缓存写法
+
+    //获取订单 非缓存
     @GetMapping("/userOrdersNew")
     public List<UserOrderEntity> userOrdersNew(){
         return  userOrderService.findAllNew();
@@ -159,29 +161,32 @@ public class TicketCenterRestController {
     List<TripEntity> searchTripsByStatus(@RequestParam(value = "status",required = false)String status){
         return tripService.findTripEntitiesByTripStatus(Byte.valueOf(status));
     }
-
+    //查看路线
     @GetMapping("/seeRoute/{id}")
     public RoutelineEntity seeRoute(@PathVariable int id) {
         RoutelineEntity routelineEntity = new  RoutelineEntity();
         routelineEntity = routelineService.findRoutelineEntityByTripId(id);
         return routelineEntity;
     }
+    //查看站点
     @GetMapping("/seeStations/{id}")
     @ResponseBody
     public List<StationsEntity> seeStations(@PathVariable int id) {
         return stationsService.findStationsEntitiesByTripId(id);
     }
+    //查看站点非缓存
     @GetMapping("/seeNewStations/{id}")
     @ResponseBody
     public List<StationsEntity> seeNewStations(@PathVariable int id) {
         return stationsService.newFindStationsEntitiesByTripId(id);
     }
+    //查看票价
     @GetMapping("/seeFares/{id}")
     @ResponseBody
     public List<FareEntity> seeFares(@PathVariable int id) {
         return fareService.findFareEntitiesByTripId(id);
     }
-
+    //编辑站点
     @PostMapping("/editStation")
     public  void editStation(@RequestParam(value = "time",required = false)String time,
                                        @RequestParam(value = "id",required = false)int id){
@@ -189,6 +194,7 @@ public class TicketCenterRestController {
                         stationsService.updateStationEntityById(Timestamp.valueOf(time),id);
                         System.out.println("ok");
     }
+    //编辑票价
     @PostMapping("/editFare")
     public  void editFare(@RequestParam(value = "price",required = false)String price,
                              @RequestParam(value = "id",required = false)int id){
@@ -196,7 +202,7 @@ public class TicketCenterRestController {
         fareService.updateFareEntityById(bigDecimal,id);
         System.out.println("ok");
     }
-
+    //增加站点
     @PostMapping("/addStation")
     public void addStation(@RequestParam(value = "name",required = false)String name,
                               @RequestParam(value = "time",required = false)String time,
@@ -209,7 +215,7 @@ public class TicketCenterRestController {
         stationsEntity.setTripByTripId(tripService.findTripEntityById(id));
         stationsService.save(stationsEntity);
     }
-
+    //增加费用
     @PostMapping("/addFare")
     public void addFare(@RequestParam(value = "start",required = false)String start,
                            @RequestParam(value = "end",required = false)String end,
@@ -225,20 +231,23 @@ public class TicketCenterRestController {
         fareEntity.setTripByTripId(tripService.findTripEntityById(id));
         fareService.save(fareEntity);
     }
+    //删除站点
     @DeleteMapping("/deleteStation/{id}")
     public void deleteStation(@PathVariable int id) {
         stationsService.deleteStationsEntityById(id);
     }
+    //删除票价
     @DeleteMapping("/deleteFare/{id}")
     public void deleteFare(@PathVariable int id) {
           fareService.deleteFareEntityById(id);
     }
+    //新增、编辑路线
     @PostMapping("/editRoute")
      public  RoutelineEntity editRoute(@RequestParam(value = "route",required = false)String route,
                               @RequestParam(value = "id",required = false)int id){
-        System.out.println("new route");
         RoutelineEntity routelineEntity  = routelineService.findRoutelineEntityByTripId(id);
         String [] newCity = route.split("-");
+        //路线不存在 新建路线以及对应的站点和票价
         if (routelineEntity==null){
             RoutelineEntity routelineEntity1 = new RoutelineEntity();
             routelineEntity1.setRouteLine(route);
@@ -295,10 +304,9 @@ public class TicketCenterRestController {
                     seatEntity.setTripByTripId(tripService.findTripEntityById(id));
                     seatService.save(seatEntity);
                 }
-
-
             return routelineEntity1;
         }
+        //路线存在 修改路线以及座位信息
         else {
             routelineService.updateRoutelineEntityById(route,routelineEntity.getId());
             seatService.deleteSeatEntitiesByTripId(id);

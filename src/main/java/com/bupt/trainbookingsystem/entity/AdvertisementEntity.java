@@ -1,11 +1,12 @@
 package com.bupt.trainbookingsystem.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "advertisement", schema = "booking", catalog = "")
-public class AdvertisementEntity {
+public class AdvertisementEntity implements Serializable {
     private int id;
     private String photo;
     private String link;

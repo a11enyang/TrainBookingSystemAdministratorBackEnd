@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 @Table(name = "ordinary_user", schema = "booking", catalog = "")
-public class OrdinaryUserEntity {
+public class OrdinaryUserEntity implements Serializable {
     private int id;
     private String name;
     private String password;

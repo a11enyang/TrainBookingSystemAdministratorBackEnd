@@ -1,11 +1,12 @@
 package com.bupt.trainbookingsystem.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "administrator", schema = "booking", catalog = "")
-public class AdministratorEntity {
+public class AdministratorEntity implements Serializable {
     private int id;
     private String name; //管理员名字
     private String password; //密码

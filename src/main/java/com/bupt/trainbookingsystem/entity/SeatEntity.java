@@ -1,12 +1,13 @@
 package com.bupt.trainbookingsystem.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
 @Table(name = "seat", schema = "booking", catalog = "")
-public class SeatEntity {
+public class SeatEntity implements Serializable {
     private int id;
     private String firstStation;
     private String nextStation;

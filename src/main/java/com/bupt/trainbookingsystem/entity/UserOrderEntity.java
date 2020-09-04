@@ -1,13 +1,14 @@
 package com.bupt.trainbookingsystem.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Table(name = "user_order", schema = "booking", catalog = "")
-public class UserOrderEntity {
+public class UserOrderEntity implements Serializable {
     private int id;//订单id
     private String tripNumber;//车次的编号
     private String routLine;//路线

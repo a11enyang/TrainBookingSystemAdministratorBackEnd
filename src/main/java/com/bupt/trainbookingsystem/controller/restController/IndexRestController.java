@@ -4,6 +4,7 @@ import com.bupt.trainbookingsystem.entity.searchResult.SearchTrip;
 import com.bupt.trainbookingsystem.entity.RoutelineEntity;
 import com.bupt.trainbookingsystem.entity.TripEntity;
 import com.bupt.trainbookingsystem.service.*;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -62,6 +63,7 @@ public class IndexRestController {
 
     //返回用户搜索信息
     @PostMapping("/getTrips")
+    @Cacheable(value = "Trip" ,key = "")
     public Map<String,Object> getTrips(@RequestParam(value = "start",required = false)String start,
                                      @RequestParam(value = "end",required = false)String end,
                                      @RequestParam(value = "time",required = false)String time){
@@ -89,33 +91,22 @@ public class IndexRestController {
                 searchTrip.setStartStation(start);
                 searchTrip.setEndStation(end);
                 int tripId = tripEntity.getId();
-                System.out.println("查到的车次");
-                System.out.println(tripId);
                 searchTrip.setTripId(tripId);
                 searchTrip.setTripNumber(tripService.findTripEntityById(tripId).getTrainNumber());
                 //时间表找出发时间
-                System.out.println("出发时间");
                 Timestamp startTime =stationsService.getStationTimeByTripIdAndStation(start,tripId);
-                System.out.println(startTime);
                 searchTrip.setStartTime(String.valueOf(startTime));
                 //时间表找到达时间
-                System.out.println("到达时间"   );
                 Timestamp endTime = stationsService.getStationTimeByTripIdAndStation(end,tripId);
-                System.out.println(endTime);
                 searchTrip.setEndTime(String.valueOf(endTime));
                 String distanceTime = getDistanceTime(startTime.getTime(),endTime.getTime());
                 searchTrip.setSpendTime(distanceTime);
                 //费用表找到费用
-                System.out.println("费用");
-                System.out.println(fareService.getFareByStationsAndTripId(start,end,"1",tripId));
                 searchTrip.setFareFirst(String.valueOf(fareService.getFareByStationsAndTripId(start,end,"1",tripId)));
-                System.out.println(fareService.getFareByStationsAndTripId(start,end,"2",tripId));
                 searchTrip.setFareSecond(String.valueOf(fareService.getFareByStationsAndTripId(start,end,"2",tripId)));
                 //获取总路线
                 //获取用户经过路线
-                System.out.println("总路线");
                 String rout = routelineService.findRoutelineEntityByTripId(tripId).getRouteLine();
-                System.out.println(rout);
                 String []TripRoute = rout.split("-");
                 String myRout = "";
                 for(int i = 0;i<TripRoute.length;++i){
@@ -129,14 +120,11 @@ public class IndexRestController {
                         myRout = myRout.concat(end);
                     }
                 }
-                System.out.println("用户路线");
-                System.out.println(myRout);
                 searchTrip.setRouteLine(myRout);
                 //根据用户经过路线找座位
                 String[] MyRoute = myRout.split("-");
                 //初始化座位序列
                 int trainId = tripEntity.getTrainId();
-                System.out.println(trainId);
                 String numberOfSeat = trainService.findSeatInfoById(trainId);
                 String[] NumberOfSeat = numberOfSeat.split("-");
                 //一等座座位数
@@ -156,14 +144,11 @@ public class IndexRestController {
                     String endNext = MyRoute[j+1];
                     //查找每个二维组的座位并并起来
                     String seatInfo = seatService.getSeatByStartEndTripId(startFirst,endNext,tripId);
-                    System.out.println(seatInfo);
                     for(int n=0;n<seatInfo.length();++n){
                         int x = (Integer.valueOf(seatInitial.charAt(n)-48)&Integer.valueOf(seatInfo.charAt(n)-48));
                         last = last.concat(String.valueOf(x));
-                        System.out.println(last);
                     }
                     seatInitial = last;
-                    System.out.println(seatInitial);
                 }
                 String seatInfoFirst = seatInitial.substring(0,seatFirst);
                 String seatInfoSecond = seatInitial.substring(seatFirst,seatFirst+seatSecond);

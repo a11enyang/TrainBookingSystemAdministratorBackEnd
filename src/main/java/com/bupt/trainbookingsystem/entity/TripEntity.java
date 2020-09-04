@@ -3,13 +3,14 @@ package com.bupt.trainbookingsystem.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 @Table(name = "trip", schema = "booking", catalog = "")
-public class TripEntity {
+public class TripEntity implements Serializable {
     private int id;
     private String trainNumber;//车次编号
     private String startStation;//起点

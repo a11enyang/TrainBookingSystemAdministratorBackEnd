@@ -374,6 +374,7 @@ public class PCenterController {
 
     @PostMapping("buyticket/createorder")
     @ResponseBody
+    //
     public Map<String,Object>  createorder(@RequestBody Map<String,Object> data, HttpSession session){
         String tripid=(String)data.get("tripid");
         String start=(String)data.get("start");
@@ -406,13 +407,11 @@ public class PCenterController {
             String [][]userSelect = new String[selectcontactor.size()][3];
             for (int i = 0; i < selectcontactor.size(); i++) {
                 userSelect[i][0] = selectcontactor.get(i).getName();
-
                 userSelect[i][1]=selectcontactor.get(i).getType();
 
             }
             String[][] result = getSeatsInfo(tripEntity.getId(),userSelect,myroute);
             for (int i = 0; i < selectcontactor.size(); i++) {
-
                 if (i == 0) {
                     namelist = selectcontactor.get(i).getName();
                     pricelist=""+selectcontactor.get(i).getPrice();
@@ -431,7 +430,6 @@ public class PCenterController {
                     seatNumList += "-"+result[i][2];
                 }
             }
-
             boolean isOk = true;
             System.out.println("长度");
             for(int i=0;i<result.length;++i){
@@ -474,16 +472,13 @@ public class PCenterController {
         return -1;
     }
 
-
-
-
     @GetMapping("/api/gettrip")
     @ResponseBody
     public String gettrp(){
         return "success";
     }
 
-
+    //查看日期是否正确
     public static boolean isDateBefore(String date1,String date2){
         try{
             DateFormat df = DateFormat.getDateTimeInstance();
@@ -493,17 +488,6 @@ public class PCenterController {
             return false;
         }
     }
-/*    @GetMapping("/pcenter/{id}/changeticket")
-    public String changeticket(@PathVariable int id){
-        System.out.println("退票结果");
-        //退票
-        String result =  returnTicket(id);
-        System.out.println(result);
-        //通过原来的订单显示新的车次
-        map = getReBookTrips(id);
-        return "search_new";
-    }*/
-    //退票
 
     //改签 获取当天的车次
     public Map<String,Object> getReBookTrips(int id){
@@ -652,10 +636,8 @@ public class PCenterController {
         //总座位数
         int seatNumber = seatFirst + seatSecond;
         //初始化座位
-
         //获取区间之间的座位状况
         String[] MyRoute = myRoute.split("-");
-
         //获取当前座位
         int peopleNum = userSelect.length;
         int q = 0;
@@ -735,10 +717,7 @@ public class PCenterController {
                         result[q][1] = s;
                     }
                     p = p + 1;
-
                     }
-
-
             }
             //更新余座
             System.out.println("p");
@@ -823,7 +802,6 @@ public class PCenterController {
         return "redirect:/pcenter";
 
     }
-
 
     public String returnticket(int id){
         UserOrderEntity userOrderEntity=userOrderService.findUserOrderEntityById(id);
