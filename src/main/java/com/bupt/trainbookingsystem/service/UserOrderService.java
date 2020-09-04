@@ -14,6 +14,7 @@ import java.util.Map;
 public interface UserOrderService {
     void save(UserOrderEntity u);
     List<UserOrderEntity> findAll();
+    List<UserOrderEntity> findAllNew();
     //通过ID找订单
     UserOrderEntity findUserOrderEntityById(int id);
     //通过车次编号找订单

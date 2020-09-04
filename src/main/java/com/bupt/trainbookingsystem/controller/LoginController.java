@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
+
 import  java.util.*;
 @Controller
 @RequestMapping("")
@@ -18,7 +19,7 @@ public class LoginController {
     private OrdinaryUserService userLogin;
 
     @GetMapping("/login")
-    public String login(HttpSession session){
+    public String login(){
         return "login";
     }
     @GetMapping("/register")
@@ -55,14 +56,22 @@ public class LoginController {
     @PostMapping("/admin/login")
     public String logintry(@RequestParam("username")String username, @RequestParam("password")String password,
                            HttpSession session, RedirectAttributes attributes){
+
+        /** Logger实例 */
+
+
         OrdinaryUserEntity ordinaryuser=userLogin.checkuser(username,password);
         if(ordinaryuser!=null){
             ordinaryuser.setPassword(null);
             session.setAttribute("user",ordinaryuser);
+
+
             return "redirect:/index";
         }
         else {
             attributes.addFlashAttribute("message","用户名或密码错误");
+
+            // 打印出错误堆栈信息
             return "redirect:/login";
         }
     }

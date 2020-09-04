@@ -19,7 +19,7 @@ import java.util.*;
 public interface RoutelineRepository extends JpaRepository<RoutelineEntity,Integer> {
     //根据车次ID找到车次
      RoutelineEntity findRoutelineEntityByTripId(int id);
-
+    RoutelineEntity findRoutelineEntityById(int id);
     @Transactional
     @Modifying
     @Query(value="update routeline set  route_line =?1 where id =?2",nativeQuery=true)

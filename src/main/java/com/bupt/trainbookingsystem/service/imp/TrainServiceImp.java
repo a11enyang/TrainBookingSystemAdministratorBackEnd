@@ -6,6 +6,8 @@ package com.bupt.trainbookingsystem.service.imp;
 import com.bupt.trainbookingsystem.dao.TrainRepository;
 import com.bupt.trainbookingsystem.entity.TrainEntity;
 import com.bupt.trainbookingsystem.service.TrainService;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,16 +21,21 @@ public class TrainServiceImp implements TrainService {
     }
 
     @Override
+    @Cacheable(value = "Train" ,key = "")
     public List<TrainEntity> findAll() {
         return tr.findAll();
     }
-
+    @Override
+    public List<TrainEntity> findAllNew() {
+        return tr.findAll();
+    }
     @Override
     public TrainEntity save(TrainEntity t) {
         return  tr.save(t);
     }
 
     @Override
+    @Cacheable(value = "Train" ,key = "#id")
     public TrainEntity findTrainEntityById(int id) {
         return tr.findTrainEntityById(id);
     }
@@ -39,16 +46,20 @@ public class TrainServiceImp implements TrainService {
     }
 
     @Override
+
     public void deleteTrainEntityById(int id) {
         tr.deleteTrainEntityById(id);
     }
 
     @Override
-    public void updateTrainEntityById(String train_type, String seat_info, int id) {
+    @CachePut(value = "Train" ,key = "#result.id")
+    public TrainEntity updateTrainEntityById(String train_type, String seat_info, int id) {
         tr.updateTrainEntityById(train_type, seat_info, id);
+        return  tr.findTrainEntityById(id);
     }
 
     @Override
+    @Cacheable(value = "Train" ,key = "#id")
     public String findSeatInfoById(int id) {
         return tr.findSeatInfoById(id);
     }

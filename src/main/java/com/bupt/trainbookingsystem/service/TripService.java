@@ -13,6 +13,7 @@ public interface TripService {
 
     void save(TripEntity t);
     List<TripEntity> findAll();
+    List<TripEntity> findAllNew();
     //根据ID搜索
     TripEntity findTripEntityById(int id);
     //根据编号搜索

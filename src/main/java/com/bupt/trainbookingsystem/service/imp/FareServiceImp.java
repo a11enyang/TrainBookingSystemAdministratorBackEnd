@@ -1,25 +1,36 @@
 package com.bupt.trainbookingsystem.service.imp;
 
 import com.bupt.trainbookingsystem.dao.FareRespository;
+import com.bupt.trainbookingsystem.dao.TripRepository;
 import com.bupt.trainbookingsystem.entity.FareEntity;
+import com.bupt.trainbookingsystem.entity.TripEntity;
 import com.bupt.trainbookingsystem.service.FareService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames = {"FareCache"})
 public class FareServiceImp implements FareService {
     public final FareRespository fareRespository;
-
-    public FareServiceImp(FareRespository fareRespository) {
+    @Autowired
+    private final TripRepository tpr;
+    public FareServiceImp(FareRespository fareRespository, TripRepository tpr) {
         this.fareRespository = fareRespository;
+        this.tpr = tpr;
     }
 
     @Override
-    public void save(FareEntity f) {
-    fareRespository.save(f);
+    @CacheEvict(value="Fare",key="#f.tripId")
+    public FareEntity save(FareEntity f) {
+        fareRespository.save(f);
+        return f;
     }
 
     @Override
@@ -28,18 +39,25 @@ public class FareServiceImp implements FareService {
     }
 
     @Override
+    @Cacheable(value = "Fare",key = "#id")
     public List<FareEntity> findFareEntitiesByTripId(int id) {
         return fareRespository.findFareEntitiesByTripId(id);
     }
 
     @Override
-    public void updateFareEntityById(BigDecimal price, int id) {
+    @CachePut(value="Fare",key="#result[0].tripId")
+    public List<FareEntity> updateFareEntityById(BigDecimal price, int id) {
         fareRespository.updateFareEntityById(price,id);
+        int tripId = fareRespository.findFareEntityById(id).getTripId();
+        return  fareRespository.findFareEntitiesByTripId(tripId);
     }
 
     @Override
-    public void deleteFareEntityById(int id) {
+    @CacheEvict(value="Fare",key="#result.id")
+    public TripEntity deleteFareEntityById(int id) {
+        TripEntity tripEntity = tpr.findTripEntityById(fareRespository.findFareEntityById(id).getTripId());
         fareRespository.deleteFareEntityById(id);
+        return  tripEntity;
     }
 
     @Override

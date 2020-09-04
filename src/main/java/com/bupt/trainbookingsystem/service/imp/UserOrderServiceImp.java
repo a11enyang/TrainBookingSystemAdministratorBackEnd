@@ -11,6 +11,8 @@ import com.bupt.trainbookingsystem.entity.custom.EntityUtils;
 import com.bupt.trainbookingsystem.entity.custom.Userorder_search;
 import com.bupt.trainbookingsystem.service.UserOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,11 +42,19 @@ public class UserOrderServiceImp implements UserOrderService {
     }
 
     @Override
+    @Cacheable(value = "Order",key = "")
     public List<UserOrderEntity> findAll() {
         return uor.findAll();
     }
 
     @Override
+    public List<UserOrderEntity> findAllNew() {
+        return uor.findAll();
+    }
+
+
+    @Override
+    @Cacheable(value = "Order",key = "#id")
     public UserOrderEntity findUserOrderEntityById(int id) {
         return uor.findUserOrderEntityById(id);
     }
@@ -60,6 +70,7 @@ public class UserOrderServiceImp implements UserOrderService {
     }
 
     @Override
+    @CachePut(value = "Order",key = "#result.id")
     public UserOrderEntity updateUserOrderEntityById1(String condition, int id) {
         uor.updateUserOrderEntityById(condition, id);
         return uor.findUserOrderEntityById(id);

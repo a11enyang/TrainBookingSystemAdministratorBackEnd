@@ -32,6 +32,10 @@ public class MainController{
      * 首页url
      * @return
      */
+    @RequestMapping("/404.html")
+    public String errorPage(){
+        return "404.html";
+    }
     @RequestMapping("/index")
     public String getIndex(HttpSession session, Model model){
         OrdinaryUserEntity user=(OrdinaryUserEntity) session.getAttribute("user");
