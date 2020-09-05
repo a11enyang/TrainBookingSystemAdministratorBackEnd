@@ -281,7 +281,7 @@
                                                     <form @submit.prevent="editRoute()">
                                                     <div class="modal-body">
                                                         <div class="form-group">
-                                                            <label>路线设置</label>
+                                                            <label>路线设置(请使用“城市-城市-城市”的方式输入)</label>
                                                             <input type="text" class="form-control" v-model="edit_route">
                                                         </div>
                                                         <button type="submit" class="btn btn-default" >Submit</button>
@@ -589,7 +589,7 @@
                                         <form @submit.prevent="postEditOrder">
                                         <div class="modal-body">
                                             <div class="form-group">
-                                                <label for="InputRoute">状态设置</label>
+                                                <label >状态设置</label>
                                                 <input type="text" class="form-control" v-model="edit_condition">
                                             </div>
                                             <button type="submit" class="btn btn-default">确认</button>
@@ -619,7 +619,7 @@
                                     </div>-->
                                     <div class="col-md-3"></div>
                                     <div class="col-md-6">
-                                        <label for="searchContant">订单ID</label>
+                                        <label>订单ID</label>
                                         <form @submit.prevent="searchOrders">
                                         <div class="input-group">
                                             <input type="text" class="form-control"
@@ -877,6 +877,7 @@
             data() {
                 return {
                     trains:null,
+
                     totalPage: 1, // 统共页数，默认为1
                     currentPage: 1, //当前页数 ，默认为1
                     pageSize: 8, // 每页显示数量
@@ -911,7 +912,6 @@
                 prevPage() {
                     console.log(this.currentPage);
                     if (this.currentPage === 1) return;
-
                     this.currentPage--;
                     this.setCurrentPageData();
 
@@ -919,7 +919,6 @@
                 // 下一页
                 nextPage() {
                     if (this.currentPage === this.totalPage)return;
-
                     this.currentPage++;
                     this.setCurrentPageData();
 
@@ -989,17 +988,30 @@
                 },
                 addTrip:function (event) {
                     let param = new URLSearchParams();
-                    param.append("de_time",this.de_time);
-                    param.append("start_station",this.start_station);
-                    param.append("end_station",this.end_station);
-                    param.append("train_number",this.train_number);
-                    param.append("train_status",this.train_status);
-                    param.append("train_id",this.train_id);
-                    axios.post("http://localhost:8080/api/ticketCenter/addTrip",param)
-                        .then(savedTrip => {
-                        });
-                    this.getNew();
-                    $("#moretrip").modal('hide');
+                    let reg = /^((\d{2}(([02468][048])|([13579][26]))[\-\/\s]?((((0?[13578])|(1[02]))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\-\/\s]?((0?[1-9])|([1-2][0-9])))))|(\d{2}(([02468][1235679])|([13579][01345789]))[\-\/\s]?((((0?[13578])|(1[02]))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\-\/\s]?((0?[1-9])|(1[0-9])|(2[0-8]))))))(\s((([0-1][0-9])|(2?[0-3]))\:([0-5]?[0-9])((\s)|(\:([0-5]?[0-9])))))?$/;
+                    if(reg.test(this.de_time)){
+                        if(this.train_status==='0' || this.train_status==='1'){
+                            param.append("de_time",this.de_time);
+                            param.append("start_station",this.start_station);
+                            param.append("end_station",this.end_station);
+                            param.append("train_number",this.train_number);
+                            param.append("train_status",this.train_status);
+                            param.append("train_id",this.train_id);
+                            axios.post("http://localhost:8080/api/ticketCenter/addTrip",param)
+                                .then(savedTrip => {
+                                });
+                            this.getNew();
+                            $("#moretrip").modal('hide');
+                        }
+                       else{
+                           alert("请检查列车状态是否为0或1");
+                        }
+                    }
+                    else{
+                    alert("请检查时间格式是否为yyyy-MM-dd HH:mm:ss");
+                    }
+
+
                 },
             }
         });
@@ -1048,7 +1060,6 @@
                 prevPage() {
                     console.log(this.currentPage);
                     if (this.currentPage === 1) return;
-
                     this.currentPage--;
                     this.setCurrentPageData();
 
@@ -1093,21 +1104,35 @@
                     this.edit_status = trip.tripStatus;
                     this.edit_id = trip.id;
                 },
+
                 editTrip:function (event) {
                     let param = new URLSearchParams();
-                    param.append("edit_number",this.edit_number);
-                    param.append("edit_time",this.edit_time);
-                    param.append("edit_status",this.edit_status);
-                    param.append("id",this.edit_id);
-                    axios.post("http://localhost:8080/api/ticketCenter/editTrip",param)
-                        .then(savedTrip => {
-                            this.getNew();
-                        });
-                    $("#editTrip").modal('hide');
+                    let reg = /^((\d{2}(([02468][048])|([13579][26]))[\-\/\s]?((((0?[13578])|(1[02]))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\-\/\s]?((0?[1-9])|([1-2][0-9])))))|(\d{2}(([02468][1235679])|([13579][01345789]))[\-\/\s]?((((0?[13578])|(1[02]))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\-\/\s]?((0?[1-9])|(1[0-9])|(2[0-8]))))))(\s((([0-1][0-9])|(2?[0-3]))\:([0-5]?[0-9])((\s)|(\:([0-5]?[0-9])))))?$/;
+                    if(reg.test(this.edit_time)){
+                        if(this.edit_status==='0'||this.edit_status==='1'){
+                            param.append("edit_number",this.edit_number);
+                            param.append("edit_time",this.edit_time);
+                            param.append("edit_status",this.edit_status);
+                            param.append("id",this.edit_id);
+                            axios.post("http://localhost:8080/api/ticketCenter/editTrip",param)
+                                .then(savedTrip => {
+                                    this.getNew();
+                                });
+                            $("#editTrip").modal('hide');
+                        }
+                        else{
+                         alert("请检查车次状态是否为0or1");
+                        }
+                        }
+
+                    else {
+                        alert("请检查时间格式是否为yyyy-MM-dd HH:mm:ss");
+                    }
+
                 },
                 //搜索车次
                 searchTrips:function(event){
-                    let param = new URLSearchParams()
+                    let param = new URLSearchParams();
                     if(this.search_way==="车次编号"){
                         param.append("number",this.search_value);
                         axios.post("http://localhost:8080/api/ticketCenter/searchTripsByNumber",param)
@@ -1117,17 +1142,24 @@
                                 })
 
                     }
-                    else{
-                    param.append("status",this.search_value);
-                    axios.post("http://localhost:8080/api/ticketCenter/searchTripsByStatus",param)
-                        .then(
-                            response => {
-                                this.search_trips = response.data;
-                            })
+                    else if(this.search_way==="车次状态") {
+                        param.append("status", this.search_value);
+                        if (this.search_value === '0' || this.search_value === '1') {
+                            axios.post("http://localhost:8080/api/ticketCenter/searchTripsByStatus", param)
+                                .then(
+                                    response => {
+                                        this.search_trips = response.data;
+                                    })
+                            this.in_search = true;
+                            this.not_search = false;
+                        } else {
+                            alert("请检查车次状态是否为0or1");
+                        }
                     }
-                    this.in_search = true;
-                    this.not_search = false;
-                },
+                    else{
+                        alert("请检查搜索方式是否为空");
+                }
+                    },
                 go_back:
                     function(){
                         this.in_search = false;
@@ -1172,35 +1204,54 @@
                     let param = new URLSearchParams();
                     let myid = station.id;
                     this.edit_station_time = document.getElementById(myid).value;
-                    document.getElementById(myid).value="";
-                    param.append("id",station.id);
-                    param.append("time",this.edit_station_time);
-                    axios.post("http://localhost:8080/api/ticketCenter/editStation",param)
-                        .then(response=>{this.seeStations(this.edit_trip);});
-                    this.edit_station_time="";
+                    let reg = /^((\d{2}(([02468][048])|([13579][26]))[\-\/\s]?((((0?[13578])|(1[02]))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\-\/\s]?((0?[1-9])|([1-2][0-9])))))|(\d{2}(([02468][1235679])|([13579][01345789]))[\-\/\s]?((((0?[13578])|(1[02]))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\-\/\s]?((0?[1-9])|(1[0-9])|(2[0-8]))))))(\s((([0-1][0-9])|(2?[0-3]))\:([0-5]?[0-9])((\s)|(\:([0-5]?[0-9])))))?$/;
+                    if(reg.test(this.edit_station_time)){
+                        document.getElementById(myid).value="";
+                        param.append("id",station.id);
+                        param.append("time",this.edit_station_time);
+                        axios.post("http://localhost:8080/api/ticketCenter/editStation",param)
+                            .then(response=>{this.seeStations(this.edit_trip);});
+                        this.edit_station_time="";}
+                   else{
+                        alert("请检查时间格式是否为yyyy-MM-dd HH:mm:ss");
+                    }
                 },
                 editFare:function(fare){
                     let param = new URLSearchParams();
                     let myId = fare.id;
-                    param.append("id",myId);
-                    param.append("price",document.getElementById(myId).value);
-                    axios.post("http://localhost:8080/api/ticketCenter/editFare",param)
-                        .then(response=>{this.seeFares(this.edit_trip);});
-                    document.getElementById(myId).value = "";
+                    let regPos = /^\d+(\.\d+)?$/; //非负浮点数
+                    let regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+                    if(regPos.test(document.getElementById(myId).value) || regNeg.test(document.getElementById(myId).value)){
+                        param.append("id",myId);
+                        param.append("price",document.getElementById(myId).value);
+                        axios.post("http://localhost:8080/api/ticketCenter/editFare",param)
+                            .then(response=>{this.seeFares(this.edit_trip);});
+                        document.getElementById(myId).value = "";
+                    }else{
+                        alert("请检查输入费用是否为数字");
+                    }
+
                 },
                 newStation: function(){
                     let param = new URLSearchParams();
-                    param.append("id",this.edit_trip.id);
-                    param.append("name",document.getElementById("new_stationName").value);
-                    param.append("time",document.getElementById("new_arriveTime").value);
-                    axios.post("http://localhost:8080/api/ticketCenter/addStation",param)
-                        .then(response=>{this.seeNewStations(this.edit_trip);});
-                    document.getElementById("new_stationName").value = "";
-                    document.getElementById("new_arriveTime").value = "";
-
+                    let reg = /^((\d{2}(([02468][048])|([13579][26]))[\-\/\s]?((((0?[13578])|(1[02]))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\-\/\s]?((0?[1-9])|([1-2][0-9])))))|(\d{2}(([02468][1235679])|([13579][01345789]))[\-\/\s]?((((0?[13578])|(1[02]))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\-\/\s]?((0?[1-9])|(1[0-9])|(2[0-8]))))))(\s((([0-1][0-9])|(2?[0-3]))\:([0-5]?[0-9])((\s)|(\:([0-5]?[0-9])))))?$/;
+                    if(reg.test(document.getElementById("new_arriveTime").value)){     param.append("id",this.edit_trip.id);
+                        param.append("name",document.getElementById("new_stationName").value);
+                        param.append("time",document.getElementById("new_arriveTime").value);
+                        axios.post("http://localhost:8080/api/ticketCenter/addStation",param)
+                            .then(response=>{this.seeNewStations(this.edit_trip);});
+                        document.getElementById("new_stationName").value = "";
+                        document.getElementById("new_arriveTime").value = "";}
+                    else
+                    {
+                        alert("请检查时间格式是否为yyyy-MM-dd HH:mm:ss");
+                    }
                 },
                 newFare:
                     function(){
+                        let regPos = /^\d+(\.\d+)?$/; //非负浮点数
+                        let regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+                        if(regPos.test(document.getElementById("newPrice").value) || regNeg.test(document.getElementById("newPrice").value)){
                         let param = new URLSearchParams();
                         param.append("id",this.edit_fare_trip_id);
                         param.append("start",document.getElementById("newStartStation").value);
@@ -1213,6 +1264,10 @@
                         document.getElementById("newEndStation").value= "";
                         document.getElementById("newSeatType").value="";
                         document.getElementById("newPrice").value="";
+        }
+                        else{
+                            alert("请检查输入费用是否为数字");
+        }
                     },
                 deleteStation:async  function (station) {
                     await axios
