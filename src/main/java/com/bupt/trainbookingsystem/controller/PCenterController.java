@@ -11,6 +11,8 @@ import com.bupt.trainbookingsystem.service.*;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Controller;
@@ -374,7 +376,7 @@ public class PCenterController {
 
     @PostMapping("buyticket/createorder")
     @ResponseBody
-    //
+    //@CacheEvict(value = "getTrips" ,key ="#result['start']+'-'+#result['end']+'-'+#result['time']")
     public Map<String,Object>  createorder(@RequestBody Map<String,Object> data, HttpSession session){
         String tripid=(String)data.get("tripid");
         String start=(String)data.get("start");
@@ -383,7 +385,11 @@ public class PCenterController {
         List<Selectcontactor> selectcontactor= JSONObject.parseArray(str,Selectcontactor.class);
        // JSONArray jsonArray=new JSONArray();
         Map<String,Object> map=new HashMap<>();
-
+        map.put("start",start);
+        map.put("end",end);
+        Timestamp myTime = stationsService.getStationTimeByTripIdAndStation(start,Integer.parseInt(tripid));
+        String timeStr = String.valueOf(myTime).substring(0,9);
+        map.put("time",timeStr);
         OrdinaryUserEntity user=(OrdinaryUserEntity)session.getAttribute("user");
         TripEntity tripEntity=tripService.findTripEntityById(Integer.parseInt(tripid));
         String namelist="",seatlist="",myroute="",pricelist="",typelist="",seatNumList="";
@@ -395,6 +401,7 @@ public class PCenterController {
             String[] routeline=rou.split("-");
             int startindex=getindex(routeline,start);
             int endindex=getindex(routeline,end);
+
             for(int j=startindex;j<=endindex;j++){
                 if(j==startindex){
                     myroute=myroute.concat(routeline[j]);
@@ -408,7 +415,6 @@ public class PCenterController {
             for (int i = 0; i < selectcontactor.size(); i++) {
                 userSelect[i][0] = selectcontactor.get(i).getName();
                 userSelect[i][1]=selectcontactor.get(i).getType();
-
             }
             String[][] result = getSeatsInfo(tripEntity.getId(),userSelect,myroute);
             for (int i = 0; i < selectcontactor.size(); i++) {
@@ -627,7 +633,8 @@ public class PCenterController {
     public   String[][] getSeatsInfo(int tripId,String[][] userSelect,String myRoute){
         //获取座位数
         String result[][] = new String[userSelect.length][3];
-        String numberOfSeat = trainService.findTrainEntityById(tripService.findTripEntityById(tripId).getTrainId()).getSeatInfo();
+//        System.out.println(trainService.findTrainEntityById(thisid));
+        String numberOfSeat = trainService.findSeatInfoById(tripService.findTripEntityById(tripId).getTrainId());
         String[] NumberOfSeat = numberOfSeat.split("-");
         //一等座座位数
         int seatFirst = Integer.parseInt(NumberOfSeat[0]);
@@ -655,14 +662,14 @@ public class PCenterController {
                 String endNext = MyRoute[j+1];
                 //查找每个二维组的座位并并起来
                 String seatInfo = seatService.getSeatByStartEndTripId(startFirst,endNext,tripId);
-                System.out.println(seatInfo);
+                //System.out.println(seatInfo);
                 for(int n=0;n<seatInfo.length();++n){
                     int x = (Integer.valueOf(seatInitial.charAt(n)-48)&Integer.valueOf(seatInfo.charAt(n)-48));
                     last = last.concat(String.valueOf(x));
-                    System.out.println(last);
+                    //System.out.println(last);
                 }
                 seatInitial = last;
-                System.out.println(seatInitial);
+             //   System.out.println(seatInitial);
             }
             String seatInfoFirst = seatInitial.substring(0,seatFirst);
             String seatInfoSecond = seatInitial.substring(seatFirst,seatFirst+seatSecond);
@@ -705,8 +712,8 @@ public class PCenterController {
                     if (seatInfoSecond.charAt(p)=='0'){
                         //当前余座
                         System.out.println("当前座位");
-                        p =  p+seatFirst;
                         System.out.println(p);
+                        p =  p+seatFirst-1;
                         check = 0;
                         result[q][0] = name;
                         int x  = (p+1)/40;
@@ -723,7 +730,7 @@ public class PCenterController {
             System.out.println("p");
             System.out.println(p);
             result[q][2] = String.valueOf(p);
-            if(result[q][1]  != "无座"){
+            if(result[q][1] != "无座"){
                 //更新座位表
                 for(int w =0 ;w<MyRoute.length-1;++w){
                     String startFirst = MyRoute[w];
@@ -732,6 +739,7 @@ public class PCenterController {
                     String seatInfo = seatService.getSeatByStartEndTripId(startFirst,endNext,tripId);
                     StringBuilder strBuilder = new StringBuilder(seatInfo);
                     strBuilder.setCharAt(p,'1');
+                    System.out.println("座位"+strBuilder.toString());
                     seatService.updateSeatInfoByTripId(strBuilder.toString(),startFirst,endNext,tripId);
                 }
             }
@@ -770,7 +778,7 @@ public class PCenterController {
     public String returnticket1(@PathVariable int id,Model model){
         UserOrderEntity userOrderEntity=userOrderService.findUserOrderEntityById(id);
         int tripid=userOrderEntity.getTripId();
-        String numberOfSeat = trainService.findTrainEntityById(tripService.findTripEntityById(tripid).getTrainId()).getSeatInfo();
+        String numberOfSeat = trainService.findSeatInfoById(tripService.findTripEntityById(tripid).getTrainId());
         String[] seatlist=userOrderEntity.getSeatList().split(",");
         String[] routelist=userOrderEntity.getRoutLine().split("-");
         String seatFirst=numberOfSeat.split("-")[0];

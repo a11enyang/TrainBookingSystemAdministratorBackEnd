@@ -4,6 +4,7 @@ import com.bupt.trainbookingsystem.entity.searchResult.SearchTrip;
 import com.bupt.trainbookingsystem.entity.RoutelineEntity;
 import com.bupt.trainbookingsystem.entity.TripEntity;
 import com.bupt.trainbookingsystem.service.*;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +64,7 @@ public class IndexRestController {
 
     //返回用户搜索信息
     @PostMapping("/getTrips")
-    @Cacheable(value = "getTrips" ,key = "#start+'-'+#end+'-'+#time")
+   // @CachePut(value = "getTrips" ,key = "#start+'-'+#end+'-'+#time")
     public Map<String,Object> getTrips(@RequestParam(value = "start",required = false)String start,
                                      @RequestParam(value = "end",required = false)String end,
                                      @RequestParam(value = "time",required = false)String time){

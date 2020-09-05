@@ -59,7 +59,7 @@ public class TrainServiceImp implements TrainService {
     }
 
     @Override
-    @Cacheable(value = "Train" ,key = "#id")
+    //@Cacheable(value = "Train" ,key = "#id")
     public String findSeatInfoById(int id) {
         return tr.findSeatInfoById(id);
     }

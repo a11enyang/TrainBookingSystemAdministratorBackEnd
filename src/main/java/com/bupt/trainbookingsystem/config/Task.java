@@ -12,7 +12,7 @@ import java.util.Date;
 @Component
 @Slf4j
 public class Task {
-    @Scheduled(cron = "* */5 * * * ?")
+    @Scheduled(cron = "* */30 * * * ?")
     public void dump() throws Exception {
         String backName = new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new Date());
         dataBaseDump("localhost", "3306", "root", "070500", "booking", backName);
