@@ -1,4 +1,4 @@
-package com.bupt.trainbookingsystem.security.systemCenter;
+package com.bupt.trainbookingsystem.security;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;

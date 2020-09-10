@@ -1,15 +1,16 @@
-package com.bupt.trainbookingsystem.controller.systemCenter.administrator;
+package com.bupt.trainbookingsystem.controller.administrator;
 
+import com.bupt.trainbookingsystem.bean.ResponseData;
 import com.bupt.trainbookingsystem.entity.AdministratorEntity;
-import com.bupt.trainbookingsystem.security.Aes;
 import com.bupt.trainbookingsystem.service.AdministratorService;
 import com.bupt.trainbookingsystem.vo.Accept;
-import com.bupt.trainbookingsystem.vo.Meta;
-import com.bupt.trainbookingsystem.vo.Result;
-import com.bupt.trainbookingsystem.vo.AdministratorOutput;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
+@Api(tags = "管理员登录的接口")
 @RestController
 @CrossOrigin
 @RequestMapping("/administrator")
@@ -17,34 +18,22 @@ public class AdministratorLogin {
     @Autowired
     public AdministratorService administratorService;
 
+    @ApiOperation("管理员登录")
     @PostMapping("/login")
-    public Result login(@RequestBody Accept accept) throws Exception {
-        System.out.println(Aes.Decrypt(accept.getPassword()));
-        String token = administratorService.login(accept.getUsername(), Aes.Decrypt(accept.getPassword()));
-        Result result = new Result();
-        Meta meta = new Meta();
+    public Object login(@RequestBody Accept accept) {
+        String token = administratorService.login(accept.getUsername(), accept.getPassword());
+        System.out.println(token);
         if (token.isEmpty()){
-            meta.setStatus(true);
-            meta.setMsg("用户名或者密码错误");
-            result.setMeta(meta);
-            return result;
+            return ResponseData.fail("账号或密码不对", 101);
         }
-        meta.setMsg("登录成功");
-        meta.setStatus(false);
-        result.setToken(token);
-        result.setName(accept.getUsername());
-        result.setMeta(meta);
-        return result;
+        return token;
     }
 
 
+    @ApiOperation("根据token找到相关管理员")
     @PostMapping("/administratorpersonal/{token}")
-    public AdministratorOutput findAdtor(@PathVariable String token){
+    public AdministratorEntity findAdtor(@PathVariable String token){
         AdministratorEntity administratorEntity = administratorService.findAdministratorByToken(token);
-        AdministratorOutput ticketUserOutput = new AdministratorOutput();
-        ticketUserOutput.setAdministratorid(String.valueOf(administratorEntity.getId()));
-        ticketUserOutput.setAdministratorname(administratorEntity.getName());
-        ticketUserOutput.setAdministratorpwd(administratorEntity.getPassword());
-        return ticketUserOutput;
+        return administratorEntity;
     }
 }

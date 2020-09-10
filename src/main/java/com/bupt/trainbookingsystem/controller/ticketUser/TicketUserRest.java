@@ -1,9 +1,10 @@
-package com.bupt.trainbookingsystem.controller.systemCenter.ticketUser;
+package com.bupt.trainbookingsystem.controller.ticketUser;
 
 
 import com.bupt.trainbookingsystem.entity.TicketManagerEntity;
 import com.bupt.trainbookingsystem.service.imp.AdministratorService;
-import com.bupt.trainbookingsystem.vo.Meta;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Api(tags = "票务端用户管理的接口")
 @RequestMapping("/administratorapi/ticketuser")
 @RestController
 @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
@@ -23,42 +25,28 @@ public class TicketUserRest {
     /**
      * 1. 删除
      */
+    @ApiOperation("删除一个票务端使用者")
     @PostMapping("/delete/{id}")
-    public Meta deleteTicketUser(@PathVariable int  id){
-        Meta meta = new Meta();
-        try {
-            administratorService.deleteTicketUser(id);
-        }catch (Exception e){
-            meta.setStatus(false);
-            meta.setMsg("删除失败");
-            return meta;
-        }
-        meta.setStatus(true);
-        meta.setMsg("删除成功");
-        return meta;
+    public Object deleteTicketUser(@PathVariable int  id){
+        administratorService.deleteTicketUser(id);
+        return null;
     }
 
     /**
      * 2. 保存
      */
+    @ApiOperation("保存一个票务端使用者")
     @PostMapping("/save")
-    public  Meta saveTicketUser(@RequestBody TicketManagerEntity ticketManagerEntity){
-        Meta meta = new Meta();
-        try {
-            administratorService.saveTicketUser(ticketManagerEntity);
-        }catch (Exception e){
-            meta.setMsg("失败");
-            meta.setStatus(false);
-            return meta;
-        }
-        meta.setStatus(true);
-        meta.setMsg("成功");
-        return meta;
+    public  Object saveTicketUser(@RequestBody TicketManagerEntity ticketManagerEntity){
+        System.out.println(ticketManagerEntity.getStaffId());
+        administratorService.saveTicketUser(ticketManagerEntity);
+        return null;
     }
 
     /**
      * 3. 分页显示
      */
+    @ApiOperation("分页显示票务端使用者")
     @PostMapping("/page/{page}")
     public Map<String, Object> findTicketUsersPage(@PathVariable int page){
         int pageSize = 10;
@@ -73,9 +61,9 @@ public class TicketUserRest {
     /**
      * 4. 多条件查询
      */
+    @ApiOperation("查询票务端使用者")
     @PostMapping("/search")
     public List<TicketManagerEntity> search(@RequestBody TicketManagerEntity ticketManagerEntity){
-        System.out.println(ticketManagerEntity.getName());
         return administratorService.findTicketUsersWithSpecification(ticketManagerEntity);
     }
 

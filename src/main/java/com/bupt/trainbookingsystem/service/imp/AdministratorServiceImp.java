@@ -21,22 +21,7 @@ public class AdministratorServiceImp implements AdministratorService {
     @Autowired
     private AdministratorRespository administratorRespository;
 
-
-    //根据账号找到管理员对象
-    @Override
-    public AdministratorEntity findAdtorByNameAndPwd(String name, String pwd){
-        Optional<AdministratorEntity> administratorEntity = administratorRespository.findAdministratorEntityByNameAndPassword(name,pwd);
-        if(administratorEntity!=null&&administratorEntity.isPresent()){
-            return  administratorEntity.get();
-        }
-        else {
-            return  null;
-        }
-    }
-
-
-    //安全机制begin
-    //登录并且设置token
+    //接受用户名和密码,并返回用于成功凭证的令牌
     @Override
     public String login(String name, String password){
         Optional<AdministratorEntity> administratorEntity = administratorRespository.findAdministratorEntityByNameAndPassword(name, password);
@@ -50,11 +35,12 @@ public class AdministratorServiceImp implements AdministratorService {
         return StringUtils.EMPTY;
     }
 
-    //token的机制验证
+    //所有的资源都要经过token认证
     public Optional<User> findByToken(String token) {
         Optional<AdministratorEntity> administratorEntity= administratorRespository.findAdministratorEntityByToken(token);
         if(administratorEntity.isPresent()){
             AdministratorEntity administratorEntity1 = administratorEntity.get();
+            //授权
             User user= new User(administratorEntity1.getName(), administratorEntity1.getPassword(), true, true, true, true,
                     AuthorityUtils.createAuthorityList("USER"));
             return Optional.of(user);
@@ -74,6 +60,9 @@ public class AdministratorServiceImp implements AdministratorService {
         administratorRespository.save(administratorEntity);
     }
     //安全机制end
+
+
+
 
     //分页显示
     public Page<AdministratorEntity> findAdministratorPage(int page, int pageSize){

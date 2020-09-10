@@ -1,9 +1,11 @@
-package com.bupt.trainbookingsystem.controller.systemCenter.ad;
+package com.bupt.trainbookingsystem.controller.ad;
 
 
 import com.bupt.trainbookingsystem.entity.AdvertisementEntity;
 import com.bupt.trainbookingsystem.service.imp.AdministratorService;
-import com.bupt.trainbookingsystem.vo.Meta;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import javafx.beans.binding.ObjectExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+
+@Api(tags = "广告相关接口", description = "提供操作广告相关的 Rest API")
 @RestController
 @RequestMapping("/administratorapi/ad")
 @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
@@ -18,38 +22,24 @@ public class AdRest {
     @Autowired
     public AdministratorService administratorService;
 
+    @ApiOperation("保存广告信息的api")
     @PostMapping("/save")
-    public Meta saveAd(@RequestBody AdvertisementEntity advertisementEntity){
-        Meta meta = new Meta();
-        try {
-            administratorService.saveAd(advertisementEntity);
-        }catch (Exception e){
-            meta.setStatus(false);
-            meta.setMsg("失败");
-            return meta;
-        }
-        meta.setMsg("成功");
-        meta.setStatus(true);
-        return meta;
+    public Object saveAd(@RequestBody AdvertisementEntity advertisementEntity){
+        administratorService.saveAd(advertisementEntity);
+        return null;
     }
 
 
+    @ApiOperation("删除广告的api")
     @PostMapping("/delete/{id}")
-    public Meta deleteAd(@PathVariable int id){
-        Meta meta = new Meta();
-        try {
-            administratorService.deleteAd(id);
-        }catch (Exception e){
-            meta.setStatus(false);
-            meta.setMsg("失败");
-            return meta;
-        }
-        meta.setStatus(true);
-        meta.setMsg("成功");
-        return meta;
+    public Object deleteAd(@PathVariable int id){
+        administratorService.deleteAd(id);
+        return null;
     }
 
 
+
+    @ApiOperation("广告分页的api")
     @PostMapping("/page/{page}")
     public Map<String, Object> findAdsPage(@PathVariable int page){
         int pageSize = 10;

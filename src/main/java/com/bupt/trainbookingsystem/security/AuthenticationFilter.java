@@ -1,4 +1,4 @@
-package com.bupt.trainbookingsystem.security.systemCenter;
+package com.bupt.trainbookingsystem.security;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +16,14 @@ import java.io.IOException;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-//不需要进行修改
+/**
+ * 此文件不需要进行修改
+ * 1️⃣从用户请求中提取出未验证的token
+ */
+
+//令牌认证过滤器负责从头获取认证过滤器，并调用认证管理器进行认证
+//此过滤器将身份验证委托给UsernamePasswordAuthenticationToken
+//此过滤器仅对特定url启用
 public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
 
@@ -32,7 +39,6 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
         token= StringUtils.removeStart(token, "Bearer").trim();
         Authentication requestAuthentication = new UsernamePasswordAuthenticationToken(token, token);
         return getAuthenticationManager().authenticate(requestAuthentication);
-
     }
 
     @Override

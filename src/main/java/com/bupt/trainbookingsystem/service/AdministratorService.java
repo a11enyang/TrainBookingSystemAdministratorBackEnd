@@ -18,7 +18,6 @@ public interface AdministratorService {
 
     public AdministratorEntity findAdministratorByToken(String token);
 
-    public AdministratorEntity findAdtorByNameAndPwd(String name, String pwd);
 
     public Page<AdministratorEntity> findAdministratorPage(int page, int pageSize);
 

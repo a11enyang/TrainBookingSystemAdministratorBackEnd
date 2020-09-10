@@ -1,7 +1,8 @@
-package com.bupt.trainbookingsystem.bean;
+package com.bupt.trainbookingsystem.interceptor;
 
 
 import com.alibaba.fastjson.JSON;
+import com.bupt.trainbookingsystem.bean.ResponseData;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;

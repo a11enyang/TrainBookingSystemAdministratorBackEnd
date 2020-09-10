@@ -1,8 +1,11 @@
-package com.bupt.trainbookingsystem.controller.systemCenter.ordinaryUser;
+package com.bupt.trainbookingsystem.controller.ordinaryUser;
 
 import com.bupt.trainbookingsystem.entity.OrdinaryUserEntity;
 import com.bupt.trainbookingsystem.service.imp.AdministratorService;
 import com.bupt.trainbookingsystem.vo.Meta;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import javafx.beans.binding.ObjectExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -11,47 +14,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+@Api(tags = "普通用户管理的接口")
 @RestController
 @RequestMapping("/administratorapi/ordinaryuser")
-@CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:8081")
 public class OrdinaryUserRest {
 
     @Autowired
     public AdministratorService administratorService;
 
+    @ApiOperation("删除一个普通用户")
     //删除一个普通用户
     @PostMapping("/delete/{id}")
-    public Meta deleteOrdinaryUser(@PathVariable int id){
-        Meta meta = new Meta();
-        try {
-            administratorService.deleteOrdinaryUserById(id);
-        }catch (Exception e){
-            meta.setStatus(false);
-            meta.setMsg("删除失败!");
-            return meta;
-        }
-        meta.setMsg("删除成功");
-        meta.setStatus(true);
-        return meta;
+    public Object deleteOrdinaryUser(@PathVariable int id){
+        administratorService.deleteOrdinaryUserById(id);
+        return null;
     }
 
+    @ApiOperation("更新一个普通用户")
     //编辑一个普通用户
     @PostMapping("/updateOne")
-    public Meta saveOrdinaryUser(@RequestBody OrdinaryUserEntity ordinaryUserEntity){
-        Meta meta = new Meta();
-        try {
-            administratorService.saveOrdinaryUser(ordinaryUserEntity);
-        }catch (Exception e){
-            meta.setStatus(false);
-            meta.setMsg("编辑失败");
-            return meta;
-        }
-        meta.setMsg("编程成功");
-        meta.setStatus(true);
-        return meta;
+    public Object saveOrdinaryUser(@RequestBody OrdinaryUserEntity ordinaryUserEntity){
+        administratorService.saveOrdinaryUser(ordinaryUserEntity);
+        return null;
     }
 
 
+    @ApiOperation("用户列表分页")
     //分页查询
     @PostMapping("/page/{page}")
     public Map<String, Object> findOrdinaryUsersWithPage(@PathVariable int page){
@@ -64,6 +54,7 @@ public class OrdinaryUserRest {
         return mapper;
     }
 
+    @ApiOperation("搜索一个普通用户")
     //搜索一个普通用户
     @PostMapping("/search")
     public List<OrdinaryUserEntity> findAllSpecification(@RequestBody OrdinaryUserEntity ordinaryUserEntity){

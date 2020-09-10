@@ -1,4 +1,4 @@
-package com.bupt.trainbookingsystem.service.systemCenter;
+package com.bupt.trainbookingsystem.service.imp;
 
 import com.bupt.trainbookingsystem.dao.AdvertisementRespository;
 import com.bupt.trainbookingsystem.dao.OrdinaryUserRepository;
@@ -21,6 +21,10 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * 对广告 售票端管理员 普通用户的增删查改
+ */
 @Service
 public class AdministratorService {
     @Autowired
