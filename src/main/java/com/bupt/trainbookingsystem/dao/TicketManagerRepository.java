@@ -3,7 +3,6 @@
 内容：票务管理员的DAO层
 **/
 package com.bupt.trainbookingsystem.dao;
-import com.bupt.trainbookingsystem.entity.TicketManagerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
